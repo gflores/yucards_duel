@@ -1,0 +1,8 @@
+<template name="scoreBar">
+    <div class="score-bar">
+        {{> fillingBar currentValue=GetCurrentScore maxValue=GetMaxScore}}
+        <div class="text-info">
+            {{GetCurrentScore}}/{{GetMaxScore}}
+        </div>
+    </div>
+</template>

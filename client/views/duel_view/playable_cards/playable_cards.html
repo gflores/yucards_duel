@@ -1,0 +1,19 @@
+<template name="playableCards">
+    <div class="playable-cards">
+
+        
+        {{> playableCard index=0 GetCard=(GetCardFunc 0)}}
+
+        {{> playableCard index=1 GetCard=(GetCardFunc 1)}}
+
+        {{> playableCard index=2 GetCard=(GetCardFunc 2)}}
+
+    </div>
+</template>
+
+<template name="playableCard">
+    <div class="playable-card {{GetCard.element.toLowerCase}} {{GetClassForAvailability}}">
+        <div class="value"> {{GetCard.value}} </div>
+        <div class="element"> {{GetCard.element}} </div>
+    </div>    
+</template>

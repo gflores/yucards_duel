@@ -1,0 +1,12 @@
+<template name="centralStack">
+    <div id="central-stack">
+        {{#if IsThereTopCard}}
+            {{> playableCard GetCard=GetCardFunc}}
+        {{else}}
+            <div class="playable-card">
+            </div>
+
+        {{/if}}
+        
+    </div>
+</template>
