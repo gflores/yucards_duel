@@ -1,5 +1,7 @@
 <template name="duelView">
+    {{#if IsGameRoomReady}}
+        {{> opponentSide}}
+    {{/if}}
     {{> playerSide}}
-    {{> opponentSide}}
     {{> centralStack}}
 </template>
