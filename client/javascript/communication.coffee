@@ -17,18 +17,39 @@ define("communication", [], ()->
     serverMessagesHandlers = {
         "duel_countdown": (message) ->
             console.log("duel is going to start in #{message.countdownDuration} ms. OpponentID: #{if message.players_ids[0] == Meteor.userId() then message.players_ids[1] else message.players_ids[0]}")
+
         "duel_start": (message) ->
             game_data = require("game_data")
-
             [player, opponent] = if message.players[0].id == Meteor.userId() then [message.players[0], message.players[1]] else [message.players[1], message.players[0]]
             SetCardsToPlayer(player.playableCards)
             SetCardsToOpponent(opponent.playableCards)
             game_data.set("IsGameRoomReady", true)
-
             opponent_data = require("opponent_data")
             opponent_data.set("UserId", opponent.id)
             opponent_data.set("CurrentScore", 0)
             opponent_data.set("MaxScore", 60)
+
+        "player_preparing_play": (message) ->
+            if message.player_id == Meteor.userId()
+                console.log("I prepare play !")
+            else
+                console.log("opponent is preparing play")
+
+        "card_played": (message) ->
+            game_data = require("game_data")
+            cards_module = require("cards")
+
+            card_player_data = null
+            if message.player_id == Meteor.userId()
+                card_player_data = require("player_data")
+            else
+                card_player_data = require("opponent_data")
+
+            newTopCard = card_player_data.get("Card#{message.cardPlayedIndex}")
+            newTopCard.isAvailable = true
+            game_data.set("TopCard", newTopCard)
+            card_player_data.set("Card#{message.cardPlayedIndex}", cards_module.Construct(message.newCard.value, message.newCard.element, message.cardPlayedIndex))
+            card_player_data.set("CurrentScore", message.currentScore)
 
     }
 

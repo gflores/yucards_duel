@@ -19,8 +19,9 @@ define("custom_collection_publisher", [], () ->
                 this.ready()
                 if OnSuccessFunc?
                     OnSuccessFunc(this)
+                publisher = this
                 this.onStop( () ->
-                    console.log("User:#{this.userId} UNSUBSCRIBED from '#{publicationName}'")
+                    console.log("User:#{publisher.userId} UNSUBSCRIBED from '#{publicationName}'")
                     collectionHandle.stop()
                 )
             else

@@ -7,6 +7,8 @@ define("game_room", [], () ->
             stackTopCard: null
             messageCollection: new Mongo.Collection(null)
             maxScore: 60
+            isStarted: false
+            isFinished: false
         }
     ConstructPlayer = (id, currentGameRoomId) ->
         return {
@@ -41,16 +43,16 @@ define("game_room", [], () ->
                 else
                     if gameRoom.players_ids.length == 2
                         return "ERROR: the room #{roomId} is full"
+                    #Need to create a new player
                     gameRoom.players_ids.push(this.userId)
+                    player = ConstructPlayer(this.userId, roomId)
+                    player.reserveCards = require("cards").GenerateStartingCards()
 
-                player = ConstructPlayer(this.userId, roomId)
-                player.reserveCards = require("cards").GenerateStartingCards()
+                    player.playableCards.push(player.reserveCards.pop())
+                    player.playableCards.push(player.reserveCards.pop())
+                    player.playableCards.push(player.reserveCards.pop())
 
-                player.playableCards.push(player.reserveCards.pop())
-                player.playableCards.push(player.reserveCards.pop())
-                player.playableCards.push(player.reserveCards.pop())
-
-                global_data.players[player.id] = player
+                    global_data.players[player.id] = player
                 return "SUCCESS: room #{roomId} now has #{gameRoom.players_ids.length} players"
         })
         
@@ -68,27 +70,28 @@ define("game_room", [], () ->
         OnSuccessFunc = (publisher) ->
             gameRoom = global_data.FindRoomFromPlayerId(publisher.userId)
             if gameRoom.players_ids.length == 2
-                countdownDuration = 6000
-                gameRoom.messageCollection.insert({
-                    functionId: "duel_countdown"
-                    countdownDuration: countdownDuration
-                    players_ids: gameRoom.players_ids
-                })
-                console.log("Pub: duel starting for #{gameRoom.id} in #{countdownDuration} ms")
-
-
-                Meteor.setTimeout(() ->
+                if gameRoom.isStarted == false
+                    countdownDuration = 3000
                     gameRoom.messageCollection.insert({
-                        functionId: "duel_start"
-                        players: [
-                            PlayerGetFilteredField(global_data.players[gameRoom.players_ids[0]])
-                            PlayerGetFilteredField(global_data.players[gameRoom.players_ids[1]])
-                        ]
-                            
+                        functionId: "duel_countdown"
+                        countdownDuration: countdownDuration
+                        players_ids: gameRoom.players_ids
                     })
-                , countdownDuration
-                )
+                    gameRoom.isStarted = true
+                    console.log("Pub: duel starting for #{gameRoom.id} in #{countdownDuration} ms")
 
+
+                    Meteor.setTimeout(() ->
+                        gameRoom.messageCollection.insert({
+                            functionId: "duel_start"
+                            players: [
+                                PlayerGetFilteredField(global_data.players[gameRoom.players_ids[0]])
+                                PlayerGetFilteredField(global_data.players[gameRoom.players_ids[1]])
+                            ]
+                                
+                        })
+                    , countdownDuration
+                    )
             else
                 console.log("Pub: #{gameRoom.id} still waiting")
 
