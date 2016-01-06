@@ -87,7 +87,14 @@
     transition: all 6s;
 }
 
-
+#countdown{
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    text-align: center;
+    font-size: xx-large;
+    font-weight: bold;
+}
 
 // @keyframes example {
 //     from {left: 25%;}

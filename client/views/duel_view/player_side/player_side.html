@@ -1,7 +1,9 @@
 <template name="playerSide">
     <div id="player-side">
-        
         {{> playableCards GetCard=GetCard}}
         {{> scoreBar data}}
+        <div id="discard-button">
+            Discard All
+        </div>
     </div>
 </template>

@@ -17,6 +17,23 @@ define("communication", [], ()->
     serverMessagesHandlers = {
         "duel_countdown": (message) ->
             console.log("duel is going to start in #{message.countdownDuration} ms. OpponentID: #{if message.players_ids[0] == Meteor.userId() then message.players_ids[1] else message.players_ids[0]}")
+            game_data = require("game_data")
+            game_data.set("IsCountdownStarted", true)
+
+            game_data.set("CountdownValue", message.countdownDuration / 1000)
+            CountdownFrameFunction = () ->
+                Meteor.setTimeout( () ->
+                    currentCountdownValue = game_data.get("CountdownValue")
+                    currentCountdownValue -= 1
+                    game_data.set("CountdownValue", currentCountdownValue)
+                    if currentCountdownValue != 0
+                        CountdownFrameFunction()
+                , 1000
+                )
+
+            CountdownFrameFunction()
+
+
 
         "duel_start": (message) ->
             game_data = require("game_data")

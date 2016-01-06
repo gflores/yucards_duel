@@ -32,6 +32,16 @@ define("player_actions", [], () ->
             console.log("error: '#{error}' | result: '#{result}'")
         )
 
+    DiscardAllCards = () ->
+        player_data = require("player_data")
+        console.log("discarding cards...")
+
+        SetAvailableForPlayer(player_data, false)
+        LaunchLoaderForPlayer()
+        Meteor.call("discard_all_cards", (error, result) ->
+            console.log("error: '#{error}' | result: '#{result}'")
+        )
+
     return {
         PlayCardIndex: PlayCardIndex
         SetAvailableForPlayer: SetAvailableForPlayer
@@ -39,5 +49,6 @@ define("player_actions", [], () ->
         RemoveLoaderForPlayer: RemoveLoaderForPlayer
         LaunchLoaderForOpponent: LaunchLoaderForOpponent
         RemoveLoaderForOpponent: RemoveLoaderForOpponent
+        DiscardAllCards: DiscardAllCards
     }
 )
