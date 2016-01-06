@@ -17,12 +17,15 @@ define("game_room", [], () ->
             playableCards: []
             reserveCards: []
             currentScore: 0
+            isBusy: false
+            remainingCardsNumber: {}
         }
 
     PlayerGetFilteredField = (player) ->
         return {
             id: player.id
             playableCards: player.playableCards
+            remainingCardsNumber: player.remainingCardsNumber
         }
 
     SetupRoomsCommunication = () ->
@@ -51,6 +54,7 @@ define("game_room", [], () ->
                     player.playableCards.push(player.reserveCards.pop())
                     player.playableCards.push(player.reserveCards.pop())
                     player.playableCards.push(player.reserveCards.pop())
+                    require("cards").ComputeRemainingCardsNumberForPlayer(player)
 
                     global_data.players[player.id] = player
                 return "SUCCESS: room #{roomId} now has #{gameRoom.players_ids.length} players"
@@ -71,7 +75,7 @@ define("game_room", [], () ->
             gameRoom = global_data.FindRoomFromPlayerId(publisher.userId)
             if gameRoom.players_ids.length == 2
                 if gameRoom.isStarted == false
-                    countdownDuration = 3000
+                    countdownDuration = require("shared_constants").countdownDuration
                     gameRoom.messageCollection.insert({
                         functionId: "duel_countdown"
                         countdownDuration: countdownDuration

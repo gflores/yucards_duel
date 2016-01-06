@@ -1,23 +1,34 @@
 define("communication", [], ()->
 
-    SetCardsToPlayer = (playableCards) ->
-        player_data = require("player_data")
+    InitializeCardPlayer = (card_player_data, message) ->
         cards_module = require("cards")
 
-        for card, index in playableCards
-            player_data.set("Card#{index}", cards_module.Construct(card.value, card.element, index))
+        for card, index in message.playableCards
+            card_player_data.set("Card#{index}", cards_module.Construct(card.value, card.element, index))
 
-        player_data.set("RemainingNumberROCK", 1)
-        player_data.set("RemainingNumberSCISSOR", 2)
-        player_data.set("RemainingNumberPAPER", 3)
+        for element, number of message.remainingCardsNumber
+            card_player_data.set("RemainingNumber#{element}", number)
+
+    # SetCardsToPlayer = (playableCards) ->
+    #     player_data = require("player_data")
+    #     cards_module = require("cards")
+
+    #     for card, index in playableCards
+    #         player_data.set("Card#{index}", cards_module.Construct(card.value, card.element, index))
 
 
-    SetCardsToOpponent = (playableCards) ->
-        opponent_data = require("opponent_data")
-        cards_module = require("cards")
 
-        for card, index in playableCards
-            opponent_data.set("Card#{index}", cards_module.Construct(card.value, card.element, index))
+    #     player_data.set("RemainingNumberROCK", 1)
+    #     player_data.set("RemainingNumberSCISSOR", 2)
+    #     player_data.set("RemainingNumberPAPER", 3)
+
+
+    # SetCardsToOpponent = (playableCards) ->
+    #     opponent_data = require("opponent_data")
+    #     cards_module = require("cards")
+
+    #     for card, index in playableCards
+    #         opponent_data.set("Card#{index}", cards_module.Construct(card.value, card.element, index))
 
     serverMessagesHandlers = {
         "duel_countdown": (message) ->
@@ -43,8 +54,10 @@ define("communication", [], ()->
         "duel_start": (message) ->
             game_data = require("game_data")
             [player, opponent] = if message.players[0].id == Meteor.userId() then [message.players[0], message.players[1]] else [message.players[1], message.players[0]]
-            SetCardsToPlayer(player.playableCards)
-            SetCardsToOpponent(opponent.playableCards)
+            # SetCardsToPlayer(player.playableCards)
+            # SetCardsToOpponent(opponent.playableCards)
+            InitializeCardPlayer(require("player_data"), player)
+            InitializeCardPlayer(require("opponent_data"), opponent)
             game_data.set("IsGameRoomReady", true)
             opponent_data = require("opponent_data")
             opponent_data.set("UserId", opponent.id)
@@ -86,6 +99,8 @@ define("communication", [], ()->
                 game_data.set("StackCards", stackCards)
             card_player_data.set("Card#{message.cardPlayedIndex}", cards_module.Construct(message.newCard.value, message.newCard.element, message.cardPlayedIndex))
             card_player_data.set("CurrentScore", message.currentScore)
+            for element, number of message.remainingCardsNumber
+                card_player_data.set("RemainingNumber#{element}", number)
 
             if message.currentScore >= require("shared_constants").maxScore
                 game_data.set("IsGameFinished", true)
@@ -95,6 +110,27 @@ define("communication", [], ()->
                 else
                     console.log("opponent wins !")
                     game_data.set("IsWinner", false)
+
+        "cards_discarded": (message) ->
+            game_data = require("game_data")
+            cards_module = require("cards")
+
+            card_player_data = null
+            if message.player_id == Meteor.userId()
+                card_player_data = require("player_data")
+                require("player_actions").RemoveLoaderForPlayer()
+                require("game_data").set("isDiscardButtonAvailable", true)
+                # SetCardsToPlayer(message.playableCards)
+
+            else
+                card_player_data = require("opponent_data")
+                require("player_actions").RemoveLoaderForOpponent()
+                # SetCardsToOpponent(message.playableCards)
+
+            require("player_actions").SetAvailableForPlayer(card_player_data, true)
+            InitializeCardPlayer(card_player_data, message)
+
+
 
 
     }

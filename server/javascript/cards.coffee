@@ -24,6 +24,26 @@ define("cards", [], ()->
             player.reserveCards = GenerateStartingCards()
         return player.reserveCards.pop()
 
+    DiscardAllCards = (player) ->
+        player.playableCards[0] = GetNextCardFromReserve(player)
+        player.playableCards[1] = GetNextCardFromReserve(player)
+        player.playableCards[2] = GetNextCardFromReserve(player)
+        ComputeRemainingCardsNumberForPlayer(player)
+
+    ComputeRemainingCardsNumber = (cards) ->
+        result = {
+            "ROCK": 0
+            "PAPER": 0
+            "SCISSOR": 0
+        }
+        for card in cards
+            result[card.element] += 1
+        return result
+    ComputeRemainingCardsNumberForPlayer = (player) ->
+        player.remainingCardsNumber = ComputeRemainingCardsNumber(player.reserveCards)
+
+
+
     SetupCardActions = () ->
         global_data = require("global_data")
         card_utils_shared = require("card_utils_shared")
@@ -38,6 +58,10 @@ define("cards", [], ()->
 
                 gameRoom = global_data.FindRoomFromPlayerId(this.userId)
                 player = global_data.players[this.userId]
+                if player.isBusy
+                    return "player already busy !"
+
+                player.isBusy = true
                 cardToBeplayed = player.playableCards[cardIndex]
 
                 gameRoom.messageCollection.insert({
@@ -48,9 +72,11 @@ define("cards", [], ()->
                     resultingScore = card_utils_shared.GetResultingScore(cardToBeplayed, gameRoom.stackTopCard)
                     gameRoom.stackTopCard = cardToBeplayed
                     player.currentScore += resultingScore
+                    player.isBusy = false
 
                     newCard = GetNextCardFromReserve(player)
                     player.playableCards[cardIndex] = newCard
+                    ComputeRemainingCardsNumberForPlayer(player)
 
                     gameRoom.messageCollection.insert({
                         functionId: "card_played"
@@ -58,15 +84,37 @@ define("cards", [], ()->
                         currentScore: player.currentScore
                         cardPlayedIndex: cardIndex
                         newCard: newCard
+                        remainingCardsNumber: player.remainingCardsNumber
                     })
-
                 , CARD_PREPARATION_TIME
                 )
 
+            "discard_all_cards": () ->
+                if this.userId? == false
+                    return "ERROR: no UserId"
+                gameRoom = global_data.FindRoomFromPlayerId(this.userId)
+                player = global_data.players[this.userId]
+                if player.isBusy
+                    return "player already busy !"
 
+                player.isBusy = true
+                gameRoom.messageCollection.insert({
+                    functionId: "player_preparing_play"
+                    player_id: player.id
+                })
+                Meteor.setTimeout(() ->
+                    player.isBusy = false
 
+                    DiscardAllCards(player)
 
-
+                    gameRoom.messageCollection.insert({
+                        functionId: "cards_discarded"
+                        player_id: player.id
+                        playableCards: player.playableCards
+                        remainingCardsNumber: player.remainingCardsNumber
+                    })
+                , CARD_PREPARATION_TIME
+                )
 
 
         })
@@ -76,5 +124,7 @@ define("cards", [], ()->
         GenerateStartingCards: GenerateStartingCards
         GetNextCardFromReserve: GetNextCardFromReserve
         SetupCardActions: SetupCardActions
+        ComputeRemainingCardsNumber: ComputeRemainingCardsNumber
+        ComputeRemainingCardsNumberForPlayer: ComputeRemainingCardsNumberForPlayer
     }
 )
