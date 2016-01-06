@@ -7,7 +7,8 @@ define("opponent_data", [], () ->
 )
 
 define("game_data", [], () ->
-    return new ReactiveDict('gameData');
+    game_data = new ReactiveDict('gameData');
+    return game_data;
 )
 
 define("global_data", [], () ->

@@ -22,6 +22,7 @@ define("player_actions", [], () ->
         player_data = require("player_data")
 
         SetAvailableForPlayer(player_data, false)
+        require("game_data").set("isDiscardButtonAvailable", false)
 
         card = player_data.get("Card#{index}")
         card.isPreparing = true
@@ -37,6 +38,7 @@ define("player_actions", [], () ->
         console.log("discarding cards...")
 
         SetAvailableForPlayer(player_data, false)
+        require("game_data").set("isDiscardButtonAvailable", false)
         LaunchLoaderForPlayer()
         Meteor.call("discard_all_cards", (error, result) ->
             console.log("error: '#{error}' | result: '#{result}'")

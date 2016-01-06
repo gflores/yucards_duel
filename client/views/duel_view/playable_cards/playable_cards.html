@@ -7,8 +7,14 @@
         {{> playableCard index=1 GetCard=(GetCardFunc 1)}}
 
         {{> playableCard index=2 GetCard=(GetCardFunc 2)}}
-
     </div>
+
+    <div class="remaining-cards-number-list">
+        {{> remainingCardNumber element="SCISSOR" GetRemainingCardsNumber=GetRemainingCardsNumberFunc}}
+        {{> remainingCardNumber element="PAPER" GetRemainingCardsNumber=GetRemainingCardsNumberFunc}}
+        {{> remainingCardNumber element="ROCK" GetRemainingCardsNumber=GetRemainingCardsNumberFunc}}
+    </div>
+
 </template>
 
 <template name="playableCard">
@@ -16,4 +22,12 @@
         <div class="value"> {{GetCard.value}} </div>
         <div class="element"> {{GetCard.element}} </div>
     </div>    
+</template>
+
+<template name="remainingCardNumber">
+    <div class="remaining-cards-number {{element.toLowerCase}}">
+         <div class="text-info">
+             {{GetRemainingCardsNumber element}}
+         </div>
+    </div>
 </template>

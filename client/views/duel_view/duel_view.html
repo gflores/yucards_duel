@@ -7,5 +7,17 @@
             {{> countdown}}
         {{/if}}
         {{> playerSide}}
+
+        {{#if IsGameFinished}}
+            <div id="game-finished">
+                <div class="text-info">
+                    {{#if IsWinner}}
+                        YOU WIN !!!
+                    {{else}}
+                        YOU LOOSE !!
+                    {{/if}}
+                </div>
+            </div>
+        {{/if}}
     </div>
 </template>

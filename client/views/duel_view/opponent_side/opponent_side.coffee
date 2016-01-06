@@ -4,4 +4,8 @@ Template.opponentSide.helpers({
 
     GetCard: () ->
         return ((index) -> return require("opponent_data").get("Card#{index}"))
+
+    GetRemainingCardsNumber: () ->
+        return ((element) -> return require("opponent_data").get("RemainingNumber#{element}"))
+
 })

@@ -5,8 +5,14 @@
         {{else}}
             <div class="playable-card">
             </div>
-
         {{/if}}
         
+        {{#each card in GetStackCards}}
+            <div class="playable-card {{card.element.toLowerCase}}" style="{{GetStyleForIndex @index}}">
+                <div class="value"> {{card.value}} </div>
+                <div class="element"> {{card.element}} </div>
+            </div>    
+
+        {{/each}}
     </div>
 </template>

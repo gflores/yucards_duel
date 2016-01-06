@@ -4,6 +4,11 @@ Template.playerSide.helpers({
 
     GetCard: () ->
         return ((index) -> return require("player_data").get("Card#{index}"))
+    GetRemainingCardsNumber: () ->
+        return ((element) -> return require("player_data").get("RemainingNumber#{element}"))
+
+    GetClassForAvailabilityForDiscardButton: () ->
+        return if require("game_data").get("isDiscardButtonAvailable") then "" else "unavailable"
     
 })
 

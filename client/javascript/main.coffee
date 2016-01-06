@@ -1,6 +1,6 @@
 define("main", [
- "player_data", "opponent_data", "game_data", "global_data", "cards", "player_actions", "card_elements", "communication"
- "card_elements", "utils", "id_keys", "card_utils_shared"
+ "player_data", "opponent_data", "game_data", "global_data", "cards", "player_actions", "card_elements", "communication", "feedback_launcher"
+ "card_elements", "utils", "id_keys", "card_utils_shared", "shared_constants"
  ], () ->
     return 42
 )
@@ -14,6 +14,10 @@ require(["main"], () ->
     JoinGameRoom = (roomId) ->
         game_data = require("game_data")
         game_data.set("IsGameRoomReady", false)
+        game_data.set("isDiscardButtonAvailable", true)
+        game_data.set("IsGameFinished", false)
+        game_data.set("IsWinner", false)
+        game_data.set("StackCards", []) 
 
         Deps.autorun( () ->
             if (Meteor.userId() != null)
