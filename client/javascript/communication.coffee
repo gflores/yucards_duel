@@ -34,6 +34,8 @@ define("communication", [], ()->
                 console.log("I prepare play !")
             else
                 console.log("opponent is preparing play")
+                require("player_actions").LaunchLoaderForOpponent()
+                require("player_actions").SetAvailableForPlayer(require("opponent_data"), false)
 
         "card_played": (message) ->
             game_data = require("game_data")
@@ -42,11 +44,14 @@ define("communication", [], ()->
             card_player_data = null
             if message.player_id == Meteor.userId()
                 card_player_data = require("player_data")
+                require("player_actions").RemoveLoaderForPlayer()
+                Blaze.remove(require("global_data").playerCardLoadingRenderer)
             else
                 card_player_data = require("opponent_data")
+                require("player_actions").RemoveLoaderForOpponent()
 
+            require("player_actions").SetAvailableForPlayer(card_player_data, true)
             newTopCard = card_player_data.get("Card#{message.cardPlayedIndex}")
-            newTopCard.isAvailable = true
             game_data.set("TopCard", newTopCard)
             card_player_data.set("Card#{message.cardPlayedIndex}", cards_module.Construct(message.newCard.value, message.newCard.element, message.cardPlayedIndex))
             card_player_data.set("CurrentScore", message.currentScore)

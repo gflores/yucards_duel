@@ -1,5 +1,5 @@
 define("main", [
- "player_data", "opponent_data", "game_data", "cards", "player_actions", "card_elements", "communication"
+ "player_data", "opponent_data", "game_data", "global_data", "cards", "player_actions", "card_elements", "communication"
  "card_elements", "utils", "id_keys", "card_utils_shared"
  ], () ->
     return 42

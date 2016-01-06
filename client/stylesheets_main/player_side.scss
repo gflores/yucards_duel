@@ -21,6 +21,24 @@
                     border-color:  #2196F3;
                 }
             }
+            &.preparing-card{
+                margin:-0.05em;
+                border-width: 0.1em;
+                border-color:  #2196F3;
+                &::after {
+                    position:absolute;
+                    display:block;
+                    z-index: 1;
+                    background-color: white;
+                    opacity: 0.2;
+                    left: 0;
+                    top: 0;
+                    height: 100%;
+                    width: 100%;
+                    content: '';
+                }
+            }
+
         }
 
     }

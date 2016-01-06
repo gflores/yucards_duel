@@ -9,3 +9,10 @@ define("opponent_data", [], () ->
 define("game_data", [], () ->
     return new ReactiveDict('gameData');
 )
+
+define("global_data", [], () ->
+    return {
+        playerCardLoadingRenderer: null
+        opponentCardLoadingRenderer: null
+    }
+)
