@@ -1,3 +1,21 @@
+.playable-cards{
+    position: absolute;
+    width: 100%;
+    height: 50%;
+    .playable-card{
+
+        &:nth-child(1){
+            left: 36.5%;
+        }
+        &:nth-child(2){
+            left: 46.5%;
+        }
+        &:nth-child(3){
+            left: 56.5%;
+        }
+    }
+}
+
 .playable-card{
     position: absolute;
     border-style: solid;
@@ -6,6 +24,27 @@
     height: 100%;
     font-weight: bold;
     text-align: center;
+
+    .value{
+        position: absolute;
+        width: 100%;
+        font-size: xx-large;
+
+        &.bottom{
+            border-top: 1px dashed;
+        }
+        &.top{
+            border-bottom: 1px dashed;
+        }
+    }
+
+    .element{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+    }
 }
 
 .unavailable:not(.preparing-card)::after {
@@ -28,23 +67,6 @@
     bottom: 40%;
     .playable-card{
         left: 46.5%;
-    }
-}
-.playable-cards{
-    position: absolute;
-    width: 100%;
-    height: 50%;
-    .playable-card{
-
-        &:nth-child(1){
-            left: 36.5%;
-        }
-        &:nth-child(2){
-            left: 46.5%;
-        }
-        &:nth-child(3){
-            left: 56.5%;
-        }
     }
 }
 

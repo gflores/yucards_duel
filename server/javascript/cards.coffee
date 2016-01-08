@@ -1,6 +1,7 @@
 define("cards", [], ()->
 
     CARD_PREPARATION_TIME = 4.5 * 1000
+    CARD_DISCARD_TIME = 2 * 1000
 
     Construct = (value, element) ->
         return {
@@ -8,14 +9,26 @@ define("cards", [], ()->
             element: element
         }
 
+    NotLastThreeTheSameElement = (cards) ->
+        if cards[cards.length - 1].element == cards[cards.length - 2].element && cards[cards.length - 2].element == cards[cards.length - 3].element
+            element = cards[cards.length - 1].element
+            for card, index in cards
+                if card.element != element
+                    cards[index] = cards[cards.length - 1]
+                    cards[cards.length - 1] = card
+                    break
+
+
     GenerateStartingCards = () ->
         card_elements = require("card_elements")
         startingCards = []
         for element in [card_elements.elements.ROCK, card_elements.elements.PAPER, card_elements.elements.SCISSOR]
-            for value in [2..10]
+            for value in [2, 4, 6, 8, 10]
                 startingCards.push(Construct(value, element))
         console.log("generated cards: #{JSON.stringify(startingCards)}")
         require("utils").ShuffleArray(startingCards)
+        NotLastThreeTheSameElement(startingCards)
+
         console.log("generated cards: #{JSON.stringify(startingCards)}")
         return startingCards
 
@@ -113,7 +126,7 @@ define("cards", [], ()->
                         playableCards: player.playableCards
                         remainingCardsNumber: player.remainingCardsNumber
                     })
-                , CARD_PREPARATION_TIME
+                , CARD_DISCARD_TIME
                 )
 
 
