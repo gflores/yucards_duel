@@ -1,5 +1,6 @@
 <template name="opponentSide">
     <div id="opponent-side">
+        {{> cardPlayerIcon}}
         {{> scoreBar data}}
         {{> playableCards GetCard=GetCard GetRemainingCardsNumber=GetRemainingCardsNumber}}
     </div>

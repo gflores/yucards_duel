@@ -26,4 +26,13 @@
         top: 98%;
         color: #9A0034;
     }
+    .card-player-icon {
+        top: -0.5em;
+        svg circle {
+            fill: #5E3535;
+        }
+        img {
+            -webkit-filter: brightness(0%);
+        }
+    }
 }

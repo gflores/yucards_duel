@@ -85,8 +85,6 @@
     border-style: solid;
     left: 25%;
     background-color: #666666;
-    animation-name: example;
-    animation-duration: 4s;
 
     .text-info{
         position: absolute;
@@ -159,4 +157,21 @@
 
     transition-timing-function: linear;
     transition: all 2s;
+}
+
+.card-player-icon {
+    position: absolute;
+    left: 13em;
+    width: 7.5em;
+    height: 7.5em;
+
+    svg{
+        position: absolute;
+    }
+    img{
+        position: absolute;
+        width: 80%;
+        height: 80%;
+        transform: translate(11%, 13%);
+    }
 }

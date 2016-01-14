@@ -1,5 +1,6 @@
 <template name="playerSide">
     <div id="player-side">
+        {{> cardPlayerIcon}}
         {{> playableCards GetCard=GetCard GetRemainingCardsNumber=GetRemainingCardsNumber}}
         {{> scoreBar data}}
         <div id="discard-button" class="{{GetClassForAvailabilityForDiscardButton}}">
