@@ -88,6 +88,15 @@ define("communication", [], ()->
 
             newTopCard = card_player_data.get("Card#{message.cardPlayedIndex}")
 
+            SetNewCardFromReserveFunc = do (message, card_player_data) ->
+                () ->
+                    cards_module = require("cards")
+                    card_player_data.set("Card#{message.cardPlayedIndex}", cards_module.Construct(message.newCard.value, message.newCard.element, message.cardPlayedIndex))
+                    for element, number of message.remainingCardsNumber
+                        card_player_data.set("RemainingNumber#{element}", number)
+
+
+
             FinalResultFunc = do (message, card_player_data, newTopCard) ->
                 () ->
                     game_data = require("game_data")
@@ -104,10 +113,7 @@ define("communication", [], ()->
                         stackCards.unshift(oldTopCard)
                         stackCards = stackCards[0..1]
                         game_data.set("StackCards", stackCards)
-                    card_player_data.set("Card#{message.cardPlayedIndex}", cards_module.Construct(message.newCard.value, message.newCard.element, message.cardPlayedIndex))
                     card_player_data.set("CurrentScore", message.currentScore)
-                    for element, number of message.remainingCardsNumber
-                        card_player_data.set("RemainingNumber#{element}", number)
 
                     if message.currentScore >= require("shared_constants").maxScore
                         game_data.set("IsGameFinished", true)
@@ -118,7 +124,10 @@ define("communication", [], ()->
                             console.log("opponent wins !")
                             game_data.set("IsWinner", false)
             $parent = $("#central-stack")[0]
-            Blaze.renderWithData(Template.cardPutOnTop, {card: newTopCard, FinalResultFunc: FinalResultFunc, isPlayerSide: message.player_id == Meteor.userId()}, $parent)
+            Blaze.renderWithData(Template.cardPutOnTop, {
+                    card: newTopCard, FinalResultFunc: FinalResultFunc, SetNewCardFromReserveFunc: SetNewCardFromReserveFunc, isPlayerSide: message.player_id == Meteor.userId(), cardPlayedIndex: message.cardPlayedIndex
+                }, $parent
+            )
             # $parent = $("#central-stack")[0]
             # Blaze.renderWithData(Template.cardPutOnTop, {card: {element: "ROCK", value: 9}, FinalResultFunc: null, isPlayerSide: true}, $parent)
 

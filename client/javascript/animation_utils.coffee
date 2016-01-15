@@ -9,9 +9,9 @@ define("animation_utils", [], () ->
         transforms = element._gsTransform;
         
         initProps = {
-            x:transforms.x,
-            y:transforms.y,
-            rotation:transforms.rotation
+            x:0,
+            y:0,
+            rotation:0
         }
         for i in [0..shakes]
             tl.to(element, timeScale ,{x:initProps.x + R(-xScale, xScale), y:initProps.y + R(-yScale, yScale), rotation:initProps.rotation + R(-rotationScale, rotationScale)})
