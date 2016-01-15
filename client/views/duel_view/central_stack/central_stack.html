@@ -1,16 +1,14 @@
 <template name="centralStack">
     <div id="central-stack">
-        {{#if IsThereTopCard}}
-            {{> playableCard GetCard=GetCardFunc}}
-        {{else}}
-            <div class="playable-card">
+            <div id="top-card">
+                {{> playableCard GetCard=GetCardFunc}}
             </div>
-        {{/if}}
         
         {{#each card in GetStackCards}}
             <div class="playable-card {{card.element.toLowerCase}}" style="{{GetStyleForIndex @index}}">
-                <div class="value"> {{card.value}} </div>
+                <div class="value top"> {{card.value}} </div>
                 <div class="element"> {{card.element}} </div>
+                <div class="value bottom"> {{card.value}} </div>
             </div>    
 
         {{/each}}

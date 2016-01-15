@@ -42,7 +42,7 @@ define("player_actions", [], () ->
         LaunchLoaderForPlayer()
         Meteor.call("discard_all_cards", (error, result) ->
             console.log("error: '#{error}' | result: '#{result}'")
-        )
+        )        
 
     return {
         PlayCardIndex: PlayCardIndex

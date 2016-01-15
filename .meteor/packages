@@ -32,3 +32,5 @@ reactive-dict
 mrt:define
 iron:router
 sacha:spin
+webtempest:animate
+infinitedg:gsap

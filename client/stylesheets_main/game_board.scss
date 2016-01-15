@@ -68,6 +68,10 @@
     .playable-card{
         left: 46.5%;
     }
+    .feedback{
+        z-index: 3;
+        visibility: hidden;
+    }
 }
 
 .card-loading{

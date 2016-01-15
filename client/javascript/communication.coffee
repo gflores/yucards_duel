@@ -64,6 +64,7 @@ define("communication", [], ()->
             opponent_data.set("CurrentScore", 0)
             opponent_data.set("MaxScore", require("shared_constants").maxScore)
 
+
         "player_preparing_play": (message) ->
             if message.player_id == Meteor.userId()
                 console.log("I prepare play !")
@@ -72,44 +73,55 @@ define("communication", [], ()->
                 require("player_actions").LaunchLoaderForOpponent()
                 require("player_actions").SetAvailableForPlayer(require("opponent_data"), false)
 
+
         "card_played": (message) ->
-            game_data = require("game_data")
-            cards_module = require("cards")
 
             card_player_data = null
             if message.player_id == Meteor.userId()
                 card_player_data = require("player_data")
                 require("player_actions").RemoveLoaderForPlayer()
                 require("game_data").set("isDiscardButtonAvailable", true)
-
-                require("feedback_launcher").LaunchScoreGeneratedFeedbackForPlayer(message.currentScore - card_player_data.get("CurrentScore"))
             else
                 card_player_data = require("opponent_data")
                 require("player_actions").RemoveLoaderForOpponent()
-                require("feedback_launcher").LaunchScoreGeneratedFeedbackForOpponent(message.currentScore - card_player_data.get("CurrentScore"))
-
             require("player_actions").SetAvailableForPlayer(card_player_data, true)
-            newTopCard = card_player_data.get("Card#{message.cardPlayedIndex}")
-            oldTopCard = game_data.get("TopCard")
-            game_data.set("TopCard", newTopCard)
-            if oldTopCard?
-                stackCards = game_data.get("StackCards")
-                stackCards.unshift(oldTopCard)
-                stackCards = stackCards[0..1]
-                game_data.set("StackCards", stackCards)
-            card_player_data.set("Card#{message.cardPlayedIndex}", cards_module.Construct(message.newCard.value, message.newCard.element, message.cardPlayedIndex))
-            card_player_data.set("CurrentScore", message.currentScore)
-            for element, number of message.remainingCardsNumber
-                card_player_data.set("RemainingNumber#{element}", number)
 
-            if message.currentScore >= require("shared_constants").maxScore
-                game_data.set("IsGameFinished", true)
-                if message.player_id == Meteor.userId()
-                    console.log("player wins !")
-                    game_data.set("IsWinner", true)
-                else
-                    console.log("opponent wins !")
-                    game_data.set("IsWinner", false)
+            newTopCard = card_player_data.get("Card#{message.cardPlayedIndex}")
+
+            FinalResultFunc = do (message, card_player_data, newTopCard) ->
+                () ->
+                    game_data = require("game_data")
+                    cards_module = require("cards")
+
+                    if message.player_id == Meteor.userId()
+                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForPlayer(message.currentScore - card_player_data.get("CurrentScore"))
+                    else
+                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForOpponent(message.currentScore - card_player_data.get("CurrentScore"))                
+                    oldTopCard = game_data.get("TopCard")
+                    game_data.set("TopCard", newTopCard)
+                    if oldTopCard?
+                        stackCards = game_data.get("StackCards")
+                        stackCards.unshift(oldTopCard)
+                        stackCards = stackCards[0..1]
+                        game_data.set("StackCards", stackCards)
+                    card_player_data.set("Card#{message.cardPlayedIndex}", cards_module.Construct(message.newCard.value, message.newCard.element, message.cardPlayedIndex))
+                    card_player_data.set("CurrentScore", message.currentScore)
+                    for element, number of message.remainingCardsNumber
+                        card_player_data.set("RemainingNumber#{element}", number)
+
+                    if message.currentScore >= require("shared_constants").maxScore
+                        game_data.set("IsGameFinished", true)
+                        if message.player_id == Meteor.userId()
+                            console.log("player wins !")
+                            game_data.set("IsWinner", true)
+                        else
+                            console.log("opponent wins !")
+                            game_data.set("IsWinner", false)
+            $parent = $("#central-stack")[0]
+            Blaze.renderWithData(Template.cardPutOnTop, {card: newTopCard, FinalResultFunc: FinalResultFunc, isPlayerSide: message.player_id == Meteor.userId()}, $parent)
+            # $parent = $("#central-stack")[0]
+            # Blaze.renderWithData(Template.cardPutOnTop, {card: {element: "ROCK", value: 9}, FinalResultFunc: null, isPlayerSide: true}, $parent)
+
 
         "cards_discarded": (message) ->
             game_data = require("game_data")
@@ -129,9 +141,6 @@ define("communication", [], ()->
 
             require("player_actions").SetAvailableForPlayer(card_player_data, true)
             InitializeCardPlayer(card_player_data, message)
-
-
-
 
     }
 
