@@ -8,9 +8,6 @@ Template.playableCards.helpers({
 })
 
 Template.playableCard.helpers({
-    GetClassForAvailability: () ->
-        return if this.GetCard().isAvailable then "" else "unavailable"
-
     GetClassForIsPreparing: () ->
         return if this.GetCard().isPreparing then "preparing-card" else ""
 })

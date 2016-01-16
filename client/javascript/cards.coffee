@@ -5,7 +5,6 @@ define("cards", [], ()->
             value: value
             element: element
             index: index
-            isAvailable: true
             isPreparing: false
         }
 
