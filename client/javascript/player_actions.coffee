@@ -1,10 +1,11 @@
 define("player_actions", [], () ->
     
     SetAvailableForPlayer = (card_player_data, isAvailable) ->
-        for index in [0..2]
-            card = card_player_data.get("Card#{index}")
-            card.isAvailable = isAvailable
-            card_player_data.set("Card#{index}", card)
+        card_player_data.set("AreActionsAvailable", isAvailable)
+        # for index in [0..2]
+        #     card = card_player_data.get("Card#{index}")
+        #     card.isAvailable = isAvailable
+        #     card_player_data.set("Card#{index}", card)
 
     LaunchLoaderForPlayer = () ->
         $parent = $("#player-side")[0]
@@ -39,7 +40,7 @@ define("player_actions", [], () ->
         console.log("discarding cards...")
 
         SetAvailableForPlayer(player_data, false)
-        require("game_data").set("isDiscardButtonAvailable", false)
+#        require("game_data").set("isDiscardButtonAvailable", false)
         LaunchLoaderForPlayer()
         Meteor.call("discard_all_cards", (error, result) ->
             console.log("error: '#{error}' | result: '#{result}'")

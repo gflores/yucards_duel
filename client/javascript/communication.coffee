@@ -63,6 +63,8 @@ define("communication", [], ()->
             opponent_data.set("UserId", opponent.id)
             opponent_data.set("CurrentScore", 0)
             opponent_data.set("MaxScore", require("shared_constants").maxScore)
+            opponent_data.set("AreActionsAvailable", true);
+
 
 
         "player_preparing_play": (message) ->

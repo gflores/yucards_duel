@@ -8,4 +8,7 @@ Template.opponentSide.helpers({
     GetRemainingCardsNumber: () ->
         return ((element) -> return require("opponent_data").get("RemainingNumber#{element}"))
 
+    GetClassForActionsAvailability: () ->
+        return if require("opponent_data").get("AreActionsAvailable") then "" else "actions-unavailable"
+
 })

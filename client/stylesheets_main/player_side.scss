@@ -9,18 +9,28 @@
     .card-loading{
         top: 0;
     }
+    &:not(.actions-unavailable) > .playable-cards > .playable-card{
+        @extend .clickable-block;
+        &:hover{
+            margin:-0.05em;
+            border-width: 0.1em;
+            border-color:  #2196F3;
+        }
+    }
+
+
     .playable-cards{
         bottom: 20%;
 
         .playable-card{
-            &:not(.unavailable){
-                @extend .clickable-block;
-                &:hover{
-                    margin:-0.05em;
-                    border-width: 0.1em;
-                    border-color:  #2196F3;
-                }
-            }
+            // &:not(.unavailable){
+            //     @extend .clickable-block;
+            //     &:hover{
+            //         margin:-0.05em;
+            //         border-width: 0.1em;
+            //         border-color:  #2196F3;
+            //     }
+            // }
             &.preparing-card{
                 margin:-0.05em;
                 border-width: 0.1em;
@@ -43,11 +53,13 @@
     .score-bar{
         bottom: 0;
     }
-
+    &:not(.actions-unavailable) > #discard-button {
+        @extend .clickable-block;
+    }
     #discard-button{
-        &:not(.unavailable){
-            @extend .clickable-block;
-        }
+        // &:not(.unavailable){
+        //     @extend .clickable-block;
+        // }
         width: 5%;
         border: solid;
         padding: 5px;

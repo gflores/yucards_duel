@@ -14,7 +14,7 @@ require(["main"], () ->
     JoinGameRoom = (roomId) ->
         game_data = require("game_data")
         game_data.set("IsGameRoomReady", false)
-        game_data.set("isDiscardButtonAvailable", true)
+#        game_data.set("isDiscardButtonAvailable", true)
         game_data.set("IsGameFinished", false)
         game_data.set("IsWinner", false)
         game_data.set("StackCards", []) 
@@ -37,6 +37,7 @@ require(["main"], () ->
                 player_data.set("UserId", Meteor.userId())
                 player_data.set("CurrentScore", 0)
                 player_data.set("MaxScore", 60)
+                player_data.set("AreActionsAvailable", true)
 
                 # player_data.set("Card0", cards.Construct(8, card_elements.elements.SCISSOR, 0))
                 # player_data.set("Card1", cards.Construct(3, card_elements.elements.ROCK, 1))

@@ -9,15 +9,23 @@ Template.playerSide.helpers({
 
     GetClassForAvailabilityForDiscardButton: () ->
         return if require("game_data").get("isDiscardButtonAvailable") then "" else "unavailable"
+
+    GetClassForActionsAvailability: () ->
+        return if require("player_data").get("AreActionsAvailable") then "" else "actions-unavailable"
+
     
 })
 
 Template.playerSide.events({
-    "click .playable-card:not(.unavailable)": () ->
+#    "click .playable-card:not(.unavailable)": () ->
+    "click :not(.actions-unavailable) > .playable-cards > .playable-card": () ->
+        
         console.log("clicking ! #{this.GetCard().index}")
         require("player_actions").PlayCardIndex(this.GetCard().index)
 
-    "click #discard-button:not(.unavailable)": () ->
+#    "click #discard-button:not(.unavailable)": () ->
+    "click :not(.actions-unavailable) > #discard-button": () ->
+        
         require("player_actions").DiscardAllCards()
 
 })
