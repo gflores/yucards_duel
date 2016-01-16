@@ -13,7 +13,7 @@ define("game_data", [], () ->
 
 define("global_data", [], () ->
     return {
-        playerCardLoadingRenderer: null
-        opponentCardLoadingRenderer: null
+        playerCardLoadingRenderers: []
+        opponentCardLoadingRenderers: []
     }
 )

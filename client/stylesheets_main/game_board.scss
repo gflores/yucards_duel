@@ -1,3 +1,9 @@
+#duel-view{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
 .playable-cards{
     position: absolute;
     width: 100%;
@@ -67,10 +73,6 @@
     bottom: 40%;
     .playable-card{
         left: 46.5%;
-    }
-    .feedback{
-        z-index: 3;
-        visibility: hidden;
     }
 }
 
@@ -178,4 +180,11 @@
         height: 80%;
         transform: translate(11%, 13%);
     }
+}
+
+//FEEDBACKS
+
+.playable-card.feedback{
+    z-index: 3;
+    visibility: hidden;
 }

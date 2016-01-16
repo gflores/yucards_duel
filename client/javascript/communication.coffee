@@ -149,7 +149,18 @@ define("communication", [], ()->
                 # SetCardsToOpponent(message.playableCards)
 
             require("player_actions").SetAvailableForPlayer(card_player_data, true)
-            InitializeCardPlayer(card_player_data, message)
+
+            $parent = $("#central-stack")[0]
+            for index in [0..2]
+                Blaze.renderWithData(Template.discardedCardFeedback, {
+                        card: card_player_data.get("Card#{index}"), FinalResultFunc: (() -> console.log("ok lol")), isPlayerSide: message.player_id == Meteor.userId(), cardPlayedIndex: index
+                    }, $parent
+                )
+
+            Meteor.setTimeout(() ->
+                InitializeCardPlayer(card_player_data, message)
+            , 50)
+
 
     }
 
