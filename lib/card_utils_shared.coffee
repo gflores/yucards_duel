@@ -1,5 +1,5 @@
 define("card_utils_shared", [], () ->
-    GetResultingScore = (subject, target) ->
+    GetResultingDamage = (subject, target) ->
         card_elements = require("card_elements")
 
         if target? == false
@@ -14,6 +14,6 @@ define("card_utils_shared", [], () ->
             return Math.max(0, subject.value - target.value) #never go bellow zero
 
     return {
-        GetResultingScore: GetResultingScore
+        GetResultingDamage: GetResultingDamage
     }
 )

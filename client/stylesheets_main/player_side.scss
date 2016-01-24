@@ -53,6 +53,9 @@
     .score-bar{
         bottom: 0;
     }
+    .life-bar {
+        bottom: 0;
+    }
     &:not(.actions-unavailable) > #discard-button {
         @extend .clickable-block;
     }

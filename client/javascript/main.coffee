@@ -35,8 +35,8 @@ require(["main"], () ->
                 player_data = require("player_data")
 
                 player_data.set("UserId", Meteor.userId())
-                player_data.set("CurrentScore", 0)
-                player_data.set("MaxScore", 60)
+                player_data.set("CurrentLife", require("shared_constants").maxLife)
+                player_data.set("MaxLife", require("shared_constants").maxLife)
                 player_data.set("AreActionsAvailable", true)
 
                 # player_data.set("Card0", cards.Construct(8, card_elements.elements.SCISSOR, 0))
@@ -46,8 +46,8 @@ require(["main"], () ->
                 # opponent_data = require("opponent_data")
 
                 # opponent_data.set("UserId", "badguyID")
-                # opponent_data.set("CurrentScore", 15)
-                # opponent_data.set("MaxScore", 60)
+                # opponent_data.set("CurrentLife", 15)
+                # opponent_data.set("MaxLife", 60)
 
                 # opponent_data.set("Card0", cards.Construct(2, card_elements.elements.ROCK, 0))
                 # opponent_data.set("Card1", cards.Construct(6, card_elements.elements.PAPER, 1))

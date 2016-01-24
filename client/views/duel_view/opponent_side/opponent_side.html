@@ -1,7 +1,8 @@
 <template name="opponentSide">
     <div id="opponent-side" class="{{GetClassForActionsAvailability}}">
         {{> cardPlayerIcon}}
-        {{> scoreBar data}}
+<!--         {{> scoreBar data}} -->
+        {{> lifeBar data}}
         {{> playableCards GetCard=GetCard GetRemainingCardsNumber=GetRemainingCardsNumber}}
     </div>
 </template>

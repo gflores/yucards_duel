@@ -6,17 +6,18 @@ define("game_room", [], () ->
             players_ids: []
             stackTopCard: null
             messageCollection: new Mongo.Collection(null)
-            maxScore: 60
+            maxLife: require("shared_constants").maxLife
             isStarted: false
             isFinished: false
         }
     ConstructPlayer = (id, currentGameRoomId) ->
         return {
             id: id
+            opponent: null
             currentGameRoomId: currentGameRoomId
             playableCards: []
             reserveCards: []
-            currentScore: 0
+            currentLife: require("shared_constants").maxLife
             isBusy: false
             remainingCardsNumber: {}
         }
@@ -44,11 +45,15 @@ define("game_room", [], () ->
                 if this.userId in gameRoom.players_ids
                     console.log("player #{this.userId} already in room #{roomId}")
                 else
+                    player = ConstructPlayer(this.userId, roomId)
+                    if gameRoom.players_ids.length == 1
+                        opponent = global_data.players[gameRoom.players_ids[0]]
+                        player.opponent = opponent
+                        opponent.opponent = player
                     if gameRoom.players_ids.length == 2
                         return "ERROR: the room #{roomId} is full"
                     #Need to create a new player
                     gameRoom.players_ids.push(this.userId)
-                    player = ConstructPlayer(this.userId, roomId)
                     player.reserveCards = require("cards").GenerateStartingCards()
 
                     player.playableCards.push(player.reserveCards.pop())

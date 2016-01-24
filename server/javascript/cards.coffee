@@ -82,9 +82,9 @@ define("cards", [], ()->
                     player_id: player.id
                 })
                 Meteor.setTimeout(() ->
-                    resultingScore = card_utils_shared.GetResultingScore(cardToBeplayed, gameRoom.stackTopCard)
+                    resultingDamage = card_utils_shared.GetResultingDamage(cardToBeplayed, gameRoom.stackTopCard)
                     gameRoom.stackTopCard = cardToBeplayed
-                    player.currentScore += resultingScore
+                    player.opponent.currentLife -= resultingDamage
                     player.isBusy = false
 
                     newCard = GetNextCardFromReserve(player)
@@ -94,7 +94,7 @@ define("cards", [], ()->
                     gameRoom.messageCollection.insert({
                         functionId: "card_played"
                         player_id: player.id
-                        currentScore: player.currentScore
+                        otherCurrentLife: player.opponent.currentLife
                         cardPlayedIndex: cardIndex
                         newCard: newCard
                         remainingCardsNumber: player.remainingCardsNumber

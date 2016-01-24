@@ -109,6 +109,28 @@
     }
 }
 
+.life-bar{
+    position: absolute;
+    width: 50%;
+    height: 15%;
+    border-style: solid;
+    left: 25%;
+    background-color: #666666;
+    .filling-bar {
+        background-color: red;
+    }
+
+    .text-info{
+        position: absolute;
+        width: 100%;
+        text-align: center;
+        font-weight: bold;
+        color: white;
+        top: 25%;
+    }
+}
+
+
 .car-loading-indicator{
     position: absolute;
     width: 100%;

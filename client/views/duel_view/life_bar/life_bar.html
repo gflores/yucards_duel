@@ -1,0 +1,8 @@
+<template name="lifeBar">
+    <div class="life-bar">
+        {{> fillingBar currentValue=GetCurrentLife maxValue=GetMaxLife}}
+        <div class="text-info">
+            {{GetCurrentLife}}/{{GetMaxLife}}
+        </div>
+    </div>
+</template>

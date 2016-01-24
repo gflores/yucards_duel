@@ -3,7 +3,7 @@ define("global_data", [], () ->
     players = {}
 
     FindRoomFromPlayerId = (playerId) ->
-        gameRooms[players[playerId].currentGameRoomId]
+        return gameRooms[players[playerId].currentGameRoomId]
 
     return {
         gameRooms: gameRooms
