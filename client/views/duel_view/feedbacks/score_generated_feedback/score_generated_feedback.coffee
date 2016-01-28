@@ -1,4 +1,7 @@
-
+Template.scoreGeneratedFeedback.helpers({
+    GetValue: () ->
+        return Math.abs(this.value)
+})
 
 Template.scoreGeneratedFeedback.rendered = () ->
     feedback = $(this.find(".score-generated-feedback"))
