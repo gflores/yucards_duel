@@ -2,14 +2,17 @@ html {
     width: 100%;
     height: 100%;
     position: absolute;
+    z-index: -9999;
     overflow: hidden;
     background: linear-gradient(to bottom,  rgb(255,170,172) 0%,rgb(191,246,255) 70%);
     font-family: 'Titillium Web', sans-serif;
 
     body {
+        position: absolute;
         width: 100%;
         height: 100%;
         margin: 0px;
+        z-index: -9998;
 
         background: linear-gradient(to bottom,  rgb(255,170,172) 0%,rgb(191,246,255) 70%);
     }
