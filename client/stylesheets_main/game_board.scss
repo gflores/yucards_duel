@@ -85,11 +85,6 @@
     }
 }
 
-.card-loading{
-    position: absolute;
-    width: 100%;
-    height: 30%;
-}
 
 
 
@@ -134,16 +129,22 @@
 }
 
 
-.car-loading-indicator{
+.card-loading{
     position: absolute;
     width: 100%;
-    height: 45%;
-    text-align: center;
-    top: 50%;
+    height: 30%;
+    .car-loading-indicator{
+        position: absolute;
+        width: 100%;
+        height: 45%;
+        text-align: center;
+        top: 50%;
 
-    transition-timing-function: cubic-bezier(.07,.21,0,1);
-    transition: all 6s;
+        transition-timing-function: cubic-bezier(.07,.21,0,1);
+        transition: all 6s;
+    }
 }
+
 
 #countdown{
     position: absolute;
@@ -220,4 +221,19 @@
 .playable-card.feedback{
     z-index: 3;
     visibility: hidden;
+}
+
+.damage-aura {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    .damage-aura-indicator {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        top: 70%;
+    }
+
 }
