@@ -9,3 +9,8 @@ Template.scoreGeneratedFeedback.rendered = () ->
         feedback.css("transform", "translateY(-1em)")
     , 100)
 
+    instanceView = this.view
+    Meteor.setTimeout(() ->
+        Blaze.remove(instanceView)
+    , 2000)
+
