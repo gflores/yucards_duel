@@ -4,6 +4,7 @@ Template.cardPutOnTop.rendered = () ->
     instanceView = this.view
     FinalResultFunc = this.data.FinalResultFunc
     SetNewCardFromReserveFunc = this.data.SetNewCardFromReserveFunc
+    SetTopCardOnStack = this.data.SetTopCardOnStack
 
     tl = new TimelineLite()
 
@@ -11,7 +12,14 @@ Template.cardPutOnTop.rendered = () ->
     relativeDestinationLeft = $feedbackCard.position().left
     relativeDestinationTop = $feedbackCard.position().top
 
-    $feedbackCard.offset($("##{if this.data.isPlayerSide == true then "player-side" else "opponent-side"} .playable-card:nth-child(#{this.data.cardPlayedIndex + 1})").offset())
+    if this.data.isPlayerSide == true
+        sideId = "player-side"
+        auraDamageFunc = require("feedback_launcher").LaunchAuraDamagingOpponent
+    else
+        sideId = "opponent-side"
+        auraDamageFunc = require("feedback_launcher").LaunchAuraDamagingPlayer
+
+    $feedbackCard.offset($("##{sideId} .playable-card:nth-child(#{this.data.cardPlayedIndex + 1})").offset())
 
     tl
         .to($feedbackCard[0], 0.2, {
@@ -22,7 +30,8 @@ Template.cardPutOnTop.rendered = () ->
         .to($feedbackCard[0], 0.3, {
             ease: Power0.easeNone, left: relativeDestinationLeft, top: relativeDestinationTop, scale: 1
             onComplete: () ->
-                FinalResultFunc()
+                SetTopCardOnStack()
+                auraDamageFunc(FinalResultFunc)
                 Blaze.remove(instanceView)
                 animation_utils.Shake($("#top-card .playable-card")[0], 25, 0.010, 10, 10, 2)
         })

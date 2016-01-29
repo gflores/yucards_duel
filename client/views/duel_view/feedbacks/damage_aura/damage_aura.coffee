@@ -42,6 +42,7 @@ Template.damageAura.rendered = () ->
     #     indicator.css("top", "0")
     # , 100)
     animation_utils = require("animation_utils")
+    FinalResultFunc = this.data.FinalResultFunc
 
     instanceView = this.view
 
@@ -52,6 +53,7 @@ Template.damageAura.rendered = () ->
             ease: Linear.easeNone, top: "-40%"
             onComplete: () ->
                 animation_utils.Shake(damageAura[0], 25, 0.010, 30, 30, 2)
+                FinalResultFunc()
         })
         .to(damageAura[0], 0.3, {
             ease: Power0.easeNone, autoAlpha: 0, scale: 3

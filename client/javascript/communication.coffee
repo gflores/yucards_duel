@@ -101,16 +101,9 @@ define("communication", [], ()->
                         card_player_data.set("RemainingNumber#{element}", number)
 
 
-
-            FinalResultFunc = do (message, card_player_data, target_player_data, newTopCard) ->
+            SetTopCardOnStack = do (newTopCard) ->
                 () ->
                     game_data = require("game_data")
-                    cards_module = require("cards")
-
-                    if message.player_id == Meteor.userId()
-                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForOpponent(message.otherCurrentLife - target_player_data.get("CurrentLife"))                
-                    else
-                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForPlayer(message.otherCurrentLife - target_player_data.get("CurrentLife"))
                     oldTopCard = game_data.get("TopCard")
                     game_data.set("TopCard", newTopCard)
                     if oldTopCard?
@@ -118,6 +111,16 @@ define("communication", [], ()->
                         stackCards.unshift(oldTopCard)
                         stackCards = stackCards[0..1]
                         game_data.set("StackCards", stackCards)
+
+            FinalResultFunc = do (message, card_player_data, target_player_data) ->
+                () ->
+                    game_data = require("game_data")
+                    cards_module = require("cards")
+
+                    if message.player_id == Meteor.userId()
+                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForOpponent(message.otherCurrentLife - target_player_data.get("CurrentLife"))                
+                    else
+                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForPlayer(message.otherCurrentLife - target_player_data.get("CurrentLife"))                        
                     target_player_data.set("CurrentLife", message.otherCurrentLife)
 
                     if message.otherCurrentLife <= 0
@@ -130,7 +133,7 @@ define("communication", [], ()->
                             game_data.set("IsWinner", false)
             $parent = $("#central-stack")[0]
             Blaze.renderWithData(Template.cardPutOnTop, {
-                    card: newTopCard, FinalResultFunc: FinalResultFunc, SetNewCardFromReserveFunc: SetNewCardFromReserveFunc, isPlayerSide: message.player_id == Meteor.userId(), cardPlayedIndex: message.cardPlayedIndex
+                    card: newTopCard, FinalResultFunc: FinalResultFunc, SetTopCardOnStack: SetTopCardOnStack, SetNewCardFromReserveFunc: SetNewCardFromReserveFunc, isPlayerSide: message.player_id == Meteor.userId(), cardPlayedIndex: message.cardPlayedIndex
                 }, $parent
             )
             # $parent = $("#central-stack")[0]
