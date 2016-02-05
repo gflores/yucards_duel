@@ -12,5 +12,5 @@ Template.scoreGeneratedFeedback.rendered = () ->
     instanceView = this.view
     Meteor.setTimeout(() ->
         Blaze.remove(instanceView)
-    , 2000)
+    , 1500)
 
