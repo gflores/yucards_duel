@@ -1,12 +1,56 @@
-.rock{
+@keyframes glowEffectRock {
+    0%   {box-shadow: 0px 0px 16px 0px rgb(81, 45, 0);}
+    50%  {box-shadow: 0px 0px 16px 4px rgb(81, 45, 0);}
+    100%   {box-shadow: 0px 0px 16px 0px rgb(81, 45, 0);}
+}
+
+@keyframes glowEffectScissor {
+    0%   {box-shadow: 0px 0px 16px 0px red;}
+    50%  {box-shadow: 0px 0px 16px 4px red;}
+    100%   {box-shadow: 0px 0px 16px 0px red;}
+}
+@keyframes glowEffectPaper {
+    0%   {box-shadow: 0px 0px 16px 0px rgb(139, 195, 74);}
+    50%  {box-shadow: 0px 0px 16px 4px rgb(139, 195, 74);}
+    100%   {box-shadow: 0px 0px 16px 0px rgb(139, 195, 74);}
+}
+
+@mixin glowAnimation($animationName) {
+        animation-name: $animationName;
+        animation-duration: 1.5s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;    
+}
+
+.rock {
     background-color: rgb(81, 45, 0);
     *{
-        color: white
+        color: white;
     }
 }
-.scissor{
-    background-color: red
+
+.scissor {
+    background-color: red;
 }
-.paper{
+
+.paper {
     background-color: rgb(139, 195, 74);
+}
+
+#player-side {
+    .rock {
+        &.glowing {
+            @include glowAnimation(glowEffectRock);
+        }
+    }
+    .scissor {
+        &.glowing {
+            @include glowAnimation(glowEffectScissor);
+        }
+    }
+    .paper {
+        &.glowing {
+            @include glowAnimation(glowEffectPaper);
+        }
+    }
 }

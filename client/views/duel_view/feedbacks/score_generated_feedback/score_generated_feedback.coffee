@@ -1,6 +1,8 @@
 Template.scoreGeneratedFeedback.helpers({
     GetValue: () ->
         return Math.abs(this.value)
+    IsCriticalHit: () ->
+        return this.damageCriticalityValue == 1
 })
 
 Template.scoreGeneratedFeedback.rendered = () ->

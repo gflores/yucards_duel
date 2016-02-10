@@ -1,7 +1,7 @@
 <template name="scoreGeneratedFeedback">
     <div class="score-generated-feedback">
         <div class="text-info">
-            {{GetValue}}
+            {{GetValue}} {{#if IsCriticalHit}} !! {{/if}}
         </div>
     </div>
 </template>

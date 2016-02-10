@@ -24,6 +24,7 @@ define("card_elements", [], () ->
         return 0 if subject == target
         return 1 if IsStrongAgainst(subject, target)
         return -1 if IsWeakAgainst(subject, target)
+        throw new Meteor.Error(500, "subject: #{JSON.stringify(subject)}, target: #{JSON.stringify(target)}")
 
     return {
         elements: elements

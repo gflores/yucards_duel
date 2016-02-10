@@ -103,6 +103,7 @@ define("communication", [], ()->
 
             SetTopCardOnStack = do (newTopCard) ->
                 () ->
+                    require("feedback_launcher").LaunchChangeEnvironmentTo(newTopCard.element)
                     game_data = require("game_data")
                     oldTopCard = game_data.get("TopCard")
                     game_data.set("TopCard", newTopCard)
@@ -118,12 +119,12 @@ define("communication", [], ()->
                     cards_module = require("cards")
 
                     if message.player_id == Meteor.userId()
-                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForOpponent(message.otherCurrentLife - target_player_data.get("CurrentLife"))
+                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForOpponent(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
                         require("animation_utils").Shake($("#opponent-side .life-bar")[0], 25, 0.010, 10, 10, 0.5)
                         require("animation_utils").Shake($("#opponent-side .card-player-icon")[0], 25, 0.010, 10, 10, 0.5)
                         
                     else
-                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForPlayer(message.otherCurrentLife - target_player_data.get("CurrentLife"))                        
+                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForPlayer(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
                         require("animation_utils").Shake($("#player-side .life-bar")[0], 25, 0.010, 10, 10, 0.5)
                         require("animation_utils").Shake($("#player-side .card-player-icon")[0], 25, 0.010, 10, 10, 0.5)
                     target_player_data.set("CurrentLife", message.otherCurrentLife)

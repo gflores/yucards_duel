@@ -60,6 +60,7 @@ define("cards", [], ()->
     SetupCardActions = () ->
         global_data = require("global_data")
         card_utils_shared = require("card_utils_shared")
+        card_elements = require("card_elements")
 
         Meteor.methods({
             "play_card_index": (cardIndex) ->
@@ -83,6 +84,10 @@ define("cards", [], ()->
                 })
                 Meteor.setTimeout(() ->
                     resultingDamage = card_utils_shared.GetResultingDamage(cardToBeplayed, gameRoom.stackTopCard)
+                    if gameRoom.stackTopCard? == false
+                        damageCriticalityValue = 0
+                    else
+                        damageCriticalityValue = card_elements.GetResult(cardToBeplayed.element, gameRoom.stackTopCard.element)
                     gameRoom.stackTopCard = cardToBeplayed
                     player.opponent.currentLife -= resultingDamage
                     player.isBusy = false
@@ -95,6 +100,7 @@ define("cards", [], ()->
                         functionId: "card_played"
                         player_id: player.id
                         otherCurrentLife: player.opponent.currentLife
+                        damageCriticalityValue: damageCriticalityValue
                         cardPlayedIndex: cardIndex
                         newCard: newCard
                         remainingCardsNumber: player.remainingCardsNumber

@@ -1,6 +1,7 @@
 <template name="duelView">
     <div id="duel-view">
         {{#if IsGameRoomReady}}
+            {{> cardEnvironment}}
             {{> opponentSide}}
             {{> centralStack}}
         {{else}}
