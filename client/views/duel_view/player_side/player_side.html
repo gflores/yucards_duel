@@ -4,8 +4,10 @@
         {{> playableCards GetCard=GetCard GetRemainingCardsNumber=GetRemainingCardsNumber}}
 <!--         {{> scoreBar data}} -->
         {{> lifeBar data}}
-        <div id="discard-button">
-            Discard All
-        </div>
+        {{#if IsGameRoomReady}}
+            <div id="discard-button">
+                Discard All
+            </div>
+        {{/if}}
     </div>
 </template>

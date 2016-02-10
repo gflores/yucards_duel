@@ -8,6 +8,8 @@ Template.playerSide.helpers({
         return ((element) -> return require("player_data").get("RemainingNumber#{element}"))
     GetClassForActionsAvailability: () ->
         return if require("player_data").get("AreActionsAvailable") then "" else "actions-unavailable"
+    IsGameRoomReady: () ->
+        return require("game_data").get("IsGameRoomReady")
 
     
 })
