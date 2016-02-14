@@ -1,0 +1,83 @@
+#online-users-list {
+    height: 100%;
+    width: 200px;
+
+    margin: 0;
+    padding-left: 10px;
+    overflow-y: scroll;
+    background-color: white;
+    position: absolute;
+    right: 0;
+    list-style: none;
+}
+
+
+$chat-area-bottom-margin: 24px;
+$top-area-top-margin: 24px;
+$top-area-bottom-margin: 32px;
+$top-area-height: 120px;
+
+$input-box-height: 60px;
+
+#top-area {
+    position: absolute;
+    top: 0;
+    margin: $top-area-top-margin 0 $top-area-bottom-margin 24px;
+
+    .profile-box {
+        display: flex;
+        width: 400px;
+        background-color: white;
+        flex-wrap: wrap;
+        .profile-section {
+            flex: 0 0 200px;
+            .label {
+                font-weight: bold;
+            }
+            .value {
+            }
+        }
+    }
+}
+#chat-area {
+    position: absolute;
+    bottom: 0;
+    width: 60%;
+    height: calc(100% - #{$chat-area-bottom-margin} - #{$top-area-top-margin} - #{$top-area-bottom-margin} - #{$top-area-height});
+    margin: 0 0 $chat-area-bottom-margin 24px;
+
+    #messages-list-area {
+        height: calc(100% - #{$input-box-height});
+        overflow-y: scroll;
+        background: white;
+        .message {
+            display: flex;
+            .user {
+                flex: 0 0 8em;
+                text-align: right;
+                font-weight: bold;
+                overflow-x: hidden;
+            }
+            .text {
+                flex-grow: 1;
+                margin-left: 10px;
+            }
+        }
+    }
+    #message-input-box {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: $input-box-height;
+        display: flex;
+        textarea {
+            flex-grow: 1;
+            height: 100%;
+            resize: none;
+        }
+        .send-message {
+            height: 100%;
+            flex: 0 0 100px;
+        }
+    }    
+}

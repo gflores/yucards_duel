@@ -1,0 +1,85 @@
+<template name="matchmakingView">
+    <div id="top-area">
+        <div class="profile-box">
+            <div class="username profile-section">
+                <span class="label">Username</span>: {{#if currentUser.loginStateSignedUp}}
+                            {{> loginButtons}}
+                        {{else}}
+                            <span class="value">{{currentUser.username}} </span>
+                        {{/if}}
+            </div>
+            <div class="login-buttons-section profile-section">
+                {{#if currentUser.loginStateSignedUp}}
+                    <i>Logged.</i>
+                {{else}}
+                    {{> loginButtons}}
+                {{/if}}
+            </div>
+            <div class="rank profile-section">
+                <span class="label">Rank</span>:
+                <span class="value">
+                    {{#if currentUser.loginStateSignedUp}}
+                        {{currentUser.rank}}
+                    {{else}}
+                        N/A
+                    {{/if}}
+                </span>
+            </div>
+            <div class="glory profile-section">
+                <span class="label">Glory</span>:
+                <span class="value">
+                    {{#if currentUser.loginStateSignedUp}}
+                        {{currentUser.score}}
+                    {{else}}
+                        N/A
+                    {{/if}}
+                </span>
+            </div>
+            <div class="wins profile-section">
+                <span class="label">Victories</span>:
+                <span class="value">
+                    {{#if currentUser.loginStateSignedUp}}
+                        {{currentUser.winNumber}}
+                    {{else}}
+                        N/A
+                    {{/if}}
+                </span>
+            </div>
+            <div class="losses profile-section">
+                <span class="label">Defeats</span>:
+                <span class="value">
+                    {{#if currentUser.loginStateSignedUp}}
+                        {{currentUser.loseNumber}}
+                    {{else}}
+                        N/A
+                    {{/if}}
+                </span>
+            </div>
+        </div>
+    </div>
+    <ul id="online-users-list">
+        {{#each user in GetOnlineUsers}}
+            <li>
+                {{user.username}}
+            </li>
+        {{/each}}
+    </ul>
+    <div id="chat-area">
+        <div id="messages-list-area">
+            {{#each message in GetMessagesToDisplay}}
+                <div class="message">
+                    <div class="user">
+                        {{message.user.username}}:
+                    </div>
+                    <div class="text">
+                        {{message.text}}
+                    </div>
+                </div>
+            {{/each}}
+        </div>
+        <div id="message-input-box">
+            <textarea></textarea>
+            <button class="send-message"> Send </button>
+        </div> 
+    </div>
+</template>

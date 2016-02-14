@@ -4,5 +4,9 @@ define("id_keys", [], () ->
             "server_messages"
         GetServerMessagesPublicationName: () ->
             "server_messages"
+        GetChatMessagesCollectionName: () ->
+            "chat_messages"
+        GetChatMessagesPublicationName: () ->
+            "chat_messages"
     }
 )
