@@ -1,6 +1,6 @@
 define("users", [], () ->
     Meteor.publish(null, () ->
-        Meteor.users.find {}
+        Meteor.users.find({ "status.online": true })
     )
     Accounts.onCreateUser((options, user) ->
         user.rank = 1
