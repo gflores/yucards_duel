@@ -42,7 +42,7 @@ $input-box-height: 60px;
 #chat-area {
     position: absolute;
     bottom: 0;
-    width: 60%;
+    width: 70%;
     height: calc(100% - #{$chat-area-bottom-margin} - #{$top-area-top-margin} - #{$top-area-bottom-margin} - #{$top-area-height});
     margin: 0 0 $chat-area-bottom-margin 24px;
 
@@ -52,8 +52,13 @@ $input-box-height: 60px;
         background: white;
         .message {
             display: flex;
+            .date {
+                font-size: 0.9em;
+                color: #555;
+                flex: 0 0 4.6em;
+            }
             .user {
-                flex: 0 0 8em;
+                flex: 0 0 9em;
                 text-align: right;
                 font-weight: bold;
                 overflow-x: hidden;
@@ -61,6 +66,11 @@ $input-box-height: 60px;
             .text {
                 flex-grow: 1;
                 margin-left: 10px;
+            }
+            &.is-guest {
+                .user {
+                    text-decoration: line-through;                    
+                }
             }
         }
     }
@@ -78,6 +88,17 @@ $input-box-height: 60px;
         .send-message {
             height: 100%;
             flex: 0 0 100px;
+        }
+    }    
+}
+
+.is-guest {
+    #chat-area {
+        #messages-list-area {
+            .message {
+                .user {
+                }
+            }
         }
     }    
 }
