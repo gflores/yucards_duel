@@ -3,11 +3,12 @@
         <div id="top-area">
             <div class="profile-box">
                 <div class="username profile-section">
-                    <span class="label">Username</span>: {{#unless currentUser.profile.guest}}
-                                {{> loginButtons}}
-                            {{else}}
-                                <span class="value">{{currentUser.username}} </span>
-                            {{/unless}}
+                    <span class="label">Username</span>:
+                    {{#unless currentUser.profile.guest}}
+                        {{> loginButtons}}
+                    {{else}}
+                        <span class="value">{{currentUser.username}} </span>
+                    {{/unless}}
                 </div>
                 <div class="login-buttons-section profile-section">
                     {{#unless currentUser.profile.guest}}
@@ -56,6 +57,17 @@
                         {{/unless}}
                     </span>
                 </div>
+            </div>
+            <div id="game-generator-area">
+                <button class="generate-new-link">
+                    Generate new duel link
+                </button>
+                <div class="battle-link">
+                    <span>{{GetBaseDuelUrl}}/</span><input type="text" value="{{GetRoomIdToDisplay}}">
+                </div>
+                <button class="launch-battle">
+                    Join Duel
+                </button>
             </div>
         </div>
         <ul id="online-users-list">

@@ -1,3 +1,4 @@
+
 Template.matchmakingView.helpers({
     GetClassForGuest: () ->
         return if Meteor.user().profile.guest then "is-guest" else ""
@@ -11,6 +12,10 @@ Template.matchmakingView.helpers({
         #     {user: {username: "Toto"}, text: "It's a me again !!"}
         #     {user: {username: "Toto"}, text: "And againnnn"}
         # ]
+    GetBaseDuelUrl: () ->
+        return Router.routes.duel.url({roomId: ""})
+    # GetRoomIdToDisplay: () ->
+    #     return gameRoomIdToDisplay.get()
 })
 
 
@@ -21,6 +26,8 @@ SendCurrentMessage = () ->
     require("chat_messages").SendMessage(messageText)
     $('#message-input-box textarea')[0].value = ""
 
+gameRoomIdToDisplay = ""
+
 Template.matchmakingView.events({
     'keydown #message-input-box textarea': (event) ->
         if (event.which == 13)
@@ -28,6 +35,14 @@ Template.matchmakingView.events({
             SendCurrentMessage()
     'click #message-input-box .send-message': (event) ->
         SendCurrentMessage()
+
+    'click .generate-new-link': (event) ->
+        gameRoomIdToDisplay = "yodaWarrier"
+        $(".battle-link input")[0].value = gameRoomIdToDisplay
+
+    'click .launch-battle': (event) ->
+        require("chat_messages").SendMessage(Router.routes.duel.url({roomId: gameRoomIdToDisplay}))
+        window.open(Router.routes.duel.url({roomId: gameRoomIdToDisplay}))
 })
 
 ScrollChatToBottom = () ->

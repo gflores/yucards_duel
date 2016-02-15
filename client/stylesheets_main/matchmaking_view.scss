@@ -20,6 +20,7 @@ $top-area-height: 120px;
 $input-box-height: 60px;
 
 #top-area {
+    display: flex;
     position: absolute;
     top: 0;
     margin: $top-area-top-margin 0 $top-area-bottom-margin 24px;
@@ -37,6 +38,8 @@ $input-box-height: 60px;
             .value {
             }
         }
+    }
+    #game-generator-area {
     }
 }
 #chat-area {

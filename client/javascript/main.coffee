@@ -57,11 +57,17 @@ require(["main"], () ->
 
 
 
-    Router.route('/', () ->
-        this.render("matchmakingView")
+    Router.route('/', {
+        name: "mainRoom"
+        action: () ->
+            this.render("matchmakingView")
+        }
     )
-    Router.route('/play/:roomId', () ->
-        JoinGameRoom(this.params.roomId)
-        this.render("duelView")
+    Router.route('/play/:roomId', {
+        name: "duel"
+        action: () ->
+            JoinGameRoom(this.params.roomId)
+            this.render("duelView")
+        }
     )
 )
