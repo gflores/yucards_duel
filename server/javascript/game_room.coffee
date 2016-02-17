@@ -54,6 +54,11 @@ define("game_room", [], () ->
                 if this.userId? == false
                     return "ERROR: no UserId"
                 global_data = require("global_data")
+                if Meteor.user().status.playing and global_data.players[this.userId].currentGameRoomId != roomId
+                    return {
+                        isAlreadyPlaying: true
+                        otherRoomId: global_data.players[this.userId].currentGameRoomId
+                    }
 
                 gameRoom = null
                 if (roomId of global_data.gameRooms) == false #if the room didn't already exist, we create it
@@ -108,8 +113,8 @@ define("game_room", [], () ->
             global_data.FindRoomFromPlayerId(publisher.userId).messageCollection.find({date: {$gte: new Date}})
         OnSuccessFunc = (publisher) ->
             gameRoom = global_data.FindRoomFromPlayerId(publisher.userId)
-            Meteor.users.update(publisher.userId, {$set: {"status.playing": true}})
             if gameRoom.players_ids.length == 2
+                Meteor.users.update({_id: {$in: gameRoom.players_ids}}, {$set: {"status.playing": true}}, {multi: true})
                 if gameRoom.isStarted == false
                     GameRooms.insert({roomId: gameRoom.id})
                     console.log("total room nb:" + GameRooms.find().count());

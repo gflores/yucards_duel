@@ -1,24 +1,28 @@
 <template name="duelView">
     <div id="duel-view">
-        {{#if IsGameRoomReady}}
-            {{> cardEnvironment}}
-            {{> opponentSide}}
-            {{> centralStack}}
+        {{#if IsAlreadyPlayingOtherGame}}
+            You cannot join this game because you are already playing in the room: {{OtherRoomUrl}}
         {{else}}
-            {{> countdown}}
-        {{/if}}
-        {{> playerSide}}
+            {{#if IsGameRoomReady}}
+                {{> cardEnvironment}}
+                {{> opponentSide}}
+                {{> centralStack}}
+            {{else}}
+                {{> countdown}}
+            {{/if}}
+            {{> playerSide}}
 
-        {{#if IsGameFinished}}
-            <div id="game-finished">
-                <div class="text-info">
-                    {{#if IsWinner}}
-                        YOU WIN !!!
-                    {{else}}
-                        YOU LOSE !!
-                    {{/if}}
+            {{#if IsGameFinished}}
+                <div id="game-finished">
+                    <div class="text-info">
+                        {{#if IsWinner}}
+                            YOU WIN !!!
+                        {{else}}
+                            YOU LOSE !!
+                        {{/if}}
+                    </div>
                 </div>
-            </div>
+            {{/if}}
         {{/if}}
     </div>
 </template>

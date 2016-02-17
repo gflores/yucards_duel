@@ -7,6 +7,8 @@ define("main", [
 
 require(["main"], () ->
     Meteor.startup(()->
+        Meteor.users.update({}, {$set: {"status.playing": false}}, {multi: true})
+
         game_room = require("game_room")
         game_room.SetupRoomsCommunication()
 

@@ -215,6 +215,12 @@ define("communication", [], ()->
         Meteor.call("register_player_for_game", roomId, (error, result) ->
             console.log("error: '#{error}' | result: '#{JSON.stringify(result)}'")
             ListenToServerMessages()
+            if result.isAlreadyPlaying
+                console.log("already ingame at #{result.otherRoomId}")
+                game_data = require("game_data")
+                game_data.set("IsAlreadyPlayingOtherGame", true)
+                game_data.set("OtherRoomId", result.otherRoomId)
+
             if result.isStarted
                 console.log("reading from snapshot")
                 game_data = require("game_data")
