@@ -1,11 +1,16 @@
 define("game_room", [], () ->
+    GameRooms = new Mongo.Collection("game_rooms");
 
     ConstructGameRoom = (id) ->
+        messageCollection = new Mongo.Collection(null)
+        messageCollection.before.insert((userId, doc) ->
+            doc.date = new Date()
+        )
         return {
             id: id
             players_ids: []
             stackTopCard: null
-            messageCollection: new Mongo.Collection(null)
+            messageCollection: messageCollection
             maxLife: require("shared_constants").maxLife
             isStarted: false
             isFinished: false
@@ -26,8 +31,21 @@ define("game_room", [], () ->
         return {
             id: player.id
             playableCards: player.playableCards
+            currentLife: player.currentLife
+            isBusy: player.isBusy
             remainingCardsNumber: player.remainingCardsNumber
         }
+
+    GetCurrentSnapshotData = (gameRoom) ->
+        global_data = require("global_data")
+        return {
+            players: [
+                PlayerGetFilteredField(global_data.players[gameRoom.players_ids[0]])
+                PlayerGetFilteredField(global_data.players[gameRoom.players_ids[1]])
+            ]
+            stackTopCard: gameRoom.stackTopCard
+        }
+
 
     SetupRoomsCommunication = () ->
         Meteor.methods({
@@ -40,10 +58,16 @@ define("game_room", [], () ->
                 gameRoom = null
                 if (roomId of global_data.gameRooms) == false #if the room didn't already exist, we create it
                     global_data.gameRooms[roomId] = ConstructGameRoom(roomId)
+
                 gameRoom = global_data.gameRooms[roomId]
 
                 if this.userId in gameRoom.players_ids
                     console.log("player #{this.userId} already in room #{roomId}")
+                    if gameRoom.isStarted
+                        return {
+                            isStarted: true
+                            snapshot: GetCurrentSnapshotData(gameRoom)
+                        }
                 else
                     player = ConstructPlayer(this.userId, roomId)
                     if gameRoom.players_ids.length == 1
@@ -56,13 +80,18 @@ define("game_room", [], () ->
                     gameRoom.players_ids.push(this.userId)
                     player.reserveCards = require("cards").GenerateStartingCards()
 
+                    
+
                     player.playableCards.push(player.reserveCards.pop())
                     player.playableCards.push(player.reserveCards.pop())
                     player.playableCards.push(player.reserveCards.pop())
                     require("cards").ComputeRemainingCardsNumberForPlayer(player)
 
                     global_data.players[player.id] = player
-                return "SUCCESS: room #{roomId} now has #{gameRoom.players_ids.length} players"
+                return {
+                    isStarted: false
+                    msg: "SUCCESS: room #{roomId} now has #{gameRoom.players_ids.length} players"
+                }
         })
         
         custom_collection_publisher = require("custom_collection_publisher")
@@ -75,11 +104,16 @@ define("game_room", [], () ->
             catch error
                 false
         GetCursorFunc = (publisher) ->
-            global_data.FindRoomFromPlayerId(publisher.userId).messageCollection.find()
+            console.log("current date: #{new Date}")
+            global_data.FindRoomFromPlayerId(publisher.userId).messageCollection.find({date: {$gte: new Date}})
         OnSuccessFunc = (publisher) ->
             gameRoom = global_data.FindRoomFromPlayerId(publisher.userId)
+            Meteor.users.update(publisher.userId, {$set: {"status.playing": true}})
             if gameRoom.players_ids.length == 2
                 if gameRoom.isStarted == false
+                    GameRooms.insert({roomId: gameRoom.id})
+                    console.log("total room nb:" + GameRooms.find().count());
+
                     countdownDuration = require("shared_constants").countdownDuration
                     gameRoom.messageCollection.insert({
                         functionId: "duel_countdown"
@@ -88,7 +122,6 @@ define("game_room", [], () ->
                     })
                     gameRoom.isStarted = true
                     console.log("Pub: duel starting for #{gameRoom.id} in #{countdownDuration} ms")
-
 
                     Meteor.setTimeout(() ->
                         gameRoom.messageCollection.insert({
@@ -110,5 +143,6 @@ define("game_room", [], () ->
         ConstructGameRoom: ConstructGameRoom
         ConstructPlayer: ConstructPlayer
         SetupRoomsCommunication: SetupRoomsCommunication
+        GameRooms: GameRooms
     }
 )

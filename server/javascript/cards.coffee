@@ -72,6 +72,8 @@ define("cards", [], ()->
 
                 gameRoom = global_data.FindRoomFromPlayerId(this.userId)
                 player = global_data.players[this.userId]
+                if gameRoom.isFinished
+                    return "this duel is already finished !"
                 if player.isBusy
                     return "player already busy !"
 
@@ -83,6 +85,8 @@ define("cards", [], ()->
                     player_id: player.id
                 })
                 Meteor.setTimeout(() ->
+                    if gameRoom.isFinished
+                        return "this duel is already finished !"
                     resultingDamage = card_utils_shared.GetResultingDamage(cardToBeplayed, gameRoom.stackTopCard)
                     if gameRoom.stackTopCard? == false
                         damageCriticalityValue = 0
@@ -95,6 +99,12 @@ define("cards", [], ()->
                     newCard = GetNextCardFromReserve(player)
                     player.playableCards[cardIndex] = newCard
                     ComputeRemainingCardsNumberForPlayer(player)
+                    if player.opponent.currentLife < 0
+                        Meteor.users.update(player.id, {$set: {"status.playing": false}, $inc: {winNumber: 1}})
+                        Meteor.users.update(player.opponent.id, {$set: {"status.playing": false}, $inc: {loseNumber: 1}})
+                        gameRoom.isFinished = true
+                        require("game_room").GameRooms.remove({roomId: gameRoom.id})
+                        console.log("total room nb:" + require("game_room").GameRooms.find().count());
 
                     gameRoom.messageCollection.insert({
                         functionId: "card_played"
@@ -104,6 +114,7 @@ define("cards", [], ()->
                         cardPlayedIndex: cardIndex
                         newCard: newCard
                         remainingCardsNumber: player.remainingCardsNumber
+                        isGameFinished: gameRoom.isFinished
                     })
                 , CARD_PREPARATION_TIME
                 )

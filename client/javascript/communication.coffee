@@ -9,6 +9,21 @@ define("communication", [], ()->
         for element, number of message.remainingCardsNumber
             card_player_data.set("RemainingNumber#{element}", number)
 
+        if message.id? == true
+            card_player_data.set("UserId", message.id)
+
+        if message.currentLife? == true
+            card_player_data.set("CurrentLife", message.currentLife)
+
+        if message.isBusy? == true
+            require("player_actions").SetAvailableForPlayer(card_player_data, !message.isBusy)
+            if message.isBusy
+                if message.id == Meteor.userId()
+                    require("player_actions").LaunchLoaderForPlayer()
+                else
+                    require("player_actions").LaunchLoaderForOpponent()
+
+
     # SetCardsToPlayer = (playableCards) ->
     #     player_data = require("player_data")
     #     cards_module = require("cards")
@@ -29,6 +44,19 @@ define("communication", [], ()->
 
     #     for card, index in playableCards
     #         opponent_data.set("Card#{index}", cards_module.Construct(card.value, card.element, index))
+
+    UpdateFromSnapshot = (message) ->
+        game_data = require("game_data")
+        [player, opponent] = if message.players[0].id == Meteor.userId() then [message.players[0], message.players[1]] else [message.players[1], message.players[0]]
+        # SetCardsToPlayer(player.playableCards)
+        # SetCardsToOpponent(opponent.playableCards)
+        player_data = require("player_data")
+        opponent_data = require("opponent_data")
+        InitializeCardPlayer(player_data, player)
+        InitializeCardPlayer(opponent_data, opponent)
+        opponent_data.set("MaxLife", require("shared_constants").maxLife)
+        if message.stackTopCard?
+            game_data.set("TopCard", message.stackTopCard)
 
     serverMessagesHandlers = {
         "duel_countdown": (message) ->
@@ -53,19 +81,8 @@ define("communication", [], ()->
 
         "duel_start": (message) ->
             game_data = require("game_data")
-            [player, opponent] = if message.players[0].id == Meteor.userId() then [message.players[0], message.players[1]] else [message.players[1], message.players[0]]
-            # SetCardsToPlayer(player.playableCards)
-            # SetCardsToOpponent(opponent.playableCards)
-            InitializeCardPlayer(require("player_data"), player)
-            InitializeCardPlayer(require("opponent_data"), opponent)
             game_data.set("IsGameRoomReady", true)
-            opponent_data = require("opponent_data")
-            opponent_data.set("UserId", opponent.id)
-            opponent_data.set("CurrentLife", require("shared_constants").maxLife)
-            opponent_data.set("MaxLife", require("shared_constants").maxLife)
-            opponent_data.set("AreActionsAvailable", true);
-
-
+            UpdateFromSnapshot(message)
 
         "player_preparing_play": (message) ->
             if message.player_id == Meteor.userId()
@@ -190,14 +207,21 @@ define("communication", [], ()->
         collection.find().observeChanges({
             added: (id, field) ->
                 HandleServerMessage(field)
+                console.log("msg nb: " + collection.find().count())
         })
 
 
     RegisterToRoom = (roomId) ->
         Meteor.call("register_player_for_game", roomId, (error, result) ->
-            console.log("error: '#{error}' | result: '#{result}'")
+            console.log("error: '#{error}' | result: '#{JSON.stringify(result)}'")
             ListenToServerMessages()
-        )
+            if result.isStarted
+                console.log("reading from snapshot")
+                game_data = require("game_data")
+                game_data.set("IsGameRoomReady", true)
+                UpdateFromSnapshot(result.snapshot)
+       )
+
 
     return {
         serverMessagesHandlers: serverMessagesHandlers

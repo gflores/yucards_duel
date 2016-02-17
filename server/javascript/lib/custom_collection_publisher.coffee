@@ -13,7 +13,7 @@ define("custom_collection_publisher", [], () ->
     PublishCursor = (publicationName, collectionName, IsAllowedFunc, GetCursorFunc, OnSuccessFunc) ->
         Meteor.publish(publicationName, () ->
             console.log("User:#{this.userId} REQUESTS for subscription to '#{publicationName}'")
-            if IsAllowedFunc(this)
+            if IsAllowedFunc(this)                    
                 collectionHandle = GenerateHandlerForSync(
                     this, GetCursorFunc(this), collectionName)
                 this.ready()
