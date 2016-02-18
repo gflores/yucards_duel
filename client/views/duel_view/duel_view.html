@@ -4,6 +4,12 @@
             You cannot join this game because you are already playing in the room: {{OtherRoomUrl}}
         {{else}}
             {{#if IsGameRoomReady}}
+                {{#if IsPlayer}}
+                {{else}}
+                    <div id="spectating-message">
+                        You are now spectating
+                    </div>
+                {{/if}}
                 {{> cardEnvironment}}
                 {{> opponentSide}}
                 {{> centralStack}}

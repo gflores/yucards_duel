@@ -18,7 +18,7 @@ define("communication", [], ()->
         if message.isBusy? == true
             require("player_actions").SetAvailableForPlayer(card_player_data, !message.isBusy)
             if message.isBusy
-                if message.id == Meteor.userId()
+                if require("global_data").IsBottomPlayer(message.id)
                     require("player_actions").LaunchLoaderForPlayer()
                 else
                     require("player_actions").LaunchLoaderForOpponent()
@@ -47,7 +47,7 @@ define("communication", [], ()->
 
     UpdateFromSnapshot = (message) ->
         game_data = require("game_data")
-        [player, opponent] = if message.players[0].id == Meteor.userId() then [message.players[0], message.players[1]] else [message.players[1], message.players[0]]
+        [player, opponent] = if require("global_data").IsBottomPlayer(message.players[0].id) then [message.players[0], message.players[1]] else [message.players[1], message.players[0]]
         # SetCardsToPlayer(player.playableCards)
         # SetCardsToOpponent(opponent.playableCards)
         player_data = require("player_data")
@@ -60,7 +60,7 @@ define("communication", [], ()->
 
     serverMessagesHandlers = {
         "duel_countdown": (message) ->
-            console.log("duel is going to start in #{message.countdownDuration} ms. OpponentID: #{if message.players_ids[0] == Meteor.userId() then message.players_ids[1] else message.players_ids[0]}")
+            console.log("duel is going to start in #{message.countdownDuration} ms. OpponentID: #{if require("global_data").IsBottomPlayer(message.players_ids[0]) then message.players_ids[1] else message.players_ids[0]}")
             game_data = require("game_data")
             game_data.set("IsCountdownStarted", true)
 
@@ -85,8 +85,13 @@ define("communication", [], ()->
             UpdateFromSnapshot(message)
 
         "player_preparing_play": (message) ->
-            if message.player_id == Meteor.userId()
+            if require("global_data").IsBottomPlayer(message.player_id)
                 console.log("I prepare play !")
+                if require("game_data").get("IsPlayer") == false #if is spectator (but on the bottom side)
+                    require("player_actions").LaunchLoaderForPlayer()
+                    require("player_actions").SetAvailableForPlayer(require("player_data"), false)
+
+
             else
                 console.log("opponent is preparing play")
                 require("player_actions").LaunchLoaderForOpponent()
@@ -97,7 +102,7 @@ define("communication", [], ()->
 
             card_player_data = null
             target_player_data = null
-            if message.player_id == Meteor.userId()
+            if require("global_data").IsBottomPlayer(message.player_id)
                 card_player_data = require("player_data")
                 target_player_data = require("opponent_data")
                 require("player_actions").RemoveLoaderForPlayer()
@@ -135,7 +140,7 @@ define("communication", [], ()->
                     game_data = require("game_data")
                     cards_module = require("cards")
 
-                    if message.player_id == Meteor.userId()
+                    if require("global_data").IsBottomPlayer(message.player_id)
                         require("feedback_launcher").LaunchScoreGeneratedFeedbackForOpponent(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
                         require("animation_utils").Shake($("#opponent-side .life-bar")[0], 25, 0.010, 10, 10, 0.5)
                         require("animation_utils").Shake($("#opponent-side .card-player-icon")[0], 25, 0.010, 10, 10, 0.5)
@@ -148,7 +153,7 @@ define("communication", [], ()->
 
                     if message.otherCurrentLife <= 0
                         game_data.set("IsGameFinished", true)
-                        if message.player_id == Meteor.userId()
+                        if require("global_data").IsBottomPlayer(message.player_id)
                             console.log("player wins !")
                             game_data.set("IsWinner", true)
                         else
@@ -156,7 +161,7 @@ define("communication", [], ()->
                             game_data.set("IsWinner", false)
             $parent = $("#central-stack")[0]
             Blaze.renderWithData(Template.cardPutOnTop, {
-                    card: newTopCard, FinalResultFunc: FinalResultFunc, SetTopCardOnStack: SetTopCardOnStack, SetNewCardFromReserveFunc: SetNewCardFromReserveFunc, isPlayerSide: message.player_id == Meteor.userId(), cardPlayedIndex: message.cardPlayedIndex
+                    card: newTopCard, FinalResultFunc: FinalResultFunc, SetTopCardOnStack: SetTopCardOnStack, SetNewCardFromReserveFunc: SetNewCardFromReserveFunc, isPlayerSide: require("global_data").IsBottomPlayer(message.player_id), cardPlayedIndex: message.cardPlayedIndex
                 }, $parent
             )
             # $parent = $("#central-stack")[0]
@@ -168,7 +173,7 @@ define("communication", [], ()->
             cards_module = require("cards")
 
             card_player_data = null
-            if message.player_id == Meteor.userId()
+            if require("global_data").IsBottomPlayer(message.player_id)
                 card_player_data = require("player_data")
                 require("player_actions").RemoveLoaderForPlayer()
                 require("game_data").set("isDiscardButtonAvailable", true)
@@ -184,7 +189,7 @@ define("communication", [], ()->
             $parent = $("#central-stack")[0]
             for index in [0..2]
                 Blaze.renderWithData(Template.discardedCardFeedback, {
-                        card: card_player_data.get("Card#{index}"), FinalResultFunc: (() -> console.log("ok lol")), isPlayerSide: message.player_id == Meteor.userId(), cardPlayedIndex: index
+                        card: card_player_data.get("Card#{index}"), FinalResultFunc: (() -> console.log("ok lol")), isPlayerSide: require("global_data").IsBottomPlayer(message.player_id), cardPlayedIndex: index
                     }, $parent
                 )
 
@@ -215,17 +220,21 @@ define("communication", [], ()->
         Meteor.call("register_player_for_game", roomId, (error, result) ->
             console.log("error: '#{error}' | result: '#{JSON.stringify(result)}'")
             ListenToServerMessages(roomId)
-            if result.isAlreadyPlaying
+            game_data = require("game_data")
+            game_data.set("IsPlayer", result.isPlayer)
+            if result.isAlreadyPlaying #if the player is already playing another game
                 console.log("already ingame at #{result.otherRoomId}")
-                game_data = require("game_data")
                 game_data.set("IsAlreadyPlayingOtherGame", true)
                 game_data.set("OtherRoomId", result.otherRoomId)
+            else
+                if not result.isPlayer #if the user is a spectator
+                    game_data.set("BottomPlayerId", result.snapshot.players[0].id)
+                    game_data.set("TopPlayerId", result.snapshot.players[1].id)
 
-            if result.isStarted
-                console.log("reading from snapshot")
-                game_data = require("game_data")
-                game_data.set("IsGameRoomReady", true)
-                UpdateFromSnapshot(result.snapshot)
+                if result.isStarted #if the game is already running
+                    console.log("reading from snapshot")
+                    game_data.set("IsGameRoomReady", true)
+                    UpdateFromSnapshot(result.snapshot)
        )
 
 
