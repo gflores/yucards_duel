@@ -71,6 +71,8 @@ define("cards", [], ()->
                     return "ERROR: no UserId"
 
                 gameRoom = global_data.FindRoomFromPlayerId(this.userId)
+                if gameRoom == null
+                    return "No ongoing room found for player #{this.userId}"
                 player = global_data.players[this.userId]
                 if gameRoom.isFinished
                     return "this duel is already finished !"
@@ -123,6 +125,8 @@ define("cards", [], ()->
                 if this.userId? == false
                     return "ERROR: no UserId"
                 gameRoom = global_data.FindRoomFromPlayerId(this.userId)
+                if gameRoom == null
+                    return "No ongoing room found for player #{this.userId}"
                 player = global_data.players[this.userId]
                 if player.isBusy
                     return "player already busy !"

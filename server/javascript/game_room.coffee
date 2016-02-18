@@ -66,13 +66,13 @@ define("game_room", [], () ->
 
                 gameRoom = global_data.gameRooms[roomId]
 
+                if gameRoom.isStarted #if room is already started, no need to do additional stuff. Returning players and spectators will receive the snapshot
+                    return {
+                        isStarted: true
+                        snapshot: GetCurrentSnapshotData(gameRoom)
+                    }
                 if this.userId in gameRoom.players_ids
                     console.log("player #{this.userId} already in room #{roomId}")
-                    if gameRoom.isStarted
-                        return {
-                            isStarted: true
-                            snapshot: GetCurrentSnapshotData(gameRoom)
-                        }
                 else
                     player = ConstructPlayer(this.userId, roomId)
                     if gameRoom.players_ids.length == 1
@@ -103,44 +103,50 @@ define("game_room", [], () ->
         id_keys = require("id_keys")
         global_data = require("global_data")
 
-        IsAllowedFunc = (publisher) ->
-            try
-                publisher.userId in global_data.FindRoomFromPlayerId(publisher.userId).players_ids
-            catch error
-                false
-        GetCursorFunc = (publisher) ->
-            console.log("current date: #{new Date}")
-            global_data.FindRoomFromPlayerId(publisher.userId).messageCollection.find({date: {$gte: new Date}})
-        OnSuccessFunc = (publisher) ->
-            gameRoom = global_data.FindRoomFromPlayerId(publisher.userId)
-            if gameRoom.players_ids.length == 2
-                Meteor.users.update({_id: {$in: gameRoom.players_ids}}, {$set: {"status.playing": true}}, {multi: true})
-                if gameRoom.isStarted == false
-                    GameRooms.insert({roomId: gameRoom.id})
-                    console.log("total room nb:" + GameRooms.find().count());
-
-                    countdownDuration = require("shared_constants").countdownDuration
-                    gameRoom.messageCollection.insert({
-                        functionId: "duel_countdown"
-                        countdownDuration: countdownDuration
-                        players_ids: gameRoom.players_ids
-                    })
-                    gameRoom.isStarted = true
-                    console.log("Pub: duel starting for #{gameRoom.id} in #{countdownDuration} ms")
-
-                    Meteor.setTimeout(() ->
-                        gameRoom.messageCollection.insert({
-                            functionId: "duel_start"
-                            players: [
-                                PlayerGetFilteredField(global_data.players[gameRoom.players_ids[0]])
-                                PlayerGetFilteredField(global_data.players[gameRoom.players_ids[1]])
-                            ]
-                                
-                        })
-                    , countdownDuration
-                    )
+        IsAllowedFunc = (publisher, subArgs) ->
+            roomId = subArgs[0]
+            if Meteor.users.findOne(publisher.userId).status.playing == true or global_data.gameRooms.hasOwnProperty(roomId) == false
+                return false
             else
-                console.log("Pub: #{gameRoom.id} still waiting")
+                return true
+        GetCursorFunc = (publisher, subArgs) ->
+            roomId = subArgs[0]
+            global_data.gameRooms[roomId].messageCollection.find({date: {$gte: new Date}})
+        OnSuccessFunc = (publisher, subArgs) ->
+            roomId = subArgs[0]
+            gameRoom = global_data.gameRooms[roomId]
+            if publisher.userId in gameRoom.players_ids
+                if gameRoom.players_ids.length == 2
+                    if gameRoom.isStarted == false
+                        Meteor.users.update({_id: {$in: gameRoom.players_ids}}, {$set: {"status.playing": true}}, {multi: true})
+                        GameRooms.insert({roomId: gameRoom.id})
+                        console.log("total room nb:" + GameRooms.find().count());
+
+                        countdownDuration = require("shared_constants").countdownDuration
+                        gameRoom.messageCollection.insert({
+                            functionId: "duel_countdown"
+                            countdownDuration: countdownDuration
+                            players_ids: gameRoom.players_ids
+                        })
+                        gameRoom.isStarted = true
+                        console.log("Pub: duel starting for #{gameRoom.id} in #{countdownDuration} ms")
+
+                        Meteor.setTimeout(() ->
+                            gameRoom.messageCollection.insert({
+                                functionId: "duel_start"
+                                players: [
+                                    PlayerGetFilteredField(global_data.players[gameRoom.players_ids[0]])
+                                    PlayerGetFilteredField(global_data.players[gameRoom.players_ids[1]])
+                                ]
+                                    
+                            })
+                        , countdownDuration
+                        )
+                else
+                    console.log("Pub: #{gameRoom.id} still waiting")
+            else
+                console.log("#{gameRoom.id}: accepting #{publisher.userId} as spectator")
+
 
         custom_collection_publisher.PublishCursor(id_keys.GetServerMessagesPublicationName(), id_keys.GetServerMessagesCollectionName(), IsAllowedFunc, GetCursorFunc, OnSuccessFunc)
 

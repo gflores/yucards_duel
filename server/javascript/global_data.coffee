@@ -3,7 +3,12 @@ define("global_data", [], () ->
     players = {}
 
     FindRoomFromPlayerId = (playerId) ->
-        return gameRooms[players[playerId].currentGameRoomId]
+        if players.hasOwnProperty(playerId) == false
+            return null
+        player = players[playerId]
+        if player.currentGameRoomId == null or gameRooms.hasOwnProperty(player.currentGameRoomId) == false
+            return null
+        return gameRooms[player.currentGameRoomId]
 
     return {
         gameRooms: gameRooms

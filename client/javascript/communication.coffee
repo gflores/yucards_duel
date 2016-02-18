@@ -200,10 +200,10 @@ define("communication", [], ()->
         serverMessagesHandlers[serverMessage.functionId](serverMessage)
 
 
-    ListenToServerMessages = () ->
+    ListenToServerMessages = (roomId) ->
         id_keys = require("id_keys")
         collection = new Meteor.Collection(id_keys.GetServerMessagesCollectionName())
-        Meteor.subscribe(id_keys.GetServerMessagesPublicationName())
+        Meteor.subscribe(id_keys.GetServerMessagesPublicationName(), roomId)
         collection.find().observeChanges({
             added: (id, field) ->
                 HandleServerMessage(field)
@@ -214,7 +214,7 @@ define("communication", [], ()->
     RegisterToRoom = (roomId) ->
         Meteor.call("register_player_for_game", roomId, (error, result) ->
             console.log("error: '#{error}' | result: '#{JSON.stringify(result)}'")
-            ListenToServerMessages()
+            ListenToServerMessages(roomId)
             if result.isAlreadyPlaying
                 console.log("already ingame at #{result.otherRoomId}")
                 game_data = require("game_data")
