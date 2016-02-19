@@ -165,7 +165,7 @@ define("game_room", [], () ->
                 , countdownDuration
                 )
             else
-                console.log("#{gameRoom.id}: accepting #{publisher.userId} as spectator")
+                console.log("[#{gameRoom.id}] accepting subscriber: #{publisher.userId}")
 
 
         custom_collection_publisher.PublishCursor(id_keys.GetServerMessagesPublicationName(), id_keys.GetServerMessagesCollectionName(), IsAllowedFunc, GetCursorFunc, OnSuccessFunc)

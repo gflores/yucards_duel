@@ -1,6 +1,6 @@
 define("shared_constants", [], () ->
     return {
-        maxLife: 60
+        maxLife: 30
         countdownDuration: 3 * 1000
     }
 )

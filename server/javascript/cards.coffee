@@ -23,7 +23,7 @@ define("cards", [], ()->
         card_elements = require("card_elements")
         startingCards = []
         for element in [card_elements.elements.ROCK, card_elements.elements.PAPER, card_elements.elements.SCISSOR]
-            for value in [2, 4, 6, 8, 10]
+            for value in [1, 2, 3, 4, 5]
                 startingCards.push(Construct(value, element))
         console.log("generated cards: #{JSON.stringify(startingCards)}")
         require("utils").ShuffleArray(startingCards)
@@ -101,7 +101,8 @@ define("cards", [], ()->
                     newCard = GetNextCardFromReserve(player)
                     player.playableCards[cardIndex] = newCard
                     ComputeRemainingCardsNumberForPlayer(player)
-                    if player.opponent.currentLife < 0
+                    console.log("[#{gameRoom.id}]: CARD PLAYED: #{player.opponent.id} now has #{player.opponent.currentLife} HP")
+                    if player.opponent.currentLife <= 0
                         Meteor.users.update(player.id, {$set: {"status.playing": false}, $inc: {winNumber: 1}})
                         Meteor.users.update(player.opponent.id, {$set: {"status.playing": false}, $inc: {loseNumber: 1}})
                         gameRoom.isFinished = true
