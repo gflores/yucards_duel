@@ -37,8 +37,10 @@ Template.matchmakingView.events({
         SendCurrentMessage()
 
     'click .generate-new-link': (event) ->
-        gameRoomIdToDisplay = "yodaWarrier"
-        $(".battle-link input")[0].value = gameRoomIdToDisplay
+        Meteor.call("get_random_available_room_id", (error, result) ->
+            gameRoomIdToDisplay = result
+            $(".battle-link input")[0].value = gameRoomIdToDisplay
+        )
 
     'click .launch-battle': (event) ->
         require("chat_messages").SendMessage(Router.routes.duel.url({roomId: gameRoomIdToDisplay}))

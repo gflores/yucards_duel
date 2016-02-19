@@ -1,5 +1,5 @@
 <template name="playerSide">
-    <div id="player-side" class="{{GetClassForActionsAvailability}}">
+    <div id="player-side" class="{{GetClassForActionsAvailability}} {{GetClassForIsSpectator}}">
         {{> cardPlayerIcon}}
         {{> playableCards GetCard=GetCard GetRemainingCardsNumber=GetRemainingCardsNumber}}
 <!--         {{> scoreBar data}} -->

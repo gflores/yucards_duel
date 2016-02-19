@@ -1,6 +1,15 @@
 define("game_room", [], () ->
     GameRooms = new Mongo.Collection("game_rooms");
 
+    GetAvailableRoomId = () ->
+        f = () ->
+            Math.floor((Math.random() * 999999) + 1).toString()
+        roomId = f()
+        while GameRooms.find({roomId: roomId}).count() != 0
+            roomId = f()
+        return roomId
+            
+
     ConstructGameRoom = (id) ->
         messageCollection = new Mongo.Collection(null)
         messageCollection.before.insert((userId, doc) ->
@@ -175,5 +184,6 @@ define("game_room", [], () ->
         ConstructPlayer: ConstructPlayer
         SetupRoomsCommunication: SetupRoomsCommunication
         GameRooms: GameRooms
+        GetAvailableRoomId: GetAvailableRoomId
     }
 )

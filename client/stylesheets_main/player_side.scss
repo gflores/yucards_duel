@@ -9,7 +9,7 @@
     .card-loading{
         top: 0;
     }
-    &:not(.actions-unavailable) > .playable-cards > .playable-card{
+    &:not(.actions-unavailable):not(.is-spectator) > .playable-cards > .playable-card{
         @extend .clickable-block;
         &:hover{
             margin:-0.05em;
@@ -71,6 +71,12 @@
         bottom: 20%;
         left: 25%;
     }
+    &.is-spectator {
+        #discard-button{
+            display: none;
+        }
+    }
+
     .remaining-cards-number-list{
         bottom: 20%;
     }

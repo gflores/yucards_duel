@@ -37,7 +37,7 @@
     background-color: rgb(139, 195, 74);
 }
 
-#player-side {
+#player-side:not(.is-spectator) {
     .rock {
         &.glowing {
             @include glowAnimation(glowEffectRock);
