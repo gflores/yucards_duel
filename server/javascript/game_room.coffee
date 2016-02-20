@@ -35,6 +35,35 @@ define("game_room", [], () ->
             isBusy: false
             remainingCardsNumber: {}
         }
+    ConstructPlayerEndResult = (player, newScore) ->
+        res = {
+            id: player._id
+            oldScore: player.score
+            oldRank: player.rank
+            isWinner: null
+            winNumber: player.winNumber
+            loseNumber: player.loseNumber
+        }
+        player.score = Math.max(newScore, 0)
+        player.rank = require("duels").GetRankFromScore(player.score)
+        res.newScore = player.score
+        res.newRank = player.rank
+        return res
+
+    ConstructDuelEndResult = (winner, loser) ->
+        scoreTransaction = require("duels").GetScoreTransactionAmount(winner, loser)
+        winner.winNumber += 1
+        loser.loseNumber += 1
+
+        winnerResult = ConstructPlayerEndResult(winner, winner.score + scoreTransaction)
+        winnerResult.isWinner = true
+        loserResult = ConstructPlayerEndResult(loser, loser.score - scoreTransaction)
+        loserResult.isWinner = false
+        return {
+            players: [winnerResult, loserResult]
+        }
+
+
 
     PlayerGetFilteredField = (player) ->
         return {
@@ -151,7 +180,7 @@ define("game_room", [], () ->
 
                 Meteor.users.update({_id: {$in: gameRoom.players_ids}}, {$set: {"status.playing": true}}, {multi: true})
                 GameRooms.insert({roomId: gameRoom.id})
-                console.log("total room nb:" + GameRooms.find().count());
+                console.log("[#{roomId}] STARTED ! total room nb:" + GameRooms.find().count());
 
                 countdownDuration = require("shared_constants").countdownDuration
                 gameRoom.messageCollection.insert({
@@ -185,5 +214,6 @@ define("game_room", [], () ->
         SetupRoomsCommunication: SetupRoomsCommunication
         GameRooms: GameRooms
         GetAvailableRoomId: GetAvailableRoomId
+        ConstructDuelEndResult: ConstructDuelEndResult
     }
 )

@@ -196,6 +196,9 @@ define("communication", [], ()->
             Meteor.setTimeout(() ->
                 InitializeCardPlayer(card_player_data, message)
             , 50)
+        "duel_end_result": (message) ->
+            game_data = require("game_data")
+            
 
 
     }

@@ -95,7 +95,7 @@ define("cards", [], ()->
                     else
                         damageCriticalityValue = card_elements.GetResult(cardToBeplayed.element, gameRoom.stackTopCard.element)
                     gameRoom.stackTopCard = cardToBeplayed
-                    player.opponent.currentLife -= resultingDamage
+                    player.opponent.currentLife -= resultingDamage * 100
                     player.isBusy = false
 
                     newCard = GetNextCardFromReserve(player)
@@ -103,11 +103,7 @@ define("cards", [], ()->
                     ComputeRemainingCardsNumberForPlayer(player)
                     console.log("[#{gameRoom.id}]: CARD PLAYED: #{player.opponent.id} now has #{player.opponent.currentLife} HP")
                     if player.opponent.currentLife <= 0
-                        Meteor.users.update(player.id, {$set: {"status.playing": false}, $inc: {winNumber: 1}})
-                        Meteor.users.update(player.opponent.id, {$set: {"status.playing": false}, $inc: {loseNumber: 1}})
                         gameRoom.isFinished = true
-                        require("game_room").GameRooms.remove({roomId: gameRoom.id})
-                        console.log("total room nb:" + require("game_room").GameRooms.find().count());
 
                     gameRoom.messageCollection.insert({
                         functionId: "card_played"
@@ -119,6 +115,23 @@ define("cards", [], ()->
                         remainingCardsNumber: player.remainingCardsNumber
                         isGameFinished: gameRoom.isFinished
                     })
+                    if gameRoom.isFinished
+                        winner = Meteor.users.findOne(player.id)
+                        loser = Meteor.users.findOne(player.opponent.id)
+                        duelResult = require("game_room").ConstructDuelEndResult(winner, loser)
+
+                        Meteor.users.update(winner._id, {$set: {"status.playing": false, score: winner.score, rank: winner.rank, winNumber: winner.winNumber}})
+                        Meteor.users.update(loser._id, {$set: {"status.playing": false, score: loser.score, rank: loser.rank, loseNumber: loser.loseNumber}})
+
+                        gameRoom.messageCollection.insert({
+                            functionId: "duel_end_result"
+                            duelResult: duelResult
+                        })
+
+                        require("game_room").GameRooms.remove({roomId: gameRoom.id})
+                        console.log("[#{gameRoom.id}] FINISHED ! total room nb: " + require("game_room").GameRooms.find().count());
+
+
                 , CARD_PREPARATION_TIME
                 )
 
