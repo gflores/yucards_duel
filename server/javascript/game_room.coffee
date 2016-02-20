@@ -87,7 +87,6 @@ define("game_room", [], () ->
     CreatePlayerForWithId = (userId, gameRoom) ->
         player = ConstructPlayer(userId, gameRoom.id)
         global_data = require("global_data")
-        gameRoom.players_ids.push(userId)
         player.reserveCards = require("cards").GenerateStartingCards()
 
         player.playableCards.push(player.reserveCards.pop())
@@ -118,7 +117,7 @@ define("game_room", [], () ->
 
                 isUserPlayingThisGame = this.userId in gameRoom.players_ids
 
-                if gameRoom.isStarted #if room is already started, no need to do additional stuff. Returning players and spectators will receive the snapshot
+                if gameRoom.players_ids.length == 2 #if room is already started, no need to do additional stuff. Returning players and spectators will receive the snapshot
                     return {
                         isPlayer: isUserPlayingThisGame
                         isStarted: true
@@ -126,7 +125,9 @@ define("game_room", [], () ->
                     }
                 if isUserPlayingThisGame
                     console.log("player #{this.userId} already in room #{roomId}")
-                # else
+                else
+                    gameRoom.players_ids.push(this.userId)
+
                 #     player = ConstructPlayer(this.userId, roomId)
                 #     if gameRoom.players_ids.length == 1
                 #         opponent = global_data.players[gameRoom.players_ids[0]]
@@ -169,12 +170,11 @@ define("game_room", [], () ->
         OnSuccessFunc = (publisher, subArgs) ->
             roomId = subArgs[0]
             gameRoom = global_data.gameRooms[roomId]
-            if gameRoom.players_ids.length == 0
-                newPlayer = CreatePlayerForWithId(publisher.userId, gameRoom)
+            if gameRoom.players_ids.length == 1
                 console.log("Pub: #{gameRoom.id} still waiting")
-            else if gameRoom.players_ids.length == 1
-                opponent = global_data.players[gameRoom.players_ids[0]]
-                newPlayer = CreatePlayerForWithId(publisher.userId, gameRoom)
+            else if gameRoom.players_ids.length == 2
+                opponent = CreatePlayerForWithId(gameRoom.players_ids[0], gameRoom)
+                newPlayer = CreatePlayerForWithId(gameRoom.players_ids[1], gameRoom)
                 opponent.opponent = newPlayer
                 newPlayer.opponent = opponent
 
