@@ -10,7 +10,7 @@ define("duels", [], () ->
             return 0
         return loser.rank + winner.rank
     GetRankFromScore = (score) ->
-        return score / 6
+        return Math.floor(score / 6) + 1
         # n = Math.sqrt(score - 5)
         # if isNaN(n)
         #     n = 0

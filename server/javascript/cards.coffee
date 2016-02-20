@@ -129,6 +129,9 @@ define("cards", [], ()->
                         })
 
                         require("game_room").GameRooms.remove({roomId: gameRoom.id})
+                        delete global_data.gameRooms[gameRoom.id]
+                        delete global_data.players[player.id]
+                        delete global_data.players[player.opponent.id]
                         console.log("[#{gameRoom.id}] FINISHED ! total room nb: " + require("game_room").GameRooms.find().count());
 
 
