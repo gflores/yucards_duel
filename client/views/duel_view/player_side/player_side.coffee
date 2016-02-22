@@ -12,6 +12,11 @@ Template.playerSide.helpers({
         return if require("game_data").get("IsPlayer") then "" else "is-spectator"
     IsGameRoomReady: () ->
         return require("game_data").get("IsGameRoomReady")
+    GetPlayerData: () ->
+        return require("player_data")
+    GetOpponentData: () ->
+        return require("opponent_data")
+
 
     
 })

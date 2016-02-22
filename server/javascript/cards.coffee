@@ -1,6 +1,7 @@
 define("cards", [], ()->
 
-    CARD_PREPARATION_TIME = 4.5 * 1000
+    # CARD_PREPARATION_TIME = 4.5 * 1000
+    CARD_PREPARATION_TIME = 1 * 1000
     CARD_DISCARD_TIME = 2 * 1000
 
     Construct = (value, element) ->

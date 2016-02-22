@@ -24,3 +24,11 @@
 .bottom{
     bottom: 0
 }
+
+button {
+    background-color: white;
+    border: black solid 3px;
+    padding: 6px;
+    position: relative;
+    @extend .clickable-block;
+}

@@ -196,9 +196,29 @@ define("communication", [], ()->
             Meteor.setTimeout(() ->
                 InitializeCardPlayer(card_player_data, message)
             , 50)
+
         "duel_end_result": (message) ->
             game_data = require("game_data")
-            
+            SetPlayerResult = (playerResult) ->
+                card_player_data = null
+                if require("global_data").IsBottomPlayer(playerResult.id)
+                    card_player_data = require("player_data")
+                else
+                    card_player_data = require("opponent_data")
+                card_player_data.set("OldScore", playerResult.oldScore)
+                card_player_data.set("NewScore", playerResult.newScore)
+                card_player_data.set("OldRank", playerResult.oldRank)
+                card_player_data.set("NewRank", playerResult.newRank)
+                card_player_data.set("WinNumber", playerResult.winNumber)
+                card_player_data.set("LoseNumber", playerResult.loseNumber)
+
+            SetPlayerResult(message.duelResult.players[0])
+            SetPlayerResult(message.duelResult.players[1])
+
+
+
+
+
 
 
     }

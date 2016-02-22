@@ -20,15 +20,62 @@
 
             {{#if IsGameFinished}}
                 <div id="game-finished">
-                    <div class="text-info">
-                        {{#if IsWinner}}
-                            YOU WIN !!!
-                        {{else}}
-                            YOU LOSE !!
-                        {{/if}}
+                    <div class="first-part">
+                        <div class="center-part">
+                            <div class="victory-message">
+                                {{#if IsWinner}}
+                                    Victory
+                                {{else}}
+                                    Defeat
+                                {{/if}}
+                            </div>
+                            <button class="see-results">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+                    <div class="next-part">
+                        <div class="end-results">
+                            <div class="player-result">
+                                {{> playerResult data=GetOpponentData}}
+                            </div>
+                            <div class="center-part-parent">
+                                <div class="center-part">
+                                    <div class="victory-message">
+                                        {{#if IsWinner}}
+                                            Victory
+                                        {{else}}
+                                            Defeat
+                                        {{/if}}
+                                    </div>
+                                    <div class="score-change">
+                                        {{ScoreChange}} Glory
+                                    </div>
+                                </div>
+                                <div class="end-game-buttons">
+                                    <button class="play-again">Play Again</button>
+                                    <button class="go-to-home">Home</button>
+                                </div>
+                            </div>
+                            <div class="player-result">
+                                {{> playerResult data=GetPlayerData}}
+                            </div>
+                        </div>
                     </div>
                 </div>
             {{/if}}
         {{/if}}
+    </div>
+</template>
+
+<template name="playerResult">
+    <div class="result-row">
+        <div class="label"> Rank: </div> <div class="value">{{GetOldRank}} -> {{GetNewRank}}</div>
+    </div>
+    <div class="result-row">
+        <div class="label"> Score: </div> <div class="value">{{GetOldScore}} -> {{GetNewScore}}</div>
+    </div>
+    <div class="player-sumary">
+        <div class="win-number"> Win: {{GetWinNumber}} </div> <div class="lose-number"> Lose: {{GetLoseNumber}} </div>
     </div>
 </template>
