@@ -1,9 +1,9 @@
 <template name="matchmakingView">
     <div id="matchmaker-view" class="{{GetClassForGuest}}">
-        <div id="top-area">
+<!--         <div id="top-area"> -->
             <div class="profile-box">
                 <div class="username profile-section">
-                    <span class="label">Username</span>:
+<!--                     <span class="label">Username</span>: -->
                     {{#unless currentUser.profile.guest}}
                         {{> loginButtons}}
                     {{else}}
@@ -58,18 +58,21 @@
                     </span>
                 </div>
             </div>
-            <div id="game-generator-area">
-                <button class="generate-new-link">
-                    Generate new duel link
-                </button>
-                <div class="battle-link">
-                    <span>{{GetBaseDuelUrl}}/</span><input type="text" value="{{GetRoomIdToDisplay}}">
+            <div class="top-center-part">
+                <div class="horizontal-logo">
+                    <img class="logo-blitz" src="images/logo_blitz.png" alt="BLITZ">
+                    <img class="logo-rps" src="images/logo_rps.png" alt="RPS">
                 </div>
-                <button class="launch-battle">
-                    Join Duel
-                </button>
+                <div id="game-generator-area">
+                    <button class="launch-battle">
+                        Start New Duel
+                    </button>
+                    <div class="battle-link">
+                        <span>{{GetBaseDuelUrl}}/827625</span>
+                    </div>
+                </div>
             </div>
-        </div>
+<!--         </div> -->
         <ul id="online-users-list">
             {{#each user in GetOnlineUsers}}
                 <li>

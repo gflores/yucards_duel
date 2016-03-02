@@ -26,9 +26,10 @@
 }
 
 button {
-    background-color: white;
-    border: black solid 3px;
+    background-color: hsla(44,100%,80%,1);
+    border: #232222 solid 3px;
     padding: 6px;
     position: relative;
+    color: #232222;
     @extend .clickable-block;
 }
