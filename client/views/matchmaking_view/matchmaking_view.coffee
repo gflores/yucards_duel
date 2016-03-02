@@ -45,6 +45,12 @@ Template.matchmakingView.events({
     'click .launch-battle': (event) ->
         require("chat_messages").SendMessage(Router.routes.duel.url({roomId: gameRoomIdToDisplay}))
         window.open(Router.routes.duel.url({roomId: gameRoomIdToDisplay}))
+
+    'click #game-url': () ->
+        require("utils").SelectTextById("game-url")
+    'click #game-generator-area': () ->
+        require("utils").SelectTextById("game-url")
+
 })
 
 ScrollChatToBottom = () ->
@@ -60,6 +66,11 @@ Template.matchmakingView.onRendered(() ->
     Meteor.setTimeout(ScrollChatToBottom, 300)
     Meteor.setTimeout(ScrollChatToBottom, 500)
     Meteor.setTimeout(ScrollChatToBottom, 1000)
+    Meteor.call("get_random_available_room_id", (error, result) ->
+        gameRoomIdToDisplay = result
+        $(".battle-link #game-url").text(Router.routes.duel.url({roomId: gameRoomIdToDisplay}))
+        require("utils").SelectTextById("game-url")
+    )
 )
 
 

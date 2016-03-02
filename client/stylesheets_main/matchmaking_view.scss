@@ -1,18 +1,39 @@
 #online-users-list {
     height: 100%;
-    width: 200px;
+    width: 220px;
 
     margin: 0;
-    padding-left: 10px;
+    padding-left: 0;
     overflow-y: scroll;
-    background-color: white;
     position: absolute;
     right: 0;
     list-style: none;
 
-    background: #FFDD70;
+    background: hsla(44,100%,88%,1);
     border-left: #A77F00 4px solid;
 
+    li {
+        &:first-of-type {
+            border-top: #615E5E 3px solid;
+        }
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        background: hsla(44,100%,68%,1);
+        border-bottom: #615E5E 3px solid;
+        padding: 0.8em 1em;
+        color: #232222;
+        display: flex;
+
+        .username {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .rank {
+            padding-left: 1em;
+        }
+    }
 }
 
 
@@ -55,12 +76,21 @@ $input-box-height: 60px;
             flex: 0 0 260px;
             font-size: 1.3em;
             font-weight: bold;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         &.login-buttons-section {
             flex: 0 0 100px;
         }
     }
 }
+@keyframes glowEffectLaunchDuelButton {
+    0%   {box-shadow: 0px 0px 30px -2px rgba(255, 214, 99,1), inset 0px 0px 12px rgba(0,0,0,0.6);}
+    50%  {box-shadow: 0px 0px 30px 2px rgba(255, 214, 99,1), inset 0px 0px 12px rgba(0,0,0,0.6);}
+    100% {box-shadow: 0px 0px 30px -2px rgba(255, 214, 99,1), inset 0px 0px 12px rgba(0,0,0,0.6);}
+}
+
 .top-center-part {
     position: absolute;
     top: -18px;
@@ -96,6 +126,11 @@ $input-box-height: 60px;
             box-shadow: 0px 0px 30px rgba(255, 214, 99,1), inset 0px 0px 12px rgba(0,0,0,0.6);
             text-shadow: 0px 0px 2px rgba(013,013,013,0.4), 0px 1px 2px rgba(255,255,255,1);
             font-weight: bold;
+            animation-name: glowEffectLaunchDuelButton;
+            animation-duration: 1.5s;
+            animation-iteration-count: infinite;
+            animation-timing-function: linear;    
+
         }
         .battle-link {
             top: 50%;
@@ -113,18 +148,21 @@ $input-box-height: 60px;
     }
 }
 
+$total-top-part-height: $top-area-top-margin + $top-area-bottom-margin + $top-area-height;
+
 #chat-area {
     position: absolute;
+    background: red;
     bottom: 0;
     width: 70%;
-    // height: calc(100% - #{$chat-area-bottom-margin} - #{$top-area-top-margin} - #{$top-area-bottom-margin} - #{$top-area-height});
+    height: calc(100% - #{$chat-area-bottom-margin} - #{$total-top-part-height});
     margin: 0 0 $chat-area-bottom-margin 24px;
     border: #FFBC00 3px solid;
+    border-bottom-width: 4px;
 
     #messages-list-area {
-        // height: calc(100% - #{$input-box-height});
+        height: calc(100% - #{$input-box-height} - 13px);
         border-bottom: #A77F00 3px solid;
-        height: 300px;
         overflow-y: scroll;
         padding: 6px;
         background: linear-gradient(to bottom,  #979090 0%, hsla(0,3%,72%,1) 100%);
@@ -155,19 +193,17 @@ $input-box-height: 60px;
     #message-input-box {
         // position: absolute;
         // bottom: 0;
-        width: 100%;
         height: $input-box-height;
+        width: 100%;
         display: flex;
         textarea {
-            padding: 0;
-            border: 0;
+            padding: 2px 6px;
             flex-grow: 1;
-            height: 100%;
             resize: none;
         }
         .send-message {
-            height: 100%;
             flex: 0 0 100px;
+            font-size: 1.2em;
         }
     }    
 }

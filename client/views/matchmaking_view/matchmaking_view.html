@@ -68,15 +68,17 @@
                         Start New Duel
                     </button>
                     <div class="battle-link">
-                        <span>{{GetBaseDuelUrl}}/827625</span>
+                        <span id="game-url">{{GetBaseDuelUrl}}</span>
                     </div>
+
                 </div>
             </div>
 <!--         </div> -->
         <ul id="online-users-list">
             {{#each user in GetOnlineUsers}}
                 <li>
-                    {{user.username}}
+                    <div class="username">{{user.username}}</div>
+                    <div class="rank">{{user.rank}}</div>
                 </li>
             {{/each}}
         </ul>

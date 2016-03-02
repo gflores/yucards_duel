@@ -25,8 +25,26 @@ define("utils", [], () ->
             j = Math.floor(Math.random() * (i+1))
             [arr[i], arr[j]] = [arr[j], arr[i]] # use pattern matching to swap
 
+    SelectTextById = (element) ->
+        doc = document
+        text = doc.getElementById(element)
+        range = null
+        selection = null
+
+        if (doc.body.createTextRange)
+            range = document.body.createTextRange();
+            range.moveToElementText(text);
+            range.select();
+        else if (window.getSelection)
+            selection = window.getSelection();        
+            range = document.createRange();
+            range.selectNodeContents(text);
+            selection.removeAllRanges();
+            selection.addRange(range);
+
     return {
         Timer: Timer
         ShuffleArray: ShuffleArray
+        SelectTextById: SelectTextById
     }
 )
