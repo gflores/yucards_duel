@@ -178,6 +178,8 @@ $total-top-part-height: $top-area-top-margin + $top-area-bottom-margin + $top-ar
                 text-align: right;
                 font-weight: bold;
                 overflow-x: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
             }
             .text {
                 flex-grow: 1;
@@ -185,7 +187,7 @@ $total-top-part-height: $top-area-top-margin + $top-area-bottom-margin + $top-ar
             }
             &.is-guest {
                 .user {
-                    text-decoration: line-through;                    
+                    color: hsla(0,0%,30%,1);
                 }
             }
         }
