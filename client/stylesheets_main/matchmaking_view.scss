@@ -220,3 +220,21 @@ $total-top-part-height: $top-area-top-margin + $top-area-bottom-margin + $top-ar
         }
     }    
 }
+
+#login-name-link {
+  text-indent: -9999px;
+  line-height: 0; /* Collapse the original line */
+  display: block;
+}
+
+#login-name-link::after {
+  content: "Account ▾";
+  text-indent: 0;
+  display: block;
+  line-height: initial; /* New content takes up original line height */
+}
+.login-link-text {
+    color: white;
+    text-shadow: 0px 0px 6px black;
+    font-weight: bold;
+}

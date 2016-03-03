@@ -4,18 +4,20 @@
             <div class="profile-box">
                 <div class="username profile-section">
 <!--                     <span class="label">Username</span>: -->
-                    {{#unless currentUser.profile.guest}}
+<!--                     {{#unless currentUser.profile.guest}}
                         {{> loginButtons}}
                     {{else}}
                         <span class="value">{{currentUser.username}} </span>
-                    {{/unless}}
+                    {{/unless}} -->
+                    <span class="value">{{currentUser.username}} </span>
                 </div>
                 <div class="login-buttons-section profile-section">
-                    {{#unless currentUser.profile.guest}}
+<!--                     {{#unless currentUser.profile.guest}}
                         <i>Logged.</i>
                     {{else}}
                         {{> loginButtons}}
-                    {{/unless}}
+                    {{/unless}} -->
+                    {{> loginButtons}}
                 </div>
                 <div class="rank profile-section">
                     <span class="label">Rank</span>:
