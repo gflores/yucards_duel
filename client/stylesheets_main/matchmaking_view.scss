@@ -1,4 +1,4 @@
-@mixin styling($profile-box-width, $user-list-width, $battle-link-margin-left, $primary-margins){
+@mixin styling($profile-box-width, $user-list-width, $battle-link-margin-left, $primary-margins, $input-box-height){
     // $user-list-width: 220px;
     // $user-list-width: 180px;
     $user-list-border-width: 4px;
@@ -24,7 +24,7 @@
 
     $top-area-height: 104px;
 
-    $input-box-height: 60px;
+    // $input-box-height: 60px;
 
     $total-top-part-height: $top-area-top-margin + $top-area-bottom-margin + $top-area-height;
 
@@ -97,6 +97,9 @@
             width: calc(50% - 10px);
             left: 0;
             padding: 0px 6px;
+        }
+        @media screen and (max-height: 350px - 1px){
+            display: none;
         }
 
         .profile-section {
@@ -173,6 +176,10 @@
             right: calc(-1.5% - 5px);
             top: auto;
         }
+        @media screen and (max-height: 350px - 1px){
+            display: none;
+        }
+
     }
 
 
@@ -187,9 +194,12 @@
             left: 0;
             margin-left: $primary-margins
         }
+        @media screen and (max-height: 350px - 1px){
+            top: 0;
+        }
 
         .launch-battle {
-            width: 195px;
+            width: 215px;
             font-size: 20px;
             color: #090707;
             padding: 10px 22px;
@@ -215,7 +225,7 @@
             border: #FFBC00 3px solid;
             color: #232222;
             padding: 2px;
-            max-width: calc(100% - 222px);
+            max-width: calc(100% - 242px);
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -240,6 +250,10 @@
             width: calc(100% - (#{$chat-area-left-margin} * 2) - (#{$primary-border-width} * 2) );
             font-size: 14px;
         }
+        @media screen and (max-height: 350px - 1px){
+            height: calc(100% - #{$chat-area-bottom-margin} - #{$total-top-part-height} - #{$launch-battle-button-height} + 115px);
+        }
+
 
         #messages-list-area {
             height: calc(100% - #{$input-box-height} - 13px);
@@ -328,11 +342,11 @@
 }
 
 @media screen and (min-width: 1280px) {
-    @include styling($profile-box-width: 360px, $user-list-width: 220px, $battle-link-margin-left: 42px, $primary-margins: 24px);
+    @include styling($profile-box-width: 360px, $user-list-width: 220px, $battle-link-margin-left: 42px, $primary-margins: 24px, $input-box-height: 60px);
 }
 @media screen and (min-width: 1020px) and (max-width: 1280px - 1px) {
-    @include styling($profile-box-width: 280px, $user-list-width: 180px, $battle-link-margin-left: 20px, $primary-margins: 12px);
+    @include styling($profile-box-width: 280px, $user-list-width: 180px, $battle-link-margin-left: 20px, $primary-margins: 12px, $input-box-height: 60px);
 }
 @media screen and (max-width: 1020px - 1px) {
-    @include styling($profile-box-width: 280px, $user-list-width: 0px, $battle-link-margin-left: 8px, $primary-margins: 2px);
+    @include styling($profile-box-width: 280px, $user-list-width: 0px, $battle-link-margin-left: 8px, $primary-margins: 2px, $input-box-height: 40px);
 }
