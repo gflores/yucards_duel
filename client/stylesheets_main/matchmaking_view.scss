@@ -1,4 +1,4 @@
-@mixin styling($profile-box-width, $user-list-width, $battle-link-margin-left, $primary-margins, $input-box-height){
+@mixin styling($profile-box-width, $user-list-width, $battle-link-margin-left, $primary-margins, $input-box-height, $standard-font-size){
     // $user-list-width: 220px;
     // $user-list-width: 180px;
     $user-list-border-width: 4px;
@@ -300,6 +300,7 @@
             width: 100%;
             display: flex;
             textarea {
+                font-size: $standard-font-size;
                 padding: 2px 6px;
                 flex-grow: 1;
                 resize: none;
@@ -342,11 +343,11 @@
 }
 
 @media screen and (min-width: 1280px) {
-    @include styling($profile-box-width: 360px, $user-list-width: 220px, $battle-link-margin-left: 42px, $primary-margins: 24px, $input-box-height: 60px);
+    @include styling($profile-box-width: 360px, $user-list-width: 220px, $battle-link-margin-left: 42px, $primary-margins: 24px, $input-box-height: 60px, $standard-font-size: 16px);
 }
 @media screen and (min-width: 1020px) and (max-width: 1280px - 1px) {
-    @include styling($profile-box-width: 280px, $user-list-width: 180px, $battle-link-margin-left: 20px, $primary-margins: 12px, $input-box-height: 60px);
+    @include styling($profile-box-width: 280px, $user-list-width: 180px, $battle-link-margin-left: 20px, $primary-margins: 12px, $input-box-height: 60px, $standard-font-size: 16px);
 }
 @media screen and (max-width: 1020px - 1px) {
-    @include styling($profile-box-width: 280px, $user-list-width: 0px, $battle-link-margin-left: 8px, $primary-margins: 2px, $input-box-height: 40px);
+    @include styling($profile-box-width: 280px, $user-list-width: 0px, $battle-link-margin-left: 8px, $primary-margins: 2px, $input-box-height: 40px, $standard-font-size: 13px);
 }
