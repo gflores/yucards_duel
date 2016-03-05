@@ -1,121 +1,195 @@
-#online-users-list {
-    height: 100%;
-    width: 220px;
+@mixin styling($profile-box-width, $user-list-width, $battle-link-margin-left, $primary-margins){
+    // $user-list-width: 220px;
+    // $user-list-width: 180px;
+    $user-list-border-width: 4px;
 
-    margin: 0;
-    padding-left: 0;
-    overflow-y: scroll;
-    position: absolute;
-    right: 0;
-    list-style: none;
+    $righ-area-width: $user-list-width + $user-list-border-width;
 
-    background: hsla(44,100%,88%,1);
-    border-left: #A77F00 4px solid;
+    $primary-border-width: 3px;
 
-    li {
-        &:first-of-type {
-            border-top: #615E5E 3px solid;
-        }
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        background: hsla(44,100%,68%,1);
-        border-bottom: #615E5E 3px solid;
-        padding: 0.8em 1em;
-        color: #232222;
-        display: flex;
+    $top-area-top-margin: $primary-margins;
+    $top-area-bottom-margin: 32px;
+    $top-area-left-margin: $primary-margins;
 
-        .username {
-            flex: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .rank {
-            padding-left: 1em;
-        }
-    }
-}
+    $chat-area-bottom-margin: $primary-margins;
+    $chat-area-left-margin: $primary-margins;
 
+    // $profile-box-width: 360px;
+    // $profile-box-width: 280px;
 
-$chat-area-bottom-margin: 24px;
-$top-area-top-margin: 24px;
-$top-area-bottom-margin: 32px;
-$top-area-height: 150px;
+    $profile-box-hpadding: 13px;
+    $profile-box-ypadding: 3px;
 
-$input-box-height: 60px;
+    $top-left-total-width: $profile-box-width + $top-area-left-margin + ($profile-box-hpadding * 2) + ($primary-border-width * 2);
 
-.profile-box {
-    position: absolute;
-    top: 0;
-    margin: $top-area-top-margin 0 $top-area-bottom-margin 24px;
-    display: flex;
-    width: 360px;
-    background-color: white;
-    flex-wrap: wrap;
+    $top-area-height: 104px;
 
-    border: #FFBC00 3px solid;
-    background: linear-gradient(to bottom,  #979090 0%, hsla(0,3%,72%,1) 100%);
-    padding: 0.2em 0.8em;
+    $input-box-height: 60px;
 
-    .profile-section {
-        flex: 0 0 180px;
-        display: flex;
-        align-items: center;
-        padding: 0.2em 0;
-        &:nth-child(even) {
-            justify-content: flex-end;
-        }
+    $total-top-part-height: $top-area-top-margin + $top-area-bottom-margin + $top-area-height;
 
-        .label {
-            font-weight: bold;
-        }
-        .value {
-            margin-left: 2px;
-        }
-        &.username {
-            flex: 0 0 260px;
-            font-size: 1.3em;
-            font-weight: bold;
+    $launch-battle-button-height: 51px;
+
+    // $battle-link-margin-left: 42px;
+    // $battle-link-margin-left: 20px;
+
+    $game-generator-total-width: 415px + $battle-link-margin-left;
+
+    $logo-width: 400px;
+    $mid-section-left-position: calc(#{$top-left-total-width} + ((100% - #{$top-left-total-width} - #{$game-generator-total-width} - #{$user-list-width}) / 2);
+
+    #online-users-list {
+        height: 100%;
+        width: $user-list-width;
+
+        margin: 0;
+        padding-left: 0;
+        overflow-y: scroll;
+        position: absolute;
+        right: 0;
+        list-style: none;
+
+        background: hsla(44,100%,88%,1);
+        border-left: #A77F00 $user-list-border-width solid;
+
+        li {
+            &:first-of-type {
+                border-top: #615E5E 3px solid;
+            }
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+            background: hsla(44,100%,68%,1);
+            border-bottom: #615E5E 3px solid;
+            padding: 0.8em 1em;
+            color: #232222;
+            display: flex;
+
+            .username {
+                flex: 1;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .rank {
+                padding-left: 1em;
+            }
         }
-        &.login-buttons-section {
-            flex: 0 0 100px;
+        @media screen and (max-width: 1020px - 1px){
+            display: none;
         }
     }
-}
-@keyframes glowEffectLaunchDuelButton {
-    0%   {box-shadow: 0px 0px 30px -2px rgba(255, 214, 99,1), inset 0px 0px 12px rgba(0,0,0,0.6);}
-    50%  {box-shadow: 0px 0px 30px 2px rgba(255, 214, 99,1), inset 0px 0px 12px rgba(0,0,0,0.6);}
-    100% {box-shadow: 0px 0px 30px -2px rgba(255, 214, 99,1), inset 0px 0px 12px rgba(0,0,0,0.6);}
-}
 
-.top-center-part {
-    position: absolute;
-    top: -18px;
-    left: 50%;
-    transform: translateX(-50%);
+    .profile-box {
+        position: absolute;
+        top: 0;
+        margin: $top-area-top-margin 0 $top-area-bottom-margin $top-area-left-margin;
+        display: flex;
+        width: $profile-box-width;
+        background-color: white;
+        flex-wrap: wrap;
+
+        border: #FFBC00 $primary-border-width solid;
+        background: linear-gradient(to bottom,  #979090 0%, hsla(0,3%,72%,1) 100%);
+        padding: $profile-box-ypadding $profile-box-hpadding;
+
+        @media screen and (max-width: 1020px - 1px){
+            max-width: $profile-box-width;
+            width: calc(50% - 10px);
+            left: 0;
+            padding: 0px 6px;
+        }
+
+        .profile-section {
+            flex: 0 0 50%;
+            display: flex;
+            align-items: center;
+            padding: 4px 0;
+            @media screen and (max-width: 1020px - 1px){
+                font-size: 14px;
+            }
+
+            &:nth-child(even) {
+                justify-content: flex-end;
+            }
+
+            .label {
+                font-weight: bold;
+            }
+            .value {
+                margin-left: 2px;
+            }
+            &.username {
+                flex: 0 0 70%;
+                font-size: 21px;
+                font-weight: bold;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                @media screen and (max-width: 1020px - 1px){
+                    flex: 0 0 50%;
+                    font-size: 19px;
+                }
+            }
+            &.login-buttons-section {
+                flex: 0 0 30%;
+                @media screen and (max-width: 1020px - 1px){
+                    flex: 0 0 50%;
+                }
+            }
+        }
+    }
+    @keyframes glowEffectLaunchDuelButton {
+        0%   {box-shadow: 0px 0px 30px -2px rgba(255, 214, 99,1), inset 0px 0px 12px rgba(0,0,0,0.6);}
+        50%  {box-shadow: 0px 0px 30px 2px rgba(255, 214, 99,1), inset 0px 0px 12px rgba(0,0,0,0.6);}
+        100% {box-shadow: 0px 0px 30px -2px rgba(255, 214, 99,1), inset 0px 0px 12px rgba(0,0,0,0.6);}
+    }
+
+
+
 
     .horizontal-logo {
-        position: relative;
-        width: 400px;
+        position: absolute;
+        top: -18px;
+        left: $mid-section-left-position;
+        width: $logo-width;
  
         .logo-blitz {
             position: relative;
             width: 48%;
-            bottom: 27px;
+            transform: translateY(-45%);
         }
         .logo-rps {
             width: 49%;
             margin-left: 1%;
+            @media screen and (max-width: 1020px - 1px){
+                margin-left: 0;
+            }
+
+        }
+
+        @media screen and (max-width: 1020px - 1px){
+            width: calc(51.5% - 10px);
+            left: auto;
+            right: calc(-1.5% - 5px);
+            top: auto;
         }
     }
+
+
     #game-generator-area {
-        position: relative;
-        margin-top: -2px;
+        position: absolute;
+        left: $mid-section-left-position;
+        top: 115px;
+        display: flex;
+        align-items: center;
+        width: 100%;
+        @media screen and (max-width: 1020px - 1px){
+            left: 0;
+            margin-left: $primary-margins
+        }
 
         .launch-battle {
+            width: 195px;
             font-size: 20px;
             color: #090707;
             padding: 10px 22px;
@@ -133,10 +207,7 @@ $input-box-height: 60px;
 
         }
         .battle-link {
-            top: 50%;
-            transform: translateY(-50%);
-            margin-left: 40px;
-            position: absolute;
+            margin-left: $battle-link-margin-left;
             font-size: 1.2em;
             z-index: 1;
             background-color: hsla(0,3%,80%,1);
@@ -144,97 +215,124 @@ $input-box-height: 60px;
             border: #FFBC00 3px solid;
             color: #232222;
             padding: 2px;
-        }
-    }
-}
-
-$total-top-part-height: $top-area-top-margin + $top-area-bottom-margin + $top-area-height;
-
-#chat-area {
-    position: absolute;
-    background: red;
-    bottom: 0;
-    width: 70%;
-    height: calc(100% - #{$chat-area-bottom-margin} - #{$total-top-part-height});
-    margin: 0 0 $chat-area-bottom-margin 24px;
-    border: #FFBC00 3px solid;
-    border-bottom-width: 4px;
-
-    #messages-list-area {
-        height: calc(100% - #{$input-box-height} - 13px);
-        border-bottom: #A77F00 3px solid;
-        overflow-y: scroll;
-        padding: 6px;
-        background: linear-gradient(to bottom,  #979090 0%, hsla(0,3%,72%,1) 100%);
-        .message {
-            display: flex;
-            .date {
-                font-size: 0.9em;
-                color: #555;
-                flex: 0 0 4.6em;
-            }
-            .user {
-                flex: 0 0 9em;
-                text-align: right;
-                font-weight: bold;
-                overflow-x: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-            .text {
-                flex-grow: 1;
-                margin-left: 10px;
-            }
-            &.is-guest {
-                .user {
-                    color: hsla(0,0%,30%,1);
-                }
+            max-width: calc(100% - 222px);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            @media screen and (max-width: 1020px - 1px){
+                margin-left: 2.5%;
             }
         }
     }
-    #message-input-box {
-        // position: absolute;
-        // bottom: 0;
-        height: $input-box-height;
-        width: 100%;
-        display: flex;
-        textarea {
-            padding: 2px 6px;
-            flex-grow: 1;
-            resize: none;
-        }
-        .send-message {
-            flex: 0 0 100px;
-            font-size: 1.2em;
-        }
-    }    
-}
 
-.is-guest {
+
+
     #chat-area {
+        position: absolute;
+        background: #FFBC00;
+        bottom: 0;
+        width: calc(100% - (#{$chat-area-left-margin} * 4) - #{$user-list-width} - #{$user-list-border-width} - (#{$primary-border-width} * 2) );
+        height: calc(100% - #{$chat-area-bottom-margin} - #{$total-top-part-height} - #{$launch-battle-button-height});
+        margin: 0 0 $chat-area-bottom-margin $chat-area-left-margin;
+        border: #FFBC00 3px solid;
+        border-bottom-width: 4px;
+        @media screen and (max-width: 1020px - 1px){
+            width: calc(100% - (#{$chat-area-left-margin} * 2) - (#{$primary-border-width} * 2) );
+            font-size: 14px;
+        }
+
         #messages-list-area {
+            height: calc(100% - #{$input-box-height} - 13px);
+            border-bottom: #A77F00 3px solid;
+            overflow-y: scroll;
+            padding: 6px;
+            background: linear-gradient(to bottom,  #979090 0%, hsla(0,3%,72%,1) 100%);
             .message {
+                display: flex;
+                .date {
+                    font-size: 15px;
+                    color: #555;
+                    flex: 0 0 69px;
+                    @media screen and (max-width: 1020px - 1px){
+                        position: relative;
+                        top: 3px;
+                        flex: 0 0 53px;
+                        font-size: 11px;
+                    }
+                }
                 .user {
+                    flex: 0 0 23%;
+                    text-align: right;
+                    font-weight: bold;
+                    overflow-x: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+                .text {
+                    flex-grow: 1;
+                    margin-left: 10px;
+                }
+                &.is-guest {
+                    .user {
+                        color: hsla(0,0%,30%,1);
+                    }
                 }
             }
         }
-    }    
+        #message-input-box {
+            // position: absolute;
+            // bottom: 0;
+            height: $input-box-height;
+            width: 100%;
+            display: flex;
+            textarea {
+                padding: 2px 6px;
+                flex-grow: 1;
+                resize: none;
+            }
+            .send-message {
+                flex: 0 0 100px;
+                font-size: 1.2em;
+            }
+        }    
+    }
+
+    .is-guest {
+        #chat-area {
+            #messages-list-area {
+                .message {
+                    .user {
+                    }
+                }
+            }
+        }    
+    }
+
+    #login-name-link {
+      text-indent: -9999px;
+      line-height: 0; /* Collapse the original line */
+      display: block;
+    }
+
+    #login-name-link::after {
+      content: "Account ▾";
+      text-indent: 0;
+      display: block;
+      line-height: initial; /* New content takes up original line height */
+    }
+    .login-link-text {
+        color: white;
+        text-shadow: 0px 0px 6px black;
+        font-weight: bold;
+    }
 }
 
-#login-name-link {
-  text-indent: -9999px;
-  line-height: 0; /* Collapse the original line */
-  display: block;
+@media screen and (min-width: 1280px) {
+    @include styling($profile-box-width: 360px, $user-list-width: 220px, $battle-link-margin-left: 42px, $primary-margins: 24px);
 }
-
-#login-name-link::after {
-  content: "Account ▾";
-  text-indent: 0;
-  display: block;
-  line-height: initial; /* New content takes up original line height */
+@media screen and (min-width: 1020px) and (max-width: 1280px - 1px) {
+    @include styling($profile-box-width: 280px, $user-list-width: 180px, $battle-link-margin-left: 20px, $primary-margins: 12px);
 }
-.login-link-text {
-    color: white;
-    text-shadow: 0px 0px 6px black;
-    font-weight: bold;
+@media screen and (max-width: 1020px - 1px) {
+    @include styling($profile-box-width: 280px, $user-list-width: 0px, $battle-link-margin-left: 8px, $primary-margins: 2px);
 }

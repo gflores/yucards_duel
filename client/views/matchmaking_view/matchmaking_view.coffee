@@ -13,7 +13,7 @@ Template.matchmakingView.helpers({
         #     {user: {username: "Toto"}, text: "And againnnn"}
         # ]
     GetBaseDuelUrl: () ->
-        return Router.routes.duel.url({roomId: ""})
+        return Router.routes.duel.url({roomId: ""}).replace(/.*?:\/\//g, "")
     # GetRoomIdToDisplay: () ->
     #     return gameRoomIdToDisplay.get()
 })
@@ -68,7 +68,7 @@ Template.matchmakingView.onRendered(() ->
     Meteor.setTimeout(ScrollChatToBottom, 1000)
     Meteor.call("get_random_available_room_id", (error, result) ->
         gameRoomIdToDisplay = result
-        $(".battle-link #game-url").text(Router.routes.duel.url({roomId: gameRoomIdToDisplay}))
+        $(".battle-link #game-url").text(Router.routes.duel.url({roomId: gameRoomIdToDisplay}).replace(/.*?:\/\//g, ""))
         require("utils").SelectTextById("game-url")
     )
 )
