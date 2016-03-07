@@ -10,6 +10,16 @@ Template.centralStack.helpers({
 
     GetStyleForIndex: (index) ->
         index += 1
-        offset = "#{index * -10}px"
-        return "transform: translate(#{offset},#{offset}); z-index: #{(-1)-index};"
+        heightToWidthRatio = 186 / 130
+        offsetWidth = "#{index * (-8 * heightToWidthRatio)}%"
+        offsetHeight = "#{index * -8}%"
+        return "transform: translate(#{offsetWidth},#{offsetHeight}); z-index: #{(-1)-index};"
+
+    ElementToImagePath: (element) ->
+        if element == "ROCK"
+            return "/images/card_rock.png"
+        else if element == "SCISSOR"
+            return "/images/card_scissor.png"
+        else if element == "PAPER"
+            return "/images/card_paper.png"
 })

@@ -19,8 +19,8 @@
 
 <template name="playableCard">
     <div class="playable-card glowing {{GetCard.element.toLowerCase}} {{GetClassForIsPreparing}}">
+        <img src="{{ImagePath}}" class="card-image">
         <div class="value top"> {{GetCard.value}} </div>
-        <div class="element"> {{GetCard.element}} </div>
         <div class="value bottom"> {{GetCard.value}} </div>
     </div>    
 </template>

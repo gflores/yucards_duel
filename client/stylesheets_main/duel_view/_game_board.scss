@@ -26,22 +26,32 @@
     position: absolute;
     border-style: solid;
     border-width: 0.05em;
-    width: 7%;
-    height: 100%;
     font-weight: bold;
     text-align: center;
+    border-radius: 5%;
+
+    .card-image {
+        width: 130px;
+        display: block
+    }
 
     .value{
         position: absolute;
-        width: 100%;
+        // width: 100%;
         font-size: xx-large;
         line-height: 120%;
+        color: #ffec00;
+        text-shadow: -1px 1px 1px #000, 1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000, 0px 1px 1px #000, 1px 0px 1px #000, 0px -1px 1px #000, -1px 0px 1px #000;
 
         &.bottom{
-            border-top: 1px dashed;
+            // border-top: 1px dashed;
+            right: 8%;
+            bottom: 2%;
         }
         &.top{
-            border-bottom: 1px dashed;
+            left: 8%;
+            top: 2%;
+            // border-bottom: 1px dashed;
         }
     }
 
