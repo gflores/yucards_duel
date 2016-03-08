@@ -27,7 +27,7 @@
 
 
     .playable-cards{
-        bottom: 20%;
+        bottom: calc(22% + 186px);
 
         .playable-card{
             // &:not(.unavailable){
