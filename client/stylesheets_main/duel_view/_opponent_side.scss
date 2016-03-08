@@ -18,7 +18,7 @@
         transform:rotate(180deg);
     }
     .remaining-cards-number-list{
-        top: 20%;
+        bottom: -62px;
     }
 
     .score-generated-feedback{
@@ -29,12 +29,14 @@
         // color: #9A0034;
     }
     .card-player-icon {
-        top: -0.5em;
-        svg circle {
-            fill: #5E3535;
-        }
+        top: 0;
+        background: hsla(56,100%,20%,1);
         img {
             filter: brightness(0%);
         }
+        .player-username {
+            bottom: -26px;
+        }
+
     }
 }

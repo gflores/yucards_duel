@@ -9,15 +9,15 @@
     width: 100%;
     height: 50%;
     .playable-card{
-
+        transform: translateX(-50%);
         &:nth-child(1){
-            left: 36.5%;
+            left: calc(50% - 11% - 40px);
         }
         &:nth-child(2){
-            left: 46.5%;
+            left: 50%;
         }
         &:nth-child(3){
-            left: 56.5%;
+            left: calc(50% + 11% + 40px);
         }
     }
 }
@@ -91,7 +91,7 @@
     height: 20%;
     bottom: 40%;
     .playable-card{
-        left: 46.5%;
+        left: calc(50% - 65px);
     }
 }
 
@@ -118,10 +118,10 @@
 
 .life-bar{
     position: absolute;
-    width: 50%;
+    width: 68%;
     height: 15%;
     border-style: solid;
-    left: 25%;
+    left: 16%;
     background-color: #666666;
     .filling-bar {
         background-color: red;
@@ -172,12 +172,19 @@
 
 .remaining-cards-number-list{
     position: absolute;
-    right: 25%;
-    bottom: 20%;
+    display: flex;
+    width: 100%;
+    border: #232222 3px solid;
+    left: -3px;
+    color: white;
+    /* height: 24px; */
+    text-align: center;
+    text-shadow: -1px 1px 1px #000, 1px 1px 1px #000, 1px -1px 1px #000, -1px -1px 1px #000, 0px 1px 1px #000, 1px 0px 1px #000, 0px -1px 1px #000, -1px 0px 1px #000;
 
     .remaining-cards-number{
-        padding: 4px;
         font-weight: bold;
+        flex: 1;
+        line-height: 30px;
     }
 }
 #game-finished{
@@ -267,18 +274,22 @@
 
 .card-player-icon {
     position: absolute;
-    left: 13em;
-    width: 7.5em;
-    height: 7.5em;
-
-    svg{
-        position: absolute;
-    }
+    border: #232222 3px solid;
+    left: calc(8% - 68px);
     img{
+        display: block;
+        width: 130px;
+    }
+    .player-username {
         position: absolute;
-        width: 80%;
-        height: 80%;
-        transform: translate(11%, 13%);
+        line-height: 26px;
+        background: #232222;
+        width: 100%;
+        border-left: #232222 3px solid;
+        border-right: #232222 3px solid;
+        color: white;
+        text-align: center;
+        left: -3px;
     }
 }
 

@@ -36,3 +36,14 @@ Template.discardedCardFeedback.rendered = () ->
                 
 
 #            .add(animation_utils.Shake($feedbackCard, 25, 0.010, 10, 10, 5))
+
+
+Template.discardedCardFeedback.helpers({
+    ImagePath: () ->
+        if this.card.element == "ROCK"
+            return "/images/card_rock.png"
+        else if this.card.element == "SCISSOR"
+            return "/images/card_scissor.png"
+        else if this.card.element == "PAPER"
+            return "/images/card_paper.png"
+})

@@ -1,13 +1,22 @@
 <template name="playerSide">
     <div id="player-side" class="{{GetClassForActionsAvailability}} {{GetClassForIsSpectator}}">
-        {{> cardPlayerIcon}}
-        {{> playableCards GetCard=GetCard GetRemainingCardsNumber=GetRemainingCardsNumber}}
+        <div class="card-player-icon">
+            <img src="/images/character_color1.png">
+            <div class="player-username"> Leoss </div>
+            <div class="remaining-cards-number-list">
+                {{> remainingCardNumber element="SCISSOR" GetRemainingCardsNumber=GetRemainingCardsNumber}}
+                {{> remainingCardNumber element="PAPER" GetRemainingCardsNumber=GetRemainingCardsNumber}}
+                {{> remainingCardNumber element="ROCK" GetRemainingCardsNumber=GetRemainingCardsNumber}}
+            </div>
+        </div>
+
+        {{> playableCards GetCard=GetCard}}
 <!--         {{> scoreBar data}} -->
         {{> lifeBar data}}
         {{#if IsGameRoomReady}}
-            <div id="discard-button">
-                Discard All
-            </div>
+            <button id="discard-button">
+                Get New Hand !
+            </button>
         {{/if}}
     </div>
 </template>

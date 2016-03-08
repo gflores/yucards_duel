@@ -1,8 +1,16 @@
 <template name="opponentSide">
     <div id="opponent-side" class="{{GetClassForActionsAvailability}}">
-        {{> cardPlayerIcon}}
+        <div class="card-player-icon">
+            <img src="/images/character_color1.png">
+            <div class="player-username"> Leoss </div>
+            <div class="remaining-cards-number-list">
+                {{> remainingCardNumber element="SCISSOR" GetRemainingCardsNumber=GetRemainingCardsNumber}}
+                {{> remainingCardNumber element="PAPER" GetRemainingCardsNumber=GetRemainingCardsNumber}}
+                {{> remainingCardNumber element="ROCK" GetRemainingCardsNumber=GetRemainingCardsNumber}}
+            </div>
+        </div>
 <!--         {{> scoreBar data}} -->
         {{> lifeBar data}}
-        {{> playableCards GetCard=GetCard GetRemainingCardsNumber=GetRemainingCardsNumber}}
+        {{> playableCards GetCard=GetCard}}
     </div>
 </template>
