@@ -1,4 +1,3 @@
-
 #duel-view{
     position: absolute;
     width: 100%;
@@ -7,20 +6,53 @@
 
     background: linear-gradient(to bottom, hsla(0,0%,30%,1) 0%, hsla(0,0%,97%,1) 100%);
 
+    $screen-width1U: 960;
+    $screen-width2U: 360;
+
     $screen-width1: 960px;
+    $screen-width2: 360px;
+
+    $player-icon-width1U: 130;
+    $player-icon-width2U: 60;
+
+    $player-icon-width1: #{$player-icon-width1U}px;
+    $player-icon-width2: #{$player-icon-width2U}px;
+
+    $playable-card-width1U: 130;
+    $playable-card-width2U: 80;
+
+    $playable-card-width1: #{$playable-card-width1U}px;
+    $playable-card-width2: #{$playable-card-width2U}px;
+
+    $discard-button-hpadding1U: 22;
+    $discard-button-hpadding2U: 0;
+
+    $discard-button-hpadding1: #{$discard-button-hpadding1U}px;
+    $discard-button-hpadding2: #{$discard-button-hpadding2U}px;
+
+    $discard-button-vpadding1U: 10;
+    $discard-button-vpadding2U: 2;
+
+    $discard-button-vpadding1: #{$discard-button-vpadding1U}px;
+    $discard-button-vpadding2: #{$discard-button-vpadding2U}px;
+
     @media screen and (min-width: $screen-width1) {
-        $player-icon-width: 130px;
+        $player-icon-width: $player-icon-width1;
         $playable-card-width: 130px;
         $playable-card-hmargin: "_unused_";
         $discard_button_width: 144px;
+        $discard-button-hpadding: 22;
+        $discard-button-vpadding: 10;
 
         @import "_styling.scss";
     }
     @media screen and (max-width: $screen-width1 - 1px) {
-        $player-icon-width: 60px;
-        $playable-card-width: 80px;
-        $playable-card-hmargin: "(100% - #{$player-icon-width} - 6px - (#{$playable-card-width} * 3)) / 4";
+        $player-icon-width: "(#{$player-icon-width2} + ( (100% - #{$screen-width2}) / (#{$screen-width1U} - #{$screen-width2U}) ) * (#{$player-icon-width1U} - #{$player-icon-width2U}))";
+        $playable-card-width:  "(#{$playable-card-width2} + ( (100% - #{$screen-width2}) / (#{$screen-width1U} - #{$screen-width2U}) ) * (#{$playable-card-width1U} - #{$playable-card-width2U}))";
+        $playable-card-hmargin: "(100% - (#{$player-icon-width}) - 6px - (#{$playable-card-width} * 3)) / 4";
         $discard_button_width: "#{$playable-card-width} + 14px";
+        $discard-button-hpadding: "(#{$discard-button-hpadding2} + ( (100% - #{$screen-width2}) / (#{$screen-width1U} - #{$screen-width2U}) ) * (#{$discard-button-hpadding1U} - #{$discard-button-hpadding2U}))";
+        $discard-button-vpadding: "(#{$discard-button-vpadding2} + ( (100% - #{$screen-width2}) / (#{$screen-width1U} - #{$screen-width2U}) ) * (#{$discard-button-vpadding1U} - #{$discard-button-vpadding2U}))";
 
         @import "_styling.scss";
     }

@@ -16,7 +16,7 @@
             left: calc(50% - 11% - 40px);
             @media screen and (max-width: $screen-width1 - 1px) {
                 left: initial;
-                right: calc(#{$playable-card-hmargin} * 3 + #{$playable-card-width * 2});
+                right: calc(#{$playable-card-hmargin} * 3 + #{$playable-card-width} * 2);
             }
         }
         &:nth-child(2){
@@ -43,10 +43,11 @@
     font-weight: bold;
     text-align: center;
     border-radius: 5%;
+    width: calc(#{$playable-card-width});
 
     .card-image {
-        width: $playable-card-width;
-        display: block
+        width: 100%;
+        display: block;
     }
 
     .value{
@@ -306,6 +307,7 @@
 .card-player-icon {
     position: absolute;
     border: #232222 3px solid;
+    width: calc(#{$player-icon-width});
     left: calc(8% - 68px);
     @media screen and (max-width: $screen-width1 - 1px) {
         left: 0;
@@ -313,7 +315,7 @@
 
     img{
         display: block;
-        width: $player-icon-width;
+        width: 100%;
     }
     .player-username {
         position: absolute;

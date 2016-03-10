@@ -86,10 +86,21 @@
         @media screen and (max-width: $screen-width1 - 1px) {
             left: initial;
             right: 3px;
-            padding: 2px 0px;
+            padding: calc(#{$discard-button-vpadding}) calc(#{$discard-button-hpadding});
             font-size: 16px;
             height: initial;
-            bottom: calc(27% + #{$playable-card-width} * 1.425);
+            // bottom: calc(27% + #{$playable-card-width} * 1.425);
+            bottom: 79%;
+        }
+
+        @media screen and (min-width: 640px) and (max-width: $screen-width1 - 1px){
+            font-size: 20px;
+        }
+
+        @media screen and (max-width: $screen-width2 - 1px) {
+            font-size: 14px;
+            padding: 0;
+            bottom: 80%;
         }
 
     }
