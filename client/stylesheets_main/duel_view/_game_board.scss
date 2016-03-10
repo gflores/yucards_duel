@@ -9,14 +9,29 @@
     width: 100%;
     .playable-card{
         transform: translateX(-50%);
+        @media screen and (max-width: $screen-width1 - 1px) {
+            transform: initial;
+        }
         &:nth-child(1){
             left: calc(50% - 11% - 40px);
+            @media screen and (max-width: $screen-width1 - 1px) {
+                left: initial;
+                right: calc(#{$playable-card-hmargin} * 3 + #{$playable-card-width * 2});
+            }
         }
         &:nth-child(2){
             left: 50%;
+            @media screen and (max-width: $screen-width1 - 1px) {
+                left: initial;
+                right: calc(#{$playable-card-hmargin} * 2 + #{$playable-card-width});
+            }
         }
         &:nth-child(3){
             left: calc(50% + 11% + 40px);
+            @media screen and (max-width: $screen-width1 - 1px) {
+                left: initial;
+                right: calc(#{$playable-card-hmargin});
+            }
         }
     }
 }
@@ -30,7 +45,7 @@
     border-radius: 5%;
 
     .card-image {
-        width: 130px;
+        width: $playable-card-width;
         display: block
     }
 
@@ -88,9 +103,14 @@
     position: absolute;
     width: 100%;
     bottom: 40%;
-    bottom: calc(50% + (186px) / 2);
+    bottom: calc(50% + (#{$playable-card-width} * 1.425) / 2);
     .playable-card{
         left: calc(50% - 65px);
+        @media screen and (max-width: $screen-width1 - 1px) {
+            left: initial;
+            right: calc(#{$playable-card-hmargin} * 2 + #{$playable-card-width});
+        }
+
     }
 }
 
@@ -122,6 +142,12 @@
     border-style: solid;
     left: 16%;
     background-color: #666666;
+
+    @media screen and (max-width: $screen-width1 - 1px) {
+        left: initial;
+        right: 0;
+        width: calc(100% - #{$player-icon-width} - 3px * 3 - 1px);
+    }
     .filling-bar {
         background-color: red;
     }
@@ -151,6 +177,11 @@
 
         transition-timing-function: cubic-bezier(.07,.21,0,1);
         transition: all 6s;
+
+        @media screen and (max-width: $screen-width1 - 1px) {
+            width: initial;
+            left: calc(#{$player-icon-width} + 6px + (100% - #{$player-icon-width} - 6px) / 2);
+        }
     }
 }
 
@@ -271,13 +302,18 @@
     text-shadow: -1px -1px 3px #000, 1px -1px 3px #000, -1px 1px 3px #000, 1px 1px 3px #000;
 }
 
+
 .card-player-icon {
     position: absolute;
     border: #232222 3px solid;
     left: calc(8% - 68px);
+    @media screen and (max-width: $screen-width1 - 1px) {
+        left: 0;
+    }
+
     img{
         display: block;
-        width: 130px;
+        width: $player-icon-width;
     }
     .player-username {
         position: absolute;

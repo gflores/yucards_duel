@@ -1,3 +1,4 @@
+
 #duel-view{
     position: absolute;
     width: 100%;
@@ -6,8 +7,22 @@
 
     background: linear-gradient(to bottom, hsla(0,0%,30%,1) 0%, hsla(0,0%,97%,1) 100%);
 
-    @import "_card_elements.scss";
-    @import "_game_board.scss";
-    @import "_opponent_side.scss";
-    @import "_player_side.scss";
+    $screen-width1: 960px;
+    @media screen and (min-width: $screen-width1) {
+        $player-icon-width: 130px;
+        $playable-card-width: 130px;
+        $playable-card-hmargin: "_unused_";
+        $discard_button_width: 144px;
+
+        @import "_styling.scss";
+    }
+    @media screen and (max-width: $screen-width1 - 1px) {
+        $player-icon-width: 60px;
+        $playable-card-width: 80px;
+        $playable-card-hmargin: "(100% - #{$player-icon-width} - 6px - (#{$playable-card-width} * 3)) / 4";
+        $discard_button_width: "#{$playable-card-width} + 14px";
+
+        @import "_styling.scss";
+    }
+
 }

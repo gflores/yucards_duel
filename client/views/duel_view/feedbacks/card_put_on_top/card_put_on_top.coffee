@@ -19,6 +19,7 @@ Template.cardPutOnTop.rendered = () ->
         sideId = "opponent-side"
         auraDamageFunc = require("feedback_launcher").LaunchAuraDamagingPlayer
 
+    $feedbackCard.css("right", "initial");
     $feedbackCard.offset($("##{sideId} .playable-card:nth-child(#{this.data.cardPlayedIndex + 1})").offset())
 
     tl
