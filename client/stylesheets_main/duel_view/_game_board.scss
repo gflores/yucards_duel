@@ -342,17 +342,27 @@
     width: 100%;
     height: 100%;
 
-    .damage-aura-indicator {
+     .damage-aura-indicator {
         position: absolute;
         width: 100%;
         height: 100%;
         text-align: center;
         top: 70%;
+        @media screen and (max-width: $screen-width1 - 1px) {
+            width: initial;
+            left: calc(#{$player-icon-width} + 6px + (100% - #{$player-icon-width} - 6px) / 2);
+        }
     }
 
 }
 
 #card-environment {
+    // @media screen and (max-width: $screen-width1 - 1px) {
+    //     position: relative;
+    //     left: calc(50% - ((100% - #{$player-icon-width} - 3px * 3 - 1px + 3px) / 2));
+    //     width: 100%;
+    //     height: 100%;
+    // }
     svg {
         position: absolute;
         z-index: -2000;
