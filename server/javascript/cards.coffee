@@ -75,6 +75,8 @@ define("cards", [], ()->
                 if gameRoom == null
                     return "No ongoing room found for player #{this.userId}"
                 player = global_data.players[this.userId]
+                if gameRoom.isCountdownFinished == false
+                    return "countdown not finished !"
                 if gameRoom.isFinished
                     return "this duel is already finished !"
                 if player.isBusy
@@ -148,6 +150,9 @@ define("cards", [], ()->
                 player = global_data.players[this.userId]
                 if player.isBusy
                     return "player already busy !"
+                if gameRoom.isCountdownFinished == false
+                    return "countdown not finished !"
+
 
                 player.isBusy = true
                 gameRoom.messageCollection.insert({

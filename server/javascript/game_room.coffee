@@ -23,6 +23,7 @@ define("game_room", [], () ->
             maxLife: require("shared_constants").maxLife
             isStarted: false
             isFinished: false
+            isCountdownFinished: false
         }
     ConstructPlayer = (id, currentGameRoomId) ->
         return {
@@ -192,6 +193,7 @@ define("game_room", [], () ->
                 console.log("Pub: duel starting for #{gameRoom.id} in #{countdownDuration} ms")
 
                 Meteor.setTimeout(() ->
+                    gameRoom.isCountdownFinished = true
                     gameRoom.messageCollection.insert({
                         functionId: "duel_start"
                         players: [
