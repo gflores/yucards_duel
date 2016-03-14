@@ -1,6 +1,8 @@
 Template.playerSide.helpers({
     data: () ->
         require("player_data")
+    GetUser: () ->
+        Meteor.users.findOne(require("player_data").get("UserId"))
 
     GetCard: () ->
         return ((index) -> return require("player_data").get("Card#{index}"))

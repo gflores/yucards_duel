@@ -319,6 +319,10 @@
     }
     .player-username {
         position: absolute;
+        height: 26px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         line-height: 26px;
         background: #232222;
         width: 100%;

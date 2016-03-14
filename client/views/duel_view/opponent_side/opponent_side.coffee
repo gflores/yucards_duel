@@ -1,6 +1,8 @@
 Template.opponentSide.helpers({
     data: () ->
         require("opponent_data")
+    GetUser: () ->
+        Meteor.users.findOne(require("opponent_data").get("UserId"))
 
     GetCard: () ->
         return ((index) -> return require("opponent_data").get("Card#{index}"))
