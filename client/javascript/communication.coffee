@@ -149,7 +149,7 @@ define("communication", [], ()->
                         require("feedback_launcher").LaunchScoreGeneratedFeedbackForPlayer(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
                         require("animation_utils").Shake($("#player-side .life-bar")[0], 25, 0.010, 10, 10, 0.5)
                         require("animation_utils").Shake($("#player-side .card-player-icon")[0], 25, 0.010, 10, 10, 0.5)
-                    target_player_data.set("CurrentLife", message.otherCurrentLife)
+                    target_player_data.set("CurrentLife", Math.max(message.otherCurrentLife, 0))
 
                     if message.otherCurrentLife <= 0
                         game_data.set("IsGameFinished", true)
