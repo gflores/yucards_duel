@@ -172,7 +172,7 @@ define("game_room", [], () ->
             gameRoom = global_data.gameRooms[roomId]
             if gameRoom.players_ids.length == 1
                 console.log("Pub: #{gameRoom.id} still waiting")
-            else if gameRoom.players_ids.length == 2
+            else if gameRoom.players_ids.length == 2 and gameRoom.isStarted == false
                 opponent = CreatePlayerForWithId(gameRoom.players_ids[0], gameRoom)
                 newPlayer = CreatePlayerForWithId(gameRoom.players_ids[1], gameRoom)
                 opponent.opponent = newPlayer
