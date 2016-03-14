@@ -1,5 +1,11 @@
 {
   "public": {
 
-  }
+  },
+    "galaxy.meteor.com": {
+        "env": {
+            "ROOT_URL": "http://blitzrps.com",
+            "MONGO_URL": "mongodb://gflores:DNxdpSjXxC9i@ds011429.mlab.com:11429/blitzrps"
+        }
+    }
 }
