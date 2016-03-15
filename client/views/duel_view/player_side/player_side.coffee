@@ -45,6 +45,4 @@ Template.playerSide.events({
         if $(window).width() < 960
             require("game_data").set("isDisplayingInstructions", false)
             Meteor.call("SetIsDisplayingInstructions", false)
-
-
 })
