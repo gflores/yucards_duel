@@ -7,6 +7,7 @@ define("users", [], () ->
         user.score = 0
         user.winNumber = 0
         user.loseNumber = 0
+        user.isDisplayingInstructions = true
 
         if (options.profile)
             user.profile = options.profile

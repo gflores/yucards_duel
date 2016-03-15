@@ -17,6 +17,7 @@ require(["main"], () ->
 #        game_data.set("isDiscardButtonAvailable", true)
         game_data.set("IsGameFinished", false)
         game_data.set("IsWinner", false)
+        game_data.set("isDisplayingInstructions", false)
         game_data.set("StackCards", []) 
 
         Deps.autorun( () ->

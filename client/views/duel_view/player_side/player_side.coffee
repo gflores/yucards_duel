@@ -18,21 +18,33 @@ Template.playerSide.helpers({
         return require("player_data")
     GetOpponentData: () ->
         return require("opponent_data")
-
-
-    
+    IsDisplayingInstructions: () ->
+        if $(window).width() >= 960 #if it's desktop, we look at user preferences
+            Meteor.user().isDisplayingInstructions
+        else
+            require("game_data").get("isDisplayingInstructions")
 })
 
 Template.playerSide.events({
-#    "click .playable-card:not(.unavailable)": () ->
     "click :not(.actions-unavailable):not(.is-spectator) > .playable-cards > .playable-card": () ->
-        
         console.log("clicking ! #{this.GetCard().index}")
         require("player_actions").PlayCardIndex(this.GetCard().index)
 
-#    "click #discard-button:not(.unavailable)": () ->
     "click :not(.actions-unavailable):not(.is-spectator) > #discard-button": () ->
-        
         require("player_actions").DiscardAllCards()
+
+    "click .open-instruction-button": () ->
+        require("game_data").set("isDisplayingInstructions", true)
+        Meteor.call("SetIsDisplayingInstructions", true)
+
+    "click .instructions .close-button": () ->
+        require("game_data").set("isDisplayingInstructions", false)
+        Meteor.call("SetIsDisplayingInstructions", false)
+
+    "click .instructions": () ->
+        if $(window).width() < 960
+            require("game_data").set("isDisplayingInstructions", false)
+            Meteor.call("SetIsDisplayingInstructions", false)
+
 
 })
