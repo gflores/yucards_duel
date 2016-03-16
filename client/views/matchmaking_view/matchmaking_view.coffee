@@ -51,6 +51,14 @@ Template.matchmakingView.events({
     'click #game-generator-area': () ->
         require("utils").SelectTextById("game-url")
 
+    'mouseenter #contact-button': () ->
+        $('#contact-button').hide();
+        $('#contact-page').show();
+    'mouseleave #contact-page': () ->
+        $('#contact-button').show();
+        $('#contact-page').hide();
+
+
 })
 
 ScrollChatToBottom = () ->

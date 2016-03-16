@@ -38,6 +38,8 @@
     $logo-width: 400px;
     $mid-section-left-position: calc(#{$top-left-total-width} + ((100% - #{$top-left-total-width} - #{$game-generator-total-width} - #{$user-list-width}) / 2);
 
+    $contact-button-width: 100px;
+
     #online-users-list {
         height: 100%;
         width: $user-list-width;
@@ -180,6 +182,19 @@
             display: none;
         }
 
+        .twitter-link {
+            position: absolute;
+            right: 9%;
+            bottom: -9px;
+            a {
+                color: #A77F00;
+            }
+            @media screen and (min-width: 1020px){
+                display: none;
+            }
+
+        }
+
     }
 
 
@@ -235,13 +250,45 @@
         }
     }
 
+    #contact-button {
+        position: absolute;
+        background: #ffe499;
+        border: #A77F00 4px solid;
+        bottom: 0;
+        margin-bottom: $chat-area-bottom-margin;
+        right: calc(#{$user-list-width} + #{$user-list-border-width} + #{$chat-area-left-margin} * 3 / 2 + #{$contact-button-width} / 2);
+        transform: translateX(50%);
+        text-decoration: underline;
+        color: blue;
+        padding: 4px;
+    }
 
+    #contact-page {
+        display: none;
+        right: calc(#{$user-list-width} + #{$user-list-border-width} + #{$chat-area-left-margin});
+        position: absolute;
+        background: #ffe499;
+        border: #A77F00 4px solid;
+        bottom: 0;
+        z-index: 1;
+        padding: 10px;
+        margin-bottom: $chat-area-bottom-margin;
+        .my-face {
+            display: block;
+            width: 130px;
+        }
+        .twitter-link {
+            position: absolute;
+            left: 150px;
+            top: 16px;
+        }
+    }
 
     #chat-area {
         position: absolute;
         background: #FFBC00;
         bottom: 0;
-        width: calc(100% - (#{$chat-area-left-margin} * 4) - #{$user-list-width} - #{$user-list-border-width} - (#{$primary-border-width} * 2) );
+        width: calc(100% - (#{$chat-area-left-margin} * 4)  - #{$contact-button-width} - #{$user-list-width} - #{$user-list-border-width} - (#{$primary-border-width} * 2) );
         height: calc(100% - #{$chat-area-bottom-margin} - #{$total-top-part-height} - #{$launch-battle-button-height});
         margin: 0 0 $chat-area-bottom-margin $chat-area-left-margin;
         border: #FFBC00 3px solid;
