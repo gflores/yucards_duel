@@ -36,6 +36,18 @@
     }
 }
 
+#spectating-message {
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+    background: #ffd35c;
+    bottom: 33%;
+    opacity: 0.8;
+    font-weight: bold;
+    text-align: center;
+    font-size: 18px;
+}
+
 .playable-card{
     position: absolute;
     border-style: solid;
