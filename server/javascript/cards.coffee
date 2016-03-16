@@ -141,7 +141,7 @@ define("cards", [], ()->
                 , CARD_PREPARATION_TIME
                 )
 
-            "discard_all_cards": () ->
+            "discard_all_cards": (timeLaunched) ->
                 if this.userId? == false
                     return "ERROR: no UserId"
                 gameRoom = global_data.FindRoomFromPlayerId(this.userId)
@@ -158,6 +158,8 @@ define("cards", [], ()->
                 gameRoom.messageCollection.insert({
                     functionId: "player_preparing_play"
                     player_id: player.id
+                    clientLaunchTime: timeLaunched
+                    serverReceivedTime: new Date()
                 })
                 Meteor.setTimeout(() ->
                     player.isBusy = false

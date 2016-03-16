@@ -42,7 +42,7 @@ define("player_actions", [], () ->
         SetAvailableForPlayer(player_data, false)
 #        require("game_data").set("isDiscardButtonAvailable", false)
         LaunchLoaderForPlayer()
-        Meteor.call("discard_all_cards", (error, result) ->
+        Meteor.call("discard_all_cards", new Date(), (error, result) ->
             console.log("error: '#{error}' | result: '#{result}'")
         )        
 

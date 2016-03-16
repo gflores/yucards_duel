@@ -85,6 +85,9 @@ define("communication", [], ()->
             UpdateFromSnapshot(message)
 
         "player_preparing_play": (message) ->
+            now = new Date()
+            console.log("Total delay: #{now - message.clientLaunchTime}, Server Received Time: #{message.serverReceivedTime}, current time: #{now}")
+
             if require("global_data").IsBottomPlayer(message.player_id)
                 console.log("I prepare play !")
                 if require("game_data").get("IsPlayer") == false #if is spectator (but on the bottom side)
