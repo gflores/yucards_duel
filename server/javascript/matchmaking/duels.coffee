@@ -6,18 +6,21 @@ define("duels", [], () ->
             return require("game_room").GetAvailableRoomId()
     })
     GetScoreTransactionAmount = (winner, loser) ->
-        # if loser.rank * 2 + 1 < winner.rank
-        #     return 0
+        if loser.rank * 2 + 1 < winner.rank
+            return 0
         return loser.rank + winner.rank
-    GetRankFromScore = (score) ->
-        return Math.floor(score / 6) + 1
-        # n = Math.sqrt(score - 5)
-        # if isNaN(n)
-        #     n = 0
-        # return Math.floor(n) + 1
+    # GetRankFromScore = (score) ->
+    #     if score <= 6
+    #         return score / 6
+    #     a = 6
+    #     b = -3
+    #     c = 3 - score
+    #     n = (-b + Math.sqrt(Math.pow(b, 2) - 4 * a * c)) / (2 * a)
+
+    #     return n
 
     return {
         GetScoreTransactionAmount: GetScoreTransactionAmount
-        GetRankFromScore: GetRankFromScore
+        # GetRankFromScore: GetRankFromScore
     }
 )

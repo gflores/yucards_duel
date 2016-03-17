@@ -1,6 +1,6 @@
 define("main", [
  "game_room", "custom_collection_publisher", "global_data", "cards", "users", "chat_messages", "duels"
- "card_elements", "utils", "id_keys", "card_utils_shared", "shared_constants"
+ "card_elements", "utils", "id_keys", "card_utils_shared", "shared_constants", "user_rank"
  ], () ->
     return 42
 )

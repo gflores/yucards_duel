@@ -46,7 +46,8 @@ define("game_room", [], () ->
             loseNumber: player.loseNumber
         }
         player.score = Math.max(newScore, 0)
-        player.rank = require("duels").GetRankFromScore(player.score)
+        player.rank = 1 + Math.floor(require("user_rank").GetRankFromScore(player.score)) #require("duels").GetRankFromScore(player.score)
+        console.log("new rank: #{player.rank}")
         res.newScore = player.score
         res.newRank = player.rank
         return res
