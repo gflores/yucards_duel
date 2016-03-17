@@ -2,7 +2,7 @@
   // Server authentication info
   "servers": [
     {
-      "host": "104.131.128.95",
+      "host": "107.170.253.6",
       "username": "root",
       // "password": "password"
       // or pem file (ssh based authentication)
@@ -27,7 +27,7 @@
   "enableUploadProgressBar": true,
 
   // Application name (No spaces)
-  "appName": "snowball",
+  "appName": "blitzrps",
 
   // Location of app (local directory)
   "app": ".",
