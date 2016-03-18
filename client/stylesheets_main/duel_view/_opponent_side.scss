@@ -16,10 +16,25 @@
 
     .card-loading{
         transform:rotate(180deg);
+        .car-loading-indicator{
+            @media screen and (max-width: $screen-width1 - 1px) {
+                right: calc(#{$player-icon-width} + 6px + (100% - #{$player-icon-width} - 6px) / 2);
+            }
+        }
+
     }
     .remaining-cards-number-list{
         bottom: -62px;
     }
+
+    .damage-aura{
+        .damage-aura-indicator {
+            @media screen and (max-width: $screen-width1 - 1px) {
+                left: calc(#{$player-icon-width} + 6px + (100% - #{$player-icon-width} - 6px) / 2);
+            }
+        }
+    }
+
 
     .score-generated-feedback{
         // left: 42%;

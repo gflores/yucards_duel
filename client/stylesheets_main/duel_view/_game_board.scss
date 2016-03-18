@@ -199,7 +199,6 @@
 
         @media screen and (max-width: $screen-width1 - 1px) {
             width: initial;
-            left: calc(#{$player-icon-width} + 6px + (100% - #{$player-icon-width} - 6px) / 2);
         }
     }
 }
@@ -392,7 +391,6 @@
         top: 70%;
         @media screen and (max-width: $screen-width1 - 1px) {
             width: initial;
-            left: calc(#{$player-icon-width} + 6px + (100% - #{$player-icon-width} - 6px) / 2);
         }
     }
 
