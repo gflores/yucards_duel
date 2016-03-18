@@ -37,3 +37,6 @@ seba:minifiers-autoprefixer
 mizzao:user-status
 matb33:collection-hooks
 konecty:autolinker
+accounts-twitter
+accounts-facebook
+accounts-google

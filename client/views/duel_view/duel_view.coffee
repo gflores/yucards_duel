@@ -40,6 +40,12 @@ Template.duelView.events({
 
     "click .go-to-home": (event) ->
         window.location.href = Router.routes.mainRoom.url({})
+
+    "click #already-in-another-duel a": () ->
+        Meteor.setTimeout(() ->
+            document.location.reload(true)
+        , 500
+        )
 })
 
 Template.playerResult.helpers({
