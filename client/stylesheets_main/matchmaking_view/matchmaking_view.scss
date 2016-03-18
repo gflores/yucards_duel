@@ -282,6 +282,14 @@
             left: 150px;
             top: 16px;
         }
+        .email-link {
+            position: absolute;
+            left: 150px;
+            top: 40px;
+            .email {
+                color: #232222;
+            }
+        }
     }
 
     #chat-area {
