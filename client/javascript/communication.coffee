@@ -145,13 +145,13 @@ define("communication", [], ()->
 
                     if require("global_data").IsBottomPlayer(message.player_id)
                         require("feedback_launcher").LaunchScoreGeneratedFeedbackForOpponent(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
-                        require("animation_utils").Shake($("#opponent-side .life-bar")[0], 25, 0.010, 10, 10, 0.5)
-                        require("animation_utils").Shake($("#opponent-side .card-player-icon")[0], 25, 0.010, 10, 10, 0.5)
+                        require("animation_utils").Shake($("#opponent-side .life-bar")[0], 12, 0.030, 20, 20)
+                        require("animation_utils").Shake($("#opponent-side .card-player-icon")[0], 12, 0.030, 20, 20)
                         
                     else
                         require("feedback_launcher").LaunchScoreGeneratedFeedbackForPlayer(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
-                        require("animation_utils").Shake($("#player-side .life-bar")[0], 25, 0.010, 10, 10, 0.5)
-                        require("animation_utils").Shake($("#player-side .card-player-icon")[0], 25, 0.010, 10, 10, 0.5)
+                        require("animation_utils").Shake($("#player-side .life-bar")[0], 12, 0.030, 20, 20)
+                        require("animation_utils").Shake($("#player-side .card-player-icon")[0], 12, 0.030, 20, 20)
                     target_player_data.set("CurrentLife", Math.max(message.otherCurrentLife, 0))
 
                     if message.otherCurrentLife <= 0

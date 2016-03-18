@@ -33,8 +33,11 @@ Template.cardPutOnTop.rendered = () ->
             onComplete: () ->
                 SetTopCardOnStack()
                 auraDamageFunc(FinalResultFunc)
-                Blaze.remove(instanceView)
-                animation_utils.Shake($("#top-card .playable-card")[0], 25, 0.010, 10, 10, 2)
+                Meteor.setTimeout( () ->
+                    Blaze.remove(instanceView)
+                , 200)
+
+                # animation_utils.Shake($("#top-card .playable-card")[0], 12, 0.030, 20, 20)
         })
     # tl
     #     .fromTo($feedbackCard, 0.5, {

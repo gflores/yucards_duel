@@ -52,11 +52,12 @@ Template.damageAura.rendered = () ->
         .to(damageAura[0], 0.3, {
             ease: Linear.easeNone, top: "-40%"
             onComplete: () ->
-                animation_utils.Shake(damageAura[0], 25, 0.010, 30, 30, 2)
+                # animation_utils.Shake(damageAura[0], 25, 0.010, 30, 30, 2)
                 FinalResultFunc()
-        })
-        .to(damageAura[0], 0.3, {
-            ease: Power0.easeNone, autoAlpha: 0, scale: 3
-            onComplete: () ->
                 Blaze.remove(instanceView)
         })
+        # .to(damageAura[0], 0.3, {
+        #     ease: Power0.easeNone, autoAlpha: 0, scale: 3
+        #     onComplete: () ->
+        #         Blaze.remove(instanceView)
+        # })

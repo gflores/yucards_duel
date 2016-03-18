@@ -19,40 +19,43 @@
             </button>
         {{/if}}
 
-        {{#if IsDisplayingInstructions}}
-            <div class="instructions">
-                <div class="close-button"> X </div>
-                <div class="title"> INSTRUCTIONS </div>
+        {{#if IsGameRoomReady}}
+
+            {{#if IsDisplayingInstructions}}
+                <div class="instructions">
+                    <div class="close-button"> X </div>
+                    <div class="title"> INSTRUCTIONS </div>
 
 
-                <div class="instruction">
-                    <span class="case">
-                        <span class="strong"><strong>STRONG SIGN card</strong></span> played on top of <span class="weak"><strong>WEAK SIGN card</strong></span>:
-                    </span>
-                    <span class="explanation">
-                        Damages = <span class="strong">strong sign card <strong>VALUE</strong> </span> + <span class="weak">WEAK SIGN card <strong>VALUE</strong> </span>
-                    </span>
-                    <span class="example">
-                        Example: <span class="scissor-text">SCISSOR 2</span> on <span class="paper-text">PAPER 3</span> inflicts <span class="damage-text">5 damages</span>. (<span class="scissor-text">2</span> + <span class="paper-text">3</span> = <span class="damage-text"> 5</span>)
-                    </span>
+                    <div class="instruction">
+                        <span class="case">
+                            <span class="strong"><strong>STRONG SIGN card</strong></span> played on top of <span class="weak"><strong>WEAK SIGN card</strong></span>:
+                        </span>
+                        <span class="explanation">
+                            Damages = <span class="strong">strong sign card <strong>VALUE</strong> </span> + <span class="weak">WEAK SIGN card <strong>VALUE</strong> </span>
+                        </span>
+                        <span class="example">
+                            Example: <span class="scissor-text">SCISSOR 2</span> on <span class="paper-text">PAPER 3</span> inflicts <span class="damage-text">5 damages</span>. (<span class="scissor-text">2</span> + <span class="paper-text">3</span> = <span class="damage-text"> 5</span>)
+                        </span>
+                    </div>
+
+                    <div class="instruction bigger-margin">
+                        <span class="case">
+                            <span class="weak"><strong>WEAK SIGN card</strong></span> played on top of <span class="strong"><strong>STRONG SIGN card</strong></span> :
+                        </span>
+                        <span class="explanation">
+                            Damages = <span class="weak">WEAK SIGN card <strong>VALUE</strong> </span> - <span class="strong">strong sign card <strong>VALUE</strong> </span>
+                        </span>
+                        <span class="example">
+                            Example: <span class="paper-text">PAPER 3</span> on <span class="scissor-text">SCISSOR 2</span> inflicts <span class="damage-text"> 1 damages</span>. (<span class="paper-text">3</span> - <span class="scissor-text">2</span> = <span class="damage-text"> 1</span>)
+                        </span>
+                    </div>
                 </div>
-
-                <div class="instruction bigger-margin">
-                    <span class="case">
-                        <span class="weak"><strong>WEAK SIGN card</strong></span> played on top of <span class="strong"><strong>STRONG SIGN card</strong></span> :
-                    </span>
-                    <span class="explanation">
-                        Damages = <span class="weak">WEAK SIGN card <strong>VALUE</strong> </span> - <span class="strong">strong sign card <strong>VALUE</strong> </span>
-                    </span>
-                    <span class="example">
-                        Example: <span class="paper-text">PAPER 3</span> on <span class="scissor-text">SCISSOR 2</span> inflicts <span class="damage-text"> 1 damages</span>. (<span class="paper-text">3</span> - <span class="scissor-text">2</span> = <span class="damage-text"> 1</span>)
-                    </span>
+            {{else}}
+                <div class="open-instruction-button">
+                    ?
                 </div>
-            </div>
-        {{else}}
-            <div class="open-instruction-button">
-                ?
-            </div>
+            {{/if}}
         {{/if}}
     </div>
 </template>

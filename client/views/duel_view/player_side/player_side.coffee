@@ -23,6 +23,9 @@ Template.playerSide.helpers({
             Meteor.user().isDisplayingInstructions
         else
             require("game_data").get("isDisplayingInstructions")
+    IsGameRoomReady: () ->
+        return require("game_data").get("IsGameRoomReady")
+
 })
 
 Template.playerSide.events({
