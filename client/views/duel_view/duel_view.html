@@ -63,6 +63,11 @@
                                 </div>
                             </div>
                             <div class="player-result">
+                                {{#if currentUser.profile.guest}}
+                                    <div class="warning-is-guest">
+                                        <b>WARNING:</b> You are not logged-in so this battle result won't be saved. {{> loginButtons}}
+                                    </div>
+                                {{/if}}
                                 {{> playerResult data=GetPlayerData}}
                             </div>
                         </div>
