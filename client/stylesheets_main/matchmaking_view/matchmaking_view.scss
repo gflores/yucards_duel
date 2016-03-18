@@ -395,6 +395,11 @@
         text-shadow: 0px 0px 6px black;
         font-weight: bold;
     }
+    #login-dropdown-list {
+        @media screen and (max-width: 500px) {
+            left: -60px;
+        }
+    }
 }
 
 #matchmaker-view{
