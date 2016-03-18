@@ -26,7 +26,7 @@ SendCurrentMessage = () ->
     require("chat_messages").SendMessage(messageText)
     $('#message-input-box textarea')[0].value = ""
 
-gameRoomIdToDisplay = ""
+gameRoomIdToDisplay = Math.floor((Math.random() * 999999) + 1).toString()
 
 Template.matchmakingView.events({
     'keydown #message-input-box textarea': (event) ->
@@ -74,11 +74,13 @@ Template.matchmakingView.onRendered(() ->
     Meteor.setTimeout(ScrollChatToBottom, 300)
     Meteor.setTimeout(ScrollChatToBottom, 500)
     Meteor.setTimeout(ScrollChatToBottom, 1000)
-    Meteor.call("get_random_available_room_id", (error, result) ->
-        gameRoomIdToDisplay = result
-        $(".battle-link #game-url").text(Router.routes.duel.url({roomId: gameRoomIdToDisplay}).replace(/.*?:\/\//g, ""))
-        require("utils").SelectTextById("game-url")
-    )
+    # Meteor.call("get_random_available_room_id", (error, result) ->
+    #     gameRoomIdToDisplay = result
+    #     $(".battle-link #game-url").text(Router.routes.duel.url({roomId: gameRoomIdToDisplay}).replace(/.*?:\/\//g, ""))
+    #     require("utils").SelectTextById("game-url")
+    # )
+    $(".battle-link #game-url").text(Router.routes.duel.url({roomId: gameRoomIdToDisplay}).replace(/.*?:\/\//g, ""))
+    require("utils").SelectTextById("game-url")
 )
 
 
