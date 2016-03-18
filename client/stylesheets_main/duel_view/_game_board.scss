@@ -325,14 +325,19 @@
 .score-generated-feedback {
     position: absolute;
     font-weight: bold;
-    font-size: 2.5em;
+    font-size: 60px;
     z-index: 10;
 
     transition-timing-function: linear;
 
     transition: all 1.5s;
-    color: #c6c6c6;
-    text-shadow: -1px -1px 3px #000, 1px -1px 3px #000, -1px 1px 3px #000, 1px 1px 3px #000;
+    color: hsla(0,0%,90%,1);
+    text-shadow: -1px 1px 3px #000, 1px 1px 3px #000, 1px -1px 3px #000, -1px -1px 3px #000, 0px 1px 3px #000, 1px 0px 3px #000, 0px -1px 3px #000, -1px 0px 3px #000;
+
+    @media screen and (max-width: $screen-width1 - 1px) {
+        font-size: 60px;
+    }
+
 }
 
 
