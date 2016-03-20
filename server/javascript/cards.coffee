@@ -2,7 +2,7 @@ define("cards", [], ()->
 
     CARD_PREPARATION_TIME = 3.5 * 1000
     # CARD_PREPARATION_TIME = 1 * 1000
-    CARD_DISCARD_TIME = 1.5 * 1000
+    CARD_DISCARD_TIME = 1 * 1000
 
     Construct = (value, element) ->
         return {
@@ -28,39 +28,37 @@ define("cards", [], ()->
         require("utils").ShuffleArray(currentStack)
         return currentStack
 
-    GenerateStartingCards = () ->
-        card_elements = require("card_elements")
-        startingCards = []
-        elementCards = [[], [], []]
-        for element, index in [card_elements.elements.ROCK, card_elements.elements.PAPER, card_elements.elements.SCISSOR]
-            for value in [1, 2, 3, 4, 5]
-                elementCards[index].push(Construct(value, element))
-
-        require("utils").ShuffleArray(elementCards[0])
-        require("utils").ShuffleArray(elementCards[1])
-        require("utils").ShuffleArray(elementCards[2])
-
-        console.log("generated cards: #{JSON.stringify(elementCards[0])} | #{JSON.stringify(elementCards[1])} | #{JSON.stringify(elementCards[2])}")
-        while elementCards[0].length != 0
-            newStack = ExtractFromElementStack(elementCards)
-            startingCards = startingCards.concat(newStack)
-
-
-        console.log("generated cards: #{JSON.stringify(startingCards)}")
-        return startingCards
-
     # GenerateStartingCards = () ->
     #     card_elements = require("card_elements")
     #     startingCards = []
-    #     for element in [card_elements.elements.ROCK, card_elements.elements.PAPER, card_elements.elements.SCISSOR]
+    #     elementCards = [[], [], []]
+    #     for element, index in [card_elements.elements.ROCK, card_elements.elements.PAPER, card_elements.elements.SCISSOR]
     #         for value in [1, 2, 3, 4, 5]
-    #             startingCards.push(Construct(value, element))
-    #     console.log("generated cards: #{JSON.stringify(startingCards)}")
-    #     require("utils").ShuffleArray(startingCards)
-    #     NotLastThreeTheSameElement(startingCards)
+    #             elementCards[index].push(Construct(value, element))
 
+    #     require("utils").ShuffleArray(elementCards[0])
+    #     require("utils").ShuffleArray(elementCards[1])
+    #     require("utils").ShuffleArray(elementCards[2])
+
+    #     console.log("generated cards: #{JSON.stringify(elementCards[0])} | #{JSON.stringify(elementCards[1])} | #{JSON.stringify(elementCards[2])}")
+    #     while elementCards[0].length != 0
+    #         newStack = ExtractFromElementStack(elementCards)
+    #         startingCards = startingCards.concat(newStack)
     #     console.log("generated cards: #{JSON.stringify(startingCards)}")
     #     return startingCards
+
+    GenerateStartingCards = () ->
+        card_elements = require("card_elements")
+        startingCards = []
+        for element in [card_elements.elements.ROCK, card_elements.elements.PAPER, card_elements.elements.SCISSOR]
+            for value in [2, 3, 4, 5]
+                startingCards.push(Construct(value, element))
+        console.log("generated cards: #{JSON.stringify(startingCards)}")
+        require("utils").ShuffleArray(startingCards)
+        NotLastThreeTheSameElement(startingCards)
+
+        console.log("generated cards: #{JSON.stringify(startingCards)}")
+        return startingCards
 
     GetNextCardFromReserve = (player) ->
         if player.reserveCards.length == 0
