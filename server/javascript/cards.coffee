@@ -150,8 +150,8 @@ define("cards", [], ()->
                         loser = Meteor.users.findOne(player.opponent.id)
                         duelResult = require("game_room").ConstructDuelEndResult(winner, loser)
 
-                        Meteor.users.update(winner._id, {$set: {"status.playing": false, score: winner.score, rank: winner.rank, winNumber: winner.winNumber}})
-                        Meteor.users.update(loser._id, {$set: {"status.playing": false, score: loser.score, rank: loser.rank, loseNumber: loser.loseNumber}})
+                        Meteor.users.update(winner._id, {$set: {"isPlaying": false, score: winner.score, rank: winner.rank, winNumber: winner.winNumber, "currentRoomID": null}})
+                        Meteor.users.update(loser._id, {$set: {"isPlaying": false, score: loser.score, rank: loser.rank, loseNumber: loser.loseNumber, "currentRoomID": null}})
 
                         gameRoom.messageCollection.insert({
                             functionId: "duel_end_result"

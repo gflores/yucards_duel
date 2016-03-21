@@ -1,6 +1,6 @@
 define("users", [], () ->
     Meteor.publish(null, () ->
-        Meteor.users.find({ "status.online": true }, {limit: 30, fields: {status: 1, rank: 1, score: 1, winNumber: 1, loseNumber: 1, isDisplayingInstructions: 1, username: 1}})
+        Meteor.users.find({ "status.online": true }, {limit: 30, fields: {status: 1, rank: 1, score: 1, winNumber: 1, loseNumber: 1, isDisplayingInstructions: 1, username: 1, oppenedLinks: 1, currentRoomID: 1}})
     )
     Accounts.onCreateUser((options, user) ->
         user.rank = 1
@@ -8,6 +8,10 @@ define("users", [], () ->
         user.winNumber = 0
         user.loseNumber = 0
         user.isDisplayingInstructions = true
+        user.oppenedLinks = []
+        user.currentRoomID = null
+        user.isPlaying = false
+
         userEmail = null
 
         if user.services.twitter? == true

@@ -9,7 +9,14 @@ require(["main"], () ->
     Meteor.startup(()->
         process.env.MAIL_URL = "smtp://gael@blitzrps.com:blitzrpsITACHI999@smtp.gmail.com:465/"
 
-        Meteor.users.update({}, {$set: {"status.playing": false}}, {multi: true})
+        Meteor.users.update({}, {$set: 
+            {
+                "isPlaying": false
+                "oppenedLinks": []
+                "currentRoomID": null
+            }
+        }, {multi: true}
+        )
 
         game_room = require("game_room")
         game_room.SetupRoomsCommunication()

@@ -105,7 +105,7 @@ define("game_room", [], () ->
                 if this.userId? == false
                     return "ERROR: no UserId"
                 global_data = require("global_data")
-                if Meteor.user().status.playing and global_data.players[this.userId].currentGameRoomId != roomId
+                if Meteor.user().isPlaying and global_data.players[this.userId].currentGameRoomId != roomId
                     return {
                         isAlreadyPlaying: true
                         otherRoomId: global_data.players[this.userId].currentGameRoomId
@@ -129,6 +129,7 @@ define("game_room", [], () ->
                     console.log("player #{this.userId} already in room #{roomId}")
                 else
                     gameRoom.players_ids.push(this.userId)
+                    Meteor.users.update({_id: this.userId}, {$push: {"oppenedLinks": roomId}})
 
                 #     player = ConstructPlayer(this.userId, roomId)
                 #     if gameRoom.players_ids.length == 1
@@ -162,7 +163,7 @@ define("game_room", [], () ->
 
         IsAllowedFunc = (publisher, subArgs) ->
             roomId = subArgs[0]
-            if (Meteor.users.findOne(publisher.userId).status.playing == true and global_data.players[publisher.userId].currentGameRoomId != roomId) or global_data.gameRooms.hasOwnProperty(roomId) == false
+            if (Meteor.users.findOne(publisher.userId).isPlaying == true and global_data.players[publisher.userId].currentGameRoomId != roomId) or global_data.gameRooms.hasOwnProperty(roomId) == false
                 return false
             else
                 return true
@@ -179,8 +180,24 @@ define("game_room", [], () ->
                 newPlayer = CreatePlayerForWithId(gameRoom.players_ids[1], gameRoom)
                 opponent.opponent = newPlayer
                 newPlayer.opponent = opponent
+                RemovePlayerIdFromOtherRooms = (playerId) ->
+                    for link in Meteor.users.findOne(playerId).oppenedLinks
+                        if link != roomId
+                            otherRoom = global_data.gameRooms[link]
+                            idIndex = otherRoom.players_ids.indexOf(playerId)
+                            otherRoom.players_ids.splice(idIndex, 1)
 
-                Meteor.users.update({_id: {$in: gameRoom.players_ids}}, {$set: {"status.playing": true}}, {multi: true})
+                RemovePlayerIdFromOtherRooms(opponent.id)
+                RemovePlayerIdFromOtherRooms(newPlayer.id)
+
+                Meteor.users.update({_id: {$in: gameRoom.players_ids}}, {$set:
+                    {
+                        "isPlaying": true,
+                        "oppenedLinks": []
+                        "currentRoomID": gameRoom.id
+                    }
+                }, {multi: true})
+
                 GameRooms.insert({roomId: gameRoom.id})
                 console.log("[#{roomId}] STARTED ! total room nb:" + GameRooms.find().count());
 
