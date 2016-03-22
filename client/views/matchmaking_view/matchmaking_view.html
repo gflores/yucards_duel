@@ -76,9 +76,31 @@
 <!--         </div> -->
         <ul id="online-users-list">
             {{#each user in GetOnlineUsers}}
-                <li>
+                <li class="user {{GetUserStatusClass user}}">
                     <div class="username">{{user.username}}</div>
                     <div class="rank">{{user.rank}}</div>
+                    {{#if user.oppenedLinks}}
+                        <i class="action-icon fa fa-sign-in"></i>
+                        <div class="waiting-for-opponent"> Waiting for opponent... </div>
+                    {{/if}}
+                    {{#if user.isPlaying}}
+                        <i class="action-icon fa fa-eye"></i>
+                        <div class="in-duel"> In duel. </div>
+                    {{/if}}
+                    <div class="user-status-extension">
+                        <div class="wrapper">
+                            {{#if user.oppenedLinks}}
+                                <div class="user-status-extension-title"> Opened links: </div>
+                                {{#each link in user.oppenedLinks}}
+                                    <a href="{{GetDuelUrlFromId link}}" class="link" target="_blank"> {{link}} </a>
+                                {{/each}}
+                            {{/if}}
+                            {{#if user.isPlaying}}
+                                <div class="user-status-extension-title"> Spectate duel: </div>
+                                <a href="{{GetDuelUrlFromId user.currentRoomID}}" class="link" target="_blank"> {{user.currentRoomID}} </a>
+                            {{/if}}
+                        </div>
+                    </div>
                 </li>
             {{/each}}
         </ul>

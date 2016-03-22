@@ -1,3 +1,4 @@
+@import '../utils';
 @mixin styling($profile-box-width, $user-list-width, $battle-link-margin-left, $primary-margins, $input-box-height, $standard-font-size){
     // $user-list-width: 220px;
     // $user-list-width: 180px;
@@ -54,10 +55,11 @@
         background: hsla(44,100%,88%,1);
         border-left: #A77F00 $user-list-border-width solid;
 
-        li {
+        .user {
             &:first-of-type {
                 border-top: #615E5E 3px solid;
             }
+            position: relative;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -74,6 +76,63 @@
             }
             .rank {
                 padding-left: 1em;
+            }
+            &.is-available {
+                background: #73A529;
+            }
+            &.is-waiting {
+                background: #FFBA29;
+                @extend .clickable-block;
+            }
+            &.is-playing {
+                background: #FF5F29;
+                color: rgb(128, 0, 0);
+                @extend .clickable-block;
+            }
+
+            .waiting-for-opponent, .in-duel {
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                font-size: 13px;
+                width: 100%;
+                text-align: center;
+            }
+            .waiting-for-opponent {
+                color: rgb(0, 0, 205);
+            }
+            .in-duel {
+                color: rgb(255, 222, 173);
+            }
+            .action-icon {
+                position: absolute;
+                left: 0;
+                line-height: 200%;
+            }
+
+            .user-status-extension {
+                display: none;
+                position: fixed;
+                right: calc(#{$user-list-width});
+                cursor: initial;
+                z-index: 100;
+                .wrapper {
+                    cursor: initial;
+                    position: relative;
+                    background: #ffefc2;
+                    top: -13px;
+                    padding: 1px 1px 7px 1px;
+                    border: #A77F00 3px solid;
+                    border-right: #A77F00 5px solid;
+                    .user-status-extension-title {
+                        font-weight: bold;
+                    }
+                    .link {
+                        display: block;
+                        margin: 5px 10px 0px 10px;
+                        text-align: right;
+                    }
+                }
             }
         }
         @media screen and (max-width: 1020px - 1px){

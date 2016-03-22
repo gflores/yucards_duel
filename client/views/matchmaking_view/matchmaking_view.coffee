@@ -1,4 +1,3 @@
-
 Template.matchmakingView.helpers({
     GetClassForGuest: () ->
         return if Meteor.user().profile.guest then "is-guest" else ""
@@ -14,8 +13,17 @@ Template.matchmakingView.helpers({
         # ]
     GetBaseDuelUrl: () ->
         return Router.routes.duel.url({roomId: ""}).replace(/.*?:\/\//g, "")
+    GetDuelUrlFromId: (roomId) ->
+        return Router.routes.duel.url({roomId: roomId})
     # GetRoomIdToDisplay: () ->
     #     return gameRoomIdToDisplay.get()
+    GetUserStatusClass: (user) ->
+        if user.isPlaying
+            return "is-playing"
+        else if user.oppenedLinks.length != 0
+            return "is-waiting"
+        else
+            return "is-available"
 })
 
 
@@ -57,6 +65,10 @@ Template.matchmakingView.events({
     'mouseleave #contact-page': () ->
         $('#contact-button').show();
         $('#contact-page').hide();
+    'mouseenter #online-users-list .user:not(.is-available)': (e) ->
+        $(e.currentTarget).find('.user-status-extension').show();
+    'mouseleave #online-users-list .user:not(.is-available)': (e) ->
+        $(e.currentTarget).find('.user-status-extension').hide();
 
 
 })
