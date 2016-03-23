@@ -227,11 +227,18 @@ define("game_room", [], () ->
         OnStopFunc = (publisher, subArgs) ->
             roomId = subArgs[0]
             gameRoom = global_data.gameRooms[roomId]
-            if gameRoom.players_ids.length == 1
-                console.log("Removing #{publisher.userId} from GameRoom #{gameRoom.id}")
-                gameRoom.players_ids = []
-                Meteor.users.update({_id: publisher.userId}, {$pull: {"oppenedLinks": roomId}})
-
+            if gameRoom?
+                if not publisher.userId in gameRoom.players_ids
+                    console.log("#{publisher.userId} never subscribed")
+                if gameRoom.players_ids.length == 1 and publisher.userId in gameRoom.players_ids
+                    console.log("Removing #{publisher.userId} from GameRoom #{gameRoom.id}")
+                    gameRoom.players_ids = []
+                    Meteor.users.update({_id: publisher.userId}, {$pull: {"oppenedLinks": roomId}})
+                else
+                    if gameRoom.players_ids.length == 0
+                        console.log("GameRoom #{gameRoom.id} is already empty...")
+            else
+                console.log("#{roomId} room doesn't even exist")
 
 
         custom_collection_publisher.PublishCursor(id_keys.GetServerMessagesPublicationName(), id_keys.GetServerMessagesCollectionName(), IsAllowedFunc, GetCursorFunc, OnSuccessFunc, OnStopFunc)

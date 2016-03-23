@@ -82,6 +82,16 @@ define("communication", [], ()->
         "duel_start": (message) ->
             game_data = require("game_data")
             game_data.set("IsGameRoomReady", true)
+
+            if Meteor.userId() != message.players[0].id and Meteor.userId() != message.players[1].id
+                game_data.set("IsPlayer", false)
+                game_data.set("BottomPlayerId", message.players[0].id)
+                game_data.set("TopPlayerId", message.players[1].id)
+
+            else
+                game_data.set("IsPlayer", true)
+
+
             UpdateFromSnapshot(message)
 
         "player_preparing_play": (message) ->
@@ -253,11 +263,11 @@ define("communication", [], ()->
                 game_data.set("IsAlreadyPlayingOtherGame", true)
                 game_data.set("OtherRoomId", result.otherRoomId)
             else
-                if not result.isPlayer #if the user is a spectator
-                    game_data.set("BottomPlayerId", result.snapshot.players[0].id)
-                    game_data.set("TopPlayerId", result.snapshot.players[1].id)
-
                 if result.isStarted #if the game is already running
+                    if not result.isPlayer #if the user is a spectator
+                        game_data.set("BottomPlayerId", result.snapshot.players[0].id)
+                        game_data.set("TopPlayerId", result.snapshot.players[1].id)
+
                     console.log("reading from snapshot")
                     game_data.set("IsGameRoomReady", true)
                     UpdateFromSnapshot(result.snapshot)
