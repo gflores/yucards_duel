@@ -10,7 +10,7 @@ define("custom_collection_publisher", [], () ->
         })
 
 
-    PublishCursor = (publicationName, collectionName, IsAllowedFunc, GetCursorFunc, OnSuccessFunc) ->
+    PublishCursor = (publicationName, collectionName, IsAllowedFunc, GetCursorFunc, OnSuccessFunc, OnStopFunc) ->
         Meteor.publish(publicationName, () ->
             console.log("User:#{this.userId} REQUESTS for subscription to '#{publicationName}'")
             if IsAllowedFunc(this, arguments)
@@ -20,8 +20,11 @@ define("custom_collection_publisher", [], () ->
                 if OnSuccessFunc?
                     OnSuccessFunc(this, arguments)
                 publisher = this
+                publisherArguments = arguments
                 this.onStop( () ->
                     console.log("User:#{publisher.userId} UNSUBSCRIBED from '#{publicationName}'")
+                    if OnStopFunc?
+                        OnStopFunc(publisher, publisherArguments)
                     collectionHandle.stop()
                 )
             else

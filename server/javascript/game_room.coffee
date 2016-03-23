@@ -224,9 +224,17 @@ define("game_room", [], () ->
                 )
             else
                 console.log("[#{gameRoom.id}] accepting subscriber: #{publisher.userId}")
+        OnStopFunc = (publisher, subArgs) ->
+            roomId = subArgs[0]
+            gameRoom = global_data.gameRooms[roomId]
+            if gameRoom.players_ids.length == 1
+                console.log("Removing #{publisher.userId} from GameRoom #{gameRoom.id}")
+                gameRoom.players_ids = []
+                Meteor.users.update({_id: publisher.userId}, {$pull: {"oppenedLinks": roomId}})
 
 
-        custom_collection_publisher.PublishCursor(id_keys.GetServerMessagesPublicationName(), id_keys.GetServerMessagesCollectionName(), IsAllowedFunc, GetCursorFunc, OnSuccessFunc)
+
+        custom_collection_publisher.PublishCursor(id_keys.GetServerMessagesPublicationName(), id_keys.GetServerMessagesCollectionName(), IsAllowedFunc, GetCursorFunc, OnSuccessFunc, OnStopFunc)
 
     return {
         ConstructGameRoom: ConstructGameRoom
