@@ -6,5 +6,7 @@ Template.countdown.helpers({
 
     UrlToShare: () ->
         return Router.current().url
-})
 
+    OpponentName: () ->
+        Meteor.users.findOne(require("opponent_data").get("UserId")).username
+})

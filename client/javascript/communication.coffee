@@ -64,6 +64,10 @@ define("communication", [], ()->
             game_data = require("game_data")
             game_data.set("IsCountdownStarted", true)
 
+            require("opponent_data").set("UserId", if Meteor.userId() == message.players_ids[0] then message.players_ids[1] else message.players_ids[0])
+            console.log("userID set: "+ require("opponent_data").get("UserId"))
+
+
             game_data.set("CountdownValue", message.countdownDuration / 1000)
             CountdownFrameFunction = () ->
                 Meteor.setTimeout( () ->

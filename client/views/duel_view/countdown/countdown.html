@@ -1,13 +1,15 @@
 <template name="countdown">
     <div id="countdown">
         {{#if IsCountdownStarted}}
-            Opponent joined !
+            <i class="opponent-name">{{OpponentName}}</i> joined !
             <br>
             Duel starting in <b>{{CountdownValue}}</b>
         {{else}}
+            <button class="go-to-home"><i class="fa fa-home"></i> Home</button>
+            <br><br>
             Waiting for opponent to join...
             <br>
-            Send the link <a href="{{UrlToShare}}"> {{UrlToShare}} </a> for someone to join.
+            Send your link to opponent <a href="{{UrlToShare}}"> {{UrlToShare}} </a> for duel to begin.
         {{/if}}
     </div>
 </template>
