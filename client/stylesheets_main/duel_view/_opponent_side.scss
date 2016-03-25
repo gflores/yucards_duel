@@ -4,6 +4,21 @@
     height: 40%;
     top: 0;
 
+    &.actions-unavailable .playable-cards .playable-card:nth-child(3) .loading-overlay {
+        z-index: 100;
+        background-color: black;
+        opacity: 0.2;
+        position: absolute;        
+        left: -3000px;
+        bottom: 0;
+        height: 1000px;
+        width: 6000px;
+        @media screen and (max-width: $screen-width1 - 1px) {
+            bottom: -5%;
+        }
+
+    }
+
     .card-loading{
         bottom: 0;
     }

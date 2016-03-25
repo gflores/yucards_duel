@@ -13,6 +13,23 @@
     height: 40%;
     bottom: 0;
 
+    &.actions-unavailable #discard-button .loading-overlay {
+    // .loading-overlay {
+        z-index: 100;
+        background-color: black;
+        opacity: 0.2;
+        position: absolute;
+        left: -1000px;
+        top: -4px;
+        height: 323px;
+        width: 4000px;
+        @media screen and (max-width: $screen-width1 - 1px) {
+            left: initial;
+            right: -17px;
+            height: 2000px;
+        }
+    }
+
     .card-loading{
         top: 0;
         .car-loading-indicator{
@@ -65,6 +82,8 @@
         @extend .clickable-block;
     }
     #discard-button{
+        overflow: visible !important;
+
         position: absolute;
 
         height: 74px;

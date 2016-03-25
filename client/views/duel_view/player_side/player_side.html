@@ -1,5 +1,6 @@
 <template name="playerSide">
     <div id="player-side" class="{{GetClassForActionsAvailability}} {{GetClassForIsSpectator}}">
+
         <div class="card-player-icon">
             <img src="/images/character_color1.png">
             <div class="player-username"> {{GetUser.username}} </div>
@@ -16,6 +17,8 @@
         {{#if IsGameRoomReady}}
             <button id="discard-button">
                 Get New Hand !
+                <div class="loading-overlay">
+                </div>
             </button>
         {{/if}}
 
