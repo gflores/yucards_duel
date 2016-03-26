@@ -4,6 +4,12 @@
     height: 40%;
     top: 0;
 
+    .playable-cards .playable-card:nth-child(2) .opponent-has-left {
+        position: absolute;
+        display: block !important;
+        z-index: 200;
+        color: white;
+    }
     &.actions-unavailable .playable-cards .playable-card:nth-child(3) .loading-overlay {
         z-index: 100;
         background-color: black;
@@ -67,6 +73,11 @@
         .player-username {
             bottom: -26px;
         }
+    }
 
+    &.is-disconnected{
+        .card-player-icon {
+            background: rgba(110,0,0,1);
+        }
     }
 }

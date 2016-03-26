@@ -36,7 +36,7 @@
     }
 }
 
-#spectating-message, #already-in-another-duel {
+#spectating-message, #already-in-another-duel, #opponent-has-left{
     position: absolute;
     z-index: 1;
     width: 100%;
@@ -54,6 +54,11 @@
         width: 120px;
     }    
 }
+#opponent-has-left{
+    bottom: initial;
+    top: 78%;
+}
+
 .playable-card{
     position: absolute;
     border-style: solid;

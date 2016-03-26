@@ -1,6 +1,9 @@
 Template.opponentSide.helpers({
     data: () ->
         require("opponent_data")
+    GetClassForIsDisconnected: () ->
+        return if Meteor.users.findOne(require("opponent_data").get("UserId"))? == false then "is-disconnected" else ""
+        
     GetUser: () ->
         Meteor.users.findOne(require("opponent_data").get("UserId"))
 

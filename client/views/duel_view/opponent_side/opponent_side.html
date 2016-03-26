@@ -1,5 +1,5 @@
 <template name="opponentSide">
-    <div id="opponent-side" class="{{GetClassForActionsAvailability}}">
+    <div id="opponent-side" class="{{GetClassForActionsAvailability}} {{GetClassForIsDisconnected}}">
         <div class="card-player-icon">
             <img src="/images/character_color1.png">
             <div class="player-username"> {{GetUser.username}} </div>
@@ -12,5 +12,8 @@
 <!--         {{> scoreBar data}} -->
         {{> lifeBar data}}
         {{> playableCards GetCard=GetCard}}
+        {{#unless GetUser}}
+            <div id="opponent-has-left"> Your opponent has left. </div>
+        {{/unless}}
     </div>
 </template>
