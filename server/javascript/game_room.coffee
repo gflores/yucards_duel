@@ -153,6 +153,7 @@ define("game_room", [], () ->
                 return {
                     isPlayer: true
                     isStarted: false
+                    playersNb: gameRoom.players_ids.length
                     msg: "SUCCESS: room #{roomId} now has #{gameRoom.players_ids.length} players"
                 }
         })

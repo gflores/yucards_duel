@@ -67,6 +67,13 @@ define("communication", [], ()->
             require("opponent_data").set("UserId", if Meteor.userId() == message.players_ids[0] then message.players_ids[1] else message.players_ids[0])
             console.log("userID set: "+ require("opponent_data").get("UserId"))
 
+            if Meteor.userId() == message.players_ids[0]
+                new Notification("Opponent Joined !", {
+                    body: "Duel starting against #{Meteor.users.findOne(require("opponent_data").get("UserId")).username}",
+                    icon: "/images/logo_square.png"
+                })
+     
+
 
             game_data.set("CountdownValue", message.countdownDuration / 1000)
             CountdownFrameFunction = () ->
@@ -259,6 +266,17 @@ define("communication", [], ()->
     RegisterToRoom = (roomId) ->
         Meteor.call("register_player_for_game", roomId, (error, result) ->
             console.log("error: '#{error}' | result: '#{JSON.stringify(result)}'")
+            if result.playersNb == 1
+                if window.Notification? == true
+                    Notification.requestPermission((res) ->
+                        if res == "denied"
+                            console.log("NOTIFICATION DENIED")
+                        else if res == "granted"
+                            console.log("NOTIFICATION DENIED")
+                        else
+                            console.log(res)
+                    )
+
             ListenToServerMessages(roomId)
             game_data = require("game_data")
             game_data.set("IsPlayer", result.isPlayer)

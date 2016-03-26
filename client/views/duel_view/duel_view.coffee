@@ -25,7 +25,6 @@ Template.duelView.helpers({
 
 })
 
-
 Template.duelView.events({
     "click .see-results": (event) ->
         $(".first-part").toggle()
