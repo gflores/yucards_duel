@@ -12,7 +12,12 @@ Template.matchmakingView.helpers({
         #     {user: {username: "Toto"}, text: "And againnnn"}
         # ]
     GetBaseDuelUrl: () ->
-        return Router.routes.duel.url({roomId: ""}).replace(/.*?:\/\//g, "")
+        url = Router.routes.duel.url({roomId: ""})
+        if(url.match(/http:\/\//))
+            url = url.substring(7);
+        if(url.match(/^www\./))
+            url = url.substring(4);
+        return url
     GetDuelUrlFromId: (roomId) ->
         return Router.routes.duel.url({roomId: roomId})
     # GetRoomIdToDisplay: () ->
@@ -91,7 +96,15 @@ Template.matchmakingView.onRendered(() ->
     #     $(".battle-link #game-url").text(Router.routes.duel.url({roomId: gameRoomIdToDisplay}).replace(/.*?:\/\//g, ""))
     #     require("utils").SelectTextById("game-url")
     # )
-    $(".battle-link #game-url").text(Router.routes.duel.url({roomId: gameRoomIdToDisplay}).replace(/.*?:\/\//g, ""))
+
+    url = Router.routes.duel.url({roomId: gameRoomIdToDisplay})
+    if(url.match(/http:\/\//))
+        url = url.substring(7);
+    if(url.match(/^www\./))
+        url = url.substring(4);
+
+
+    $(".battle-link #game-url").text(url)
     require("utils").SelectTextById("game-url")
 )
 

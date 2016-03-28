@@ -34,7 +34,8 @@
 
   // Configure environment
   "env": {
-    "ROOT_URL": "http://blitzrps.com"
+    "PORT": 3000,
+    "ROOT_URL": "http://www.blitzrps.com"
     // "ROOT_URL": "http://104.131.128.1"
   },
 
