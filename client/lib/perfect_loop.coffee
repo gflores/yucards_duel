@@ -17,23 +17,25 @@ class @PerfectLoop
                     self.play()
                 console.log("can play through!")
 
-    play: () ->
+    play: (loopCallback) ->
         self = this
         @isPlaying = true
         @audio2.play()
         @audio2.volume = 0
-        self.SchedulePlayAndPause(@audio1, @audio2)
+        self.SchedulePlayAndPause(@audio1, @audio2, loopCallback)
 
-    SchedulePlayAndPause: (currentAudio, nextAudio) ->
+    SchedulePlayAndPause: (currentAudio, nextAudio, loopCallback) ->
         self = this
         currentAudio.currentTime = self.deltaStart
         currentAudio.volume = 1
         currentAudio.play()
+        if loopCallback? == true
+            loopCallback(self.deltaStart)
         @pauseAudioTimeout = Meteor.setTimeout(() ->
             currentAudio.pause()
         , self.realDuration * 1000)
         @playNextAudioTimeout = Meteor.setTimeout(() ->
-            self.SchedulePlayAndPause(nextAudio, currentAudio)
+            self.SchedulePlayAndPause(nextAudio, currentAudio, loopCallback)
         , (self.realDuration + self.deltaRepeat) * 1000)
 
 

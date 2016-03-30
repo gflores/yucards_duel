@@ -60,6 +60,8 @@ define("communication", [], ()->
 
     serverMessagesHandlers = {
         "duel_countdown": (message) ->
+            require("music_manager").softLoop.stop()
+            require("music_manager").buildupAudio.play()
             console.log("duel is going to start in #{message.countdownDuration} ms. OpponentID: #{if require("global_data").IsBottomPlayer(message.players_ids[0]) then message.players_ids[1] else message.players_ids[0]}")
             game_data = require("game_data")
             game_data.set("IsCountdownStarted", true)
@@ -91,6 +93,8 @@ define("communication", [], ()->
 
 
         "duel_start": (message) ->
+            require("music_manager").buildupAudio.pause()
+            require("music_manager").mainLoop.play()
             game_data = require("game_data")
             game_data.set("IsGameRoomReady", true)
 
@@ -267,6 +271,9 @@ define("communication", [], ()->
         Meteor.call("register_player_for_game", roomId, (error, result) ->
             console.log("error: '#{error}' | result: '#{JSON.stringify(result)}'")
             if result.playersNb == 1
+                Meteor.setTimeout(() ->
+                    require("music_manager").softLoopAnimation()
+                , 500)
                 if window.Notification? == true
                     Notification.requestPermission((res) ->
                         if res == "denied"

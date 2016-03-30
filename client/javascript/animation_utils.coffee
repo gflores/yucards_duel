@@ -33,8 +33,24 @@ define("animation_utils", [], () ->
         tl.to(element, timeScale ,{x:initProps.x, y:initProps.y, scale:initProps.scale})
         return tl
 
+    Thump = (element, attribute, inTime, outTime, value, endValue) ->
+        tl = new TimelineLite()
+        if endValue? == false
+            endValue = element.css(attribute)
+        tl
+            .to(element[0], inTime, {
+                "#{attribute}": value
+
+            })
+            .to(element[0], outTime, {
+                "#{attribute}": endValue
+            })
+
+
+
     return {
         R: R
         Shake: Shake
+        Thump: Thump
     }
 )
