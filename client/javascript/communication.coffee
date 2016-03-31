@@ -58,10 +58,26 @@ define("communication", [], ()->
         if message.stackTopCard?
             game_data.set("TopCard", message.stackTopCard)
 
+    DuelStartWithMessage = () ->
+        console.log("duel starting with message !")
+        message = require("global_data").duelStartMessage
+
+        require("music_manager").buildupAudio.pause()
+        require("music_manager").mainLoop.play()
+        game_data = require("game_data")
+        game_data.set("IsGameRoomReady", true)
+        if Meteor.userId() != message.players[0].id and Meteor.userId() != message.players[1].id
+            game_data.set("IsPlayer", false)
+            game_data.set("BottomPlayerId", message.players[0].id)
+            game_data.set("TopPlayerId", message.players[1].id)
+        else
+            game_data.set("IsPlayer", true)
+        UpdateFromSnapshot(message)
+
     serverMessagesHandlers = {
         "duel_countdown": (message) ->
             require("music_manager").softLoop.stop()
-            require("music_manager").buildupAudio.play()
+            require("music_manager").buildupAudioAnimation()
             console.log("duel is going to start in #{message.countdownDuration} ms. OpponentID: #{if require("global_data").IsBottomPlayer(message.players_ids[0]) then message.players_ids[1] else message.players_ids[0]}")
             game_data = require("game_data")
             game_data.set("IsCountdownStarted", true)
@@ -77,7 +93,8 @@ define("communication", [], ()->
      
 
 
-            game_data.set("CountdownValue", message.countdownDuration / 1000)
+            # game_data.set("CountdownValue", message.countdownDuration / 1000)
+            game_data.set("CountdownValue", require("music_manager").GetBuildupCountdownDuration())
             CountdownFrameFunction = () ->
                 Meteor.setTimeout( () ->
                     currentCountdownValue = game_data.get("CountdownValue")
@@ -93,21 +110,11 @@ define("communication", [], ()->
 
 
         "duel_start": (message) ->
-            require("music_manager").buildupAudio.pause()
-            require("music_manager").mainLoop.play()
-            game_data = require("game_data")
-            game_data.set("IsGameRoomReady", true)
-
-            if Meteor.userId() != message.players[0].id and Meteor.userId() != message.players[1].id
-                game_data.set("IsPlayer", false)
-                game_data.set("BottomPlayerId", message.players[0].id)
-                game_data.set("TopPlayerId", message.players[1].id)
-
-            else
-                game_data.set("IsPlayer", true)
-
-
-            UpdateFromSnapshot(message)
+            console.log("received duelStartMessage !")
+            require("global_data").duelStartMessage = message
+            require("global_data").isDuelStartMessageReceived = true
+            if require("global_data").isBuildupStartFailed == true
+                DuelStartWithMessage()
 
         "player_preparing_play": (message) ->
             now = new Date()
@@ -308,5 +315,6 @@ define("communication", [], ()->
         HandleServerMessage: HandleServerMessage
         ListenToServerMessages: ListenToServerMessages
         RegisterToRoom: RegisterToRoom
+        DuelStartWithMessage: DuelStartWithMessage
     }
 )

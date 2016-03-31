@@ -27,12 +27,29 @@ define("music_manager", [], () ->
                     , beforeBeat1Time + n * beat2Time)
             
         )
-            
+        
+    buildupAudioAnimation = () ->
+        buildupAudio.play()
+        setTimeout(() ->
+            if require("global_data").isDuelStartMessageReceived == true
+                console.log("buildup START")
+                require("communication").DuelStartWithMessage()
+            else
+                require("global_data").isBuildupStartFailed = true
+                console.log("buildup FAIL")
+        , (buildupAudio.duration - 0.3) * 1000)
+
+    GetBuildupCountdownDuration = () ->
+        return Math.ceil(buildupAudio.duration)
 
     return {
         softLoop: softLoop
         buildupAudio: buildupAudio
         mainLoop: mainLoop
+
         softLoopAnimation: softLoopAnimation
+        buildupAudioAnimation: buildupAudioAnimation
+
+        GetBuildupCountdownDuration: GetBuildupCountdownDuration
     }
 )

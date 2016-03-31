@@ -26,6 +26,11 @@ define("global_data", [], () ->
             return game_data.get("TopPlayerId") == userId
 
     return {
+        isDuelStartMessageReceived: false
+        isBuildupStartFailed: false
+        duelStartMessage: {}
+
+
         playerCardLoadingRenderers: []
         opponentCardLoadingRenderers: []
         IsBottomPlayer: IsBottomPlayer
