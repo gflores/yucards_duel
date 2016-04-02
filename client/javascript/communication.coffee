@@ -46,6 +46,9 @@ define("communication", [], ()->
     #         opponent_data.set("Card#{index}", cards_module.Construct(card.value, card.element, index))
 
     UpdateFromSnapshot = (message) ->
+        require("music_manager").buildupAudio.pause()
+        require("music_manager").mainLoopAnimation()
+
         game_data = require("game_data")
         [player, opponent] = if require("global_data").IsBottomPlayer(message.players[0].id) then [message.players[0], message.players[1]] else [message.players[1], message.players[0]]
         # SetCardsToPlayer(player.playableCards)
@@ -62,8 +65,6 @@ define("communication", [], ()->
         console.log("duel starting with message !")
         message = require("global_data").duelStartMessage
 
-        require("music_manager").buildupAudio.pause()
-        require("music_manager").mainLoop.play()
         game_data = require("game_data")
         game_data.set("IsGameRoomReady", true)
         if Meteor.userId() != message.players[0].id and Meteor.userId() != message.players[1].id
@@ -73,6 +74,7 @@ define("communication", [], ()->
         else
             game_data.set("IsPlayer", true)
         UpdateFromSnapshot(message)
+        Meteor.clearInterval(require("global_data").countdownInterval)
 
     serverMessagesHandlers = {
         "duel_countdown": (message) ->
@@ -95,15 +97,24 @@ define("communication", [], ()->
 
             # game_data.set("CountdownValue", message.countdownDuration / 1000)
             game_data.set("CountdownValue", require("music_manager").GetBuildupCountdownDuration())
-            CountdownFrameFunction = () ->
-                Meteor.setTimeout( () ->
+
+            timeStep = 33
+            require("global_data").countdownInterval = Meteor.setInterval(() ->
                     currentCountdownValue = game_data.get("CountdownValue")
-                    currentCountdownValue -= 1
+                    currentCountdownValue -= timeStep / 1000
                     game_data.set("CountdownValue", currentCountdownValue)
-                    if currentCountdownValue != 0
-                        CountdownFrameFunction()
-                , 1000
-                )
+                , timeStep)
+
+
+            # CountdownFrameFunction = () ->
+            #     Meteor.setTimeout( () ->
+            #         currentCountdownValue = game_data.get("CountdownValue")
+            #         currentCountdownValue -= 1
+            #         game_data.set("CountdownValue", currentCountdownValue)
+            #         if currentCountdownValue != 0
+            #             CountdownFrameFunction()
+            #     , 1000
+            #     )
 
             CountdownFrameFunction()
 

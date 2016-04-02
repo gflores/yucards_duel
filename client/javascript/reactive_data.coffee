@@ -30,6 +30,7 @@ define("global_data", [], () ->
         isBuildupStartFailed: false
         duelStartMessage: {}
 
+        CountdownInterval: null
 
         playerCardLoadingRenderers: []
         opponentCardLoadingRenderers: []

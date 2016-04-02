@@ -37,20 +37,20 @@
     background-color: rgb(139, 195, 74);
 }
 
-#player-side:not(.is-spectator) {
-    .rock {
-        &.glowing {
-            @include glowAnimation(glowEffectRock);
-        }
-    }
-    .scissor {
-        &.glowing {
-            @include glowAnimation(glowEffectScissor);
-        }
-    }
-    .paper {
-        &.glowing {
-            @include glowAnimation(glowEffectPaper);
-        }
-    }
-}
+// #player-side:not(.is-spectator) {
+//     .rock {
+//         &.glowing {
+//             @include glowAnimation(glowEffectRock);
+//         }
+//     }
+//     .scissor {
+//         &.glowing {
+//             @include glowAnimation(glowEffectScissor);
+//         }
+//     }
+//     .paper {
+//         &.glowing {
+//             @include glowAnimation(glowEffectPaper);
+//         }
+//     }
+// }

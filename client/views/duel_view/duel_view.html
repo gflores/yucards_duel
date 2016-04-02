@@ -1,5 +1,6 @@
 <template name="duelView">
     <div id="duel-view">
+        <div class="plane-overlay"></div>
         {{#if IsAlreadyPlayingOtherGame}}
             <div id="already-in-another-duel">
                 You cannot join this game because you are already playing in the room: <a href="{{OtherRoomUrl}}">{{OtherRoomUrl}}</a> !

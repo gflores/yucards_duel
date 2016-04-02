@@ -125,7 +125,7 @@ define("cards", [], ()->
                     else
                         damageCriticalityValue = card_elements.GetResult(cardToBeplayed.element, gameRoom.stackTopCard.element)
                     gameRoom.stackTopCard = cardToBeplayed
-                    player.opponent.currentLife -= resultingDamage * 100
+                    player.opponent.currentLife -= resultingDamage
                     player.isBusy = false
 
                     newCard = GetNextCardFromReserve(player)

@@ -4,6 +4,16 @@
     height: 100%;
 }
 
+.plane-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    z-index: 200;
+    opacity: 0;
+    pointer-events: none;
+}
+
 .playable-cards{
     position: absolute;
     width: 100%;
@@ -229,6 +239,9 @@
     }
     .send-your-url {
         display: inline-block;
+    }
+    .countdown-timer-value {
+        display: block;
     }
 }
 

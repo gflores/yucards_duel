@@ -3,7 +3,7 @@
         {{#if IsCountdownStarted}}
             <i class="opponent-name">{{OpponentName}}</i> joined !
             <br>
-            Duel starting in <b>{{CountdownValue}}</b>
+            Duel starting in <span class="countdown-timer-value">{{CountdownValue.toFixed 2}}</span>
         {{else}}
             <button class="go-to-home"><i class="fa fa-home"></i> Home</button>
             <br><br>
