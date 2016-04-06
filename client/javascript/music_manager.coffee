@@ -3,10 +3,38 @@ define("music_manager", [], () ->
     buildupAudio = new Audio("/audio/Babaroque_buildup1.mp3")
     mainLoop = new PerfectLoop("/audio/Babaroque_main_loop1.mp3", false, 0, -0.500, -0.525)
 
+    loopAnimationToLaunch = null
+
+    delayFinderStartTime = null
+    delayFinderTotalTime = null
+    delayFinderDelta = null
+
+    Meteor.setTimeout(() ->
+        delayFinderAudio = new Audio("/audio/coma.mp3")
+
+        delayFinderAudio.oncanplaythrough = () ->
+            delayFinderStartTime = (new Date()).getTime()
+            delayFinderAudio.play()
+            delayFinderAudio.volume = 0
+
+        delayFinderAudio.onended = () ->
+            delayFinderTotalTime = (new Date()).getTime() - delayFinderStartTime
+            delayFinderDelta = delayFinderTotalTime - (delayFinderAudio.duration * 1000)
+            if loopAnimationToLaunch?
+                loopAnimationToLaunch()
+            console.log("TOTAL TIME: #{delayFinderTotalTime}, time duration: #{delayFinderAudio.duration}, DELTA: #{delayFinderDelta}")
+
+    , 1500)
+
+
     softLoopAnimation = () ->
+        if delayFinderTotalTime == null
+            loopAnimationToLaunch = softLoopAnimation
+            return null
         Thump = require("animation_utils").Thump
         softLoop.play((deltaStart) ->
-            beforeBeat1Time = 544 + 25 + deltaStart + 100
+            # beforeBeat1Time = 544 + deltaStart - 15
+            beforeBeat1Time = 544 + deltaStart + 25  + 100 - 225 + delayFinderDelta
             beat1Time = 882.8
             beat1Nb = 32
             beat2Time = beat1Time / 2
@@ -31,9 +59,13 @@ define("music_manager", [], () ->
         )
 
     mainLoopAnimation = () ->
+        if delayFinderTotalTime == null
+            loopAnimationToLaunch = mainLoopAnimation
+            return null
+
         Thump = require("animation_utils").Thump
         mainLoop.play((deltaStart) ->
-            beforeBeat1Time = 103 + 25 + deltaStart + 100
+            beforeBeat1Time = 103 + 25 + deltaStart + 100 - 225 + delayFinderDelta
             beat1Time = 882.8
             beat1Nb = 64
             beat2Time = beat1Time / 2
@@ -121,6 +153,10 @@ define("music_manager", [], () ->
 
         
     buildupAudioAnimation = () ->
+        if delayFinderTotalTime == null
+            loopAnimationToLaunch = buildupAudioAnimation
+            return null
+
         Thump = require("animation_utils").Thump
         buildupAudio.play()
         setTimeout(() ->
@@ -133,7 +169,7 @@ define("music_manager", [], () ->
         , (buildupAudio.duration - 0.1) * 1000)
 
 
-        beforeBeat1Time = 931 + 25 + 150
+        beforeBeat1Time = 931 + 25 + 150 - 225 + delayFinderDelta
         beat1Time = 882.8
         beat1Nb = 4
         beat2Time = beat1Time / 2
@@ -175,7 +211,7 @@ define("music_manager", [], () ->
         , beforeBeat1Time + (beat1Nb * beat1Time) + (beat1Nb * beat2Time)
         )
         setTimeout(() ->
-            Thump($(".plane-overlay"), "opacity", (beat2Time / 1000), (beat2Time / 1000) / 2, 1, 0)
+            Thump($(".plane-overlay"), "opacity", (beat2Time / 1000) * 1.3, (beat2Time / 1000) * 0.7, 1, 0)
         , beforeBeat1Time + (beat1Nb * beat1Time) + (beat1Nb * beat2Time) + (2 * beat2Time)
         )
 
