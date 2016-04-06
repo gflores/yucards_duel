@@ -35,7 +35,7 @@ define("music_manager", [], () ->
         softLoop.play((deltaStart) ->
             # beforeBeat1Time = 544 + deltaStart - 15
             beforeBeat1Time = 544 + deltaStart + 25  + 100 - 225 + delayFinderDelta
-            beat1Time = 882.8
+            beat1Time = 882.35
             beat1Nb = 32
             beat2Time = beat1Time / 2
             beat2Nb = beat1Nb * 2
@@ -66,7 +66,7 @@ define("music_manager", [], () ->
         Thump = require("animation_utils").Thump
         mainLoop.play((deltaStart) ->
             beforeBeat1Time = 103 + 25 + deltaStart + 100 - 225 + delayFinderDelta
-            beat1Time = 882.8
+            beat1Time = 882.35
             beat1Nb = 64
             beat2Time = beat1Time / 2
             beat2Nb = beat1Nb * 2
@@ -170,7 +170,7 @@ define("music_manager", [], () ->
 
 
         beforeBeat1Time = 931 + 25 + 150 - 225 + delayFinderDelta
-        beat1Time = 882.8
+        beat1Time = 882.35
         beat1Nb = 4
         beat2Time = beat1Time / 2
         beat2Nb = 4
