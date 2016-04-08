@@ -31,6 +31,8 @@ define("global_data", [], () ->
         duelStartMessage: {}
 
         CountdownInterval: null
+        isCrazyMode: false
+        isGoodBrowser: true
 
         playerCardLoadingRenderers: []
         opponentCardLoadingRenderers: []

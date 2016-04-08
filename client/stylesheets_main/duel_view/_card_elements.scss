@@ -1,25 +1,22 @@
 @keyframes glowEffectRock {
-    0%   {box-shadow: 0px 0px 16px 0px rgb(81, 45, 0);}
-    50%  {box-shadow: 0px 0px 16px 4px rgb(81, 45, 0);}
-    100%   {box-shadow: 0px 0px 16px 0px rgb(81, 45, 0);}
+    0%   {box-shadow: 0px 0px 35px 5px rgb(81, 45, 0);}
+    50%  {box-shadow: 0px 0px 12px 11px rgb(81, 45, 0);}
+    100%   {box-shadow: 0px 0px 35px 5px rgb(81, 45, 0);}
 }
 
 @keyframes glowEffectScissor {
-    0%   {box-shadow: 0px 0px 16px 0px red;}
-    50%  {box-shadow: 0px 0px 16px 4px red;}
-    100%   {box-shadow: 0px 0px 16px 0px red;}
+    0%   {box-shadow: 0px 0px 35px 5px red;}
+    50%  {box-shadow: 0px 0px 12px 11px red;}
+    100%   {box-shadow: 0px 0px 35px 5px red;}
 }
 @keyframes glowEffectPaper {
-    0%   {box-shadow: 0px 0px 16px 0px rgb(139, 195, 74);}
-    50%  {box-shadow: 0px 0px 16px 4px rgb(139, 195, 74);}
-    100%   {box-shadow: 0px 0px 16px 0px rgb(139, 195, 74);}
+    0%   {box-shadow: 0px 0px 35px 5px rgb(139, 195, 74);}
+    50%  {box-shadow: 0px 0px 12px 11px rgb(139, 195, 74);}
+    100%   {box-shadow: 0px 0px 35px 5px rgb(139, 195, 74);}
 }
 
 @mixin glowAnimation($animationName) {
-        animation-name: $animationName;
-        animation-duration: 1.5s;
-        animation-iteration-count: infinite;
-        animation-timing-function: linear;    
+        animation: $animationName 1.5s linear infinite;
 }
 
 .rock {
@@ -37,20 +34,22 @@
     background-color: rgb(139, 195, 74);
 }
 
-// #player-side:not(.is-spectator) {
-//     .rock {
-//         &.glowing {
-//             @include glowAnimation(glowEffectRock);
+// &.visual-mode-normal {
+//     #player-side:not(.is-spectator) {
+//         .rock {
+//             &.glowing {
+//                 @include glowAnimation(glowEffectRock);
+//             }
 //         }
-//     }
-//     .scissor {
-//         &.glowing {
-//             @include glowAnimation(glowEffectScissor);
+//         .scissor {
+//             &.glowing {
+//                 @include glowAnimation(glowEffectScissor);
+//             }
 //         }
-//     }
-//     .paper {
-//         &.glowing {
-//             @include glowAnimation(glowEffectPaper);
+//         .paper {
+//             &.glowing {
+//                 @include glowAnimation(glowEffectPaper);
+//             }
 //         }
 //     }
 // }

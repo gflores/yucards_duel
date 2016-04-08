@@ -18,26 +18,26 @@
     position: absolute;
     width: 100%;
     .playable-card{
-        transform: translateX(-50%);
-        @media screen and (max-width: $screen-width1 - 1px) {
-            transform: initial;
-        }
+        // transform: translateX(-50%);
+        // @media screen and (max-width: $screen-width1 - 1px) {
+        //     transform: initial;
+        // }
         &:nth-child(1){
-            left: calc(50% - 11% - 40px);
+            left: calc(50% - 9.5% - 60px - (#{$playable-card-width} / 2));
             @media screen and (max-width: $screen-width1 - 1px) {
                 left: initial;
                 right: calc(#{$playable-card-hmargin} * 3 + #{$playable-card-width} * 2);
             }
         }
         &:nth-child(2){
-            left: 50%;
+            left: calc(50% - (#{$playable-card-width} / 2));
             @media screen and (max-width: $screen-width1 - 1px) {
                 left: initial;
                 right: calc(#{$playable-card-hmargin} * 2 + #{$playable-card-width});
             }
         }
         &:nth-child(3){
-            left: calc(50% + 11% + 40px);
+            left: calc(50% + 9.5% + 60px - (#{$playable-card-width} / 2));
             @media screen and (max-width: $screen-width1 - 1px) {
                 left: initial;
                 right: calc(#{$playable-card-hmargin});

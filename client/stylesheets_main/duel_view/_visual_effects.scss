@@ -1,0 +1,41 @@
+@keyframes AutoScaleAnimation {
+    0%   {transform: scale(1.04);}
+    50%  {transform: scale(0.97);}
+    100%   {transform: scale(1.04);}
+}
+
+@mixin animation($animationName, $duration) {
+        animation-name: $animationName;
+        animation-duration: $duration;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;    
+}
+
+&.visual-mode-normal {
+    #player-side, #opponent-side{
+        .playable-card {
+            animation: AutoScaleAnimation 3s linear infinite
+        }
+    }
+
+    #player-side:not(.is-spectator) {
+        .rock {
+            &.glowing {
+                animation: AutoScaleAnimation 3s linear infinite, glowEffectRock 1.5s linear infinite;
+            }
+        }
+        .scissor {
+            &.glowing {
+                animation: AutoScaleAnimation 3s linear infinite, glowEffectScissor 1.5s linear infinite;
+            }
+        }
+        .paper {
+            &.glowing {
+                animation: AutoScaleAnimation 3s linear infinite, glowEffectPaper 1.5s linear infinite;
+            }
+        }
+        #discard-button {
+            animation: AutoScaleAnimation 2.5s linear infinite, glowEffectButton 1.5s linear infinite;
+        }
+    }
+}

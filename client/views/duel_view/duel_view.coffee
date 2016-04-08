@@ -23,6 +23,9 @@ Template.duelView.helpers({
     GetOpponentData: () ->
         return require("opponent_data")
 
+    GetClassForVisualEffectMode: () ->
+        return if require("global_data").isCrazyMode == true then "visual-mode-crazy" else "visual-mode-normal"
+
 })
 
 Template.duelView.events({

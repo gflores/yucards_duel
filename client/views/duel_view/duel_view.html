@@ -1,5 +1,5 @@
 <template name="duelView">
-    <div id="duel-view">
+    <div id="duel-view" class="{{GetClassForVisualEffectMode}}">
         <div class="plane-overlay"></div>
         {{#if IsAlreadyPlayingOtherGame}}
             <div id="already-in-another-duel">

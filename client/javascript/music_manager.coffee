@@ -9,6 +9,8 @@ define("music_manager", [], () ->
     delayFinderTotalTime = null
     delayFinderDelta = null
 
+    isCrazyMode = false
+
     Meteor.setTimeout(() ->
         delayFinderAudio = new Audio("/audio/coma.mp3")
 
@@ -33,7 +35,9 @@ define("music_manager", [], () ->
             return null
         Thump = require("animation_utils").Thump
         softLoop.play((deltaStart) ->
-            # beforeBeat1Time = 544 + deltaStart - 15
+            if require("global_data").isGoodBrowser == false
+                return
+
             beforeBeat1Time = 544 + deltaStart + 25  + 100 - 225 + delayFinderDelta
             beat1Time = 882.35
             beat1Nb = 32
@@ -42,6 +46,9 @@ define("music_manager", [], () ->
 
             for n in [0...beat1Nb] by 1
                 setTimeout(() ->
+                    if require("global_data").isCrazyMode == false
+                        return
+
                     Thump($(".send-your-url"), "scale", 0.05, 0.2, 1.1, 1)
                     Thump($("#player-side .card-player-icon img"), "scale", 0.05, 0.2, 1.1, 1)
 
@@ -50,6 +57,9 @@ define("music_manager", [], () ->
             for n in [0..beat2Nb] by 1
                 do (n) ->
                     setTimeout(() ->
+                        if require("global_data").isCrazyMode == false
+                            return
+
                         if n % 2 == 0
                             $("#countdown .url").css("color", "blue")
                         else
@@ -65,6 +75,9 @@ define("music_manager", [], () ->
 
         Thump = require("animation_utils").Thump
         mainLoop.play((deltaStart) ->
+            if require("global_data").isGoodBrowser == false
+                return
+
             beforeBeat1Time = 103 + 25 + deltaStart + 100 - 225 + delayFinderDelta
             beat1Time = 882.35
             beat1Nb = 64
@@ -82,6 +95,9 @@ define("music_manager", [], () ->
             for n in [0...beat1Nb] by 1
                 do (n) ->
                     setTimeout(() ->
+                        if require("global_data").isCrazyMode == false
+                            return
+
                         Thump($("#player-side .card-player-icon img"), "scale", 0.05, 0.2, 1.1, 1)
                         # for cardN in [0..2] by 1
                         #     color = $("#player-side .playable-cards .playable-card:nth(#{cardN})").css("background-color")
@@ -91,6 +107,9 @@ define("music_manager", [], () ->
             for n in [0..beat2Nb] by 1
                 do (n) ->
                     setTimeout(() ->
+                        if require("global_data").isCrazyMode == false
+                            return
+
                         if n % 2 == 0
                             $discardButton = $("#discard-button")
                             if $discardButton? == true
@@ -168,6 +187,8 @@ define("music_manager", [], () ->
                 console.log("buildup FAIL")
         , (buildupAudio.duration - 0.1) * 1000)
 
+        if require("global_data").isGoodBrowser == false
+            return
 
         beforeBeat1Time = 931 + 25 + 150 - 225 + delayFinderDelta
         beat1Time = 882.35
@@ -179,6 +200,9 @@ define("music_manager", [], () ->
         currentFontSize = 32
         for n in [0...beat1Nb] by 1
             setTimeout(() ->
+                if require("global_data").isCrazyMode == false
+                    return
+
                 Thump($("#player-side .card-player-icon img"), "scale", 0.05, 0.2, 1.1, 1)
 
                 # currentScale += 0.1
@@ -193,6 +217,9 @@ define("music_manager", [], () ->
 
         for n in [0...beat2Nb] by 1
             setTimeout(() ->
+                if require("global_data").isCrazyMode == false
+                    return
+
                 console.log("scale: #{currentScale}")
                 # currentScale += 0.1
                 currentFontSize += 6
@@ -205,12 +232,18 @@ define("music_manager", [], () ->
             )
 
         setTimeout(() ->
+            if require("global_data").isCrazyMode == false
+                return
+
             currentFontSize += 40
             Thump($(".countdown-timer-value"), "font-size", 2, 0.2, "#{currentFontSize}px", "#{currentFontSize}px")
             require("animation_utils").Shake($(".countdown-timer-value")[0], 40, 0.030, 20, 20)
         , beforeBeat1Time + (beat1Nb * beat1Time) + (beat1Nb * beat2Time)
         )
         setTimeout(() ->
+            if require("global_data").isCrazyMode == false
+                return
+
             Thump($(".plane-overlay"), "opacity", (beat2Time / 1000) * 1.3, (beat2Time / 1000) * 0.7, 1, 0)
         , beforeBeat1Time + (beat1Nb * beat1Time) + (beat1Nb * beat2Time) + (2 * beat2Time)
         )
@@ -228,5 +261,6 @@ define("music_manager", [], () ->
         mainLoopAnimation: mainLoopAnimation
 
         GetBuildupCountdownDuration: GetBuildupCountdownDuration
+        isCrazyMode: isCrazyMode
     }
 )
