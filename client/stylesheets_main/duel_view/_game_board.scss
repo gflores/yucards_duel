@@ -222,6 +222,7 @@
     //     }
     // }
     .loading-bar {
+        overflow: hidden;
         position: absolute;
         border: black 3px solid;
         width: calc(130px - 6px - 10px);
