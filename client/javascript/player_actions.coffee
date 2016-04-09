@@ -12,13 +12,27 @@ define("player_actions", [], () ->
         require("global_data").playerCardLoadingRenderers.push(Blaze.renderWithData(Template.cardLoading, {side: "isPlayer"}, $parent))
 
     RemoveLoaderForPlayer = () ->
-        Blaze.remove(require("global_data").playerCardLoadingRenderers.shift())
+        tl = new TimelineLite()    
+        loader = $("#player-side .loading-bar")
+        tl
+            .to(loader[0], 0.5, {
+                visibility: "visible", scale: 1.6, autoAlpha: 0
+                onComplete: () ->
+                    Blaze.remove(require("global_data").playerCardLoadingRenderers.shift())
+            })
 
     LaunchLoaderForOpponent = () ->
         $parent = $("#opponent-side")[0]
         require("global_data").opponentCardLoadingRenderers.push(Blaze.renderWithData(Template.cardLoading, {side: "isOpponent"}, $parent))
     RemoveLoaderForOpponent = () ->
-        Blaze.remove(require("global_data").opponentCardLoadingRenderers.shift())
+        tl = new TimelineLite()    
+        loader = $("#opponent-side .loading-bar")
+        tl
+            .to(loader[0], 0.5, {
+                visibility: "visible", scale: 1.6, autoAlpha: 0
+                onComplete: () ->
+                    Blaze.remove(require("global_data").opponentCardLoadingRenderers.shift())
+            })
 
     PlayCardIndex = (index) ->
         player_data = require("player_data")
