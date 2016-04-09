@@ -41,9 +41,19 @@ Template.cardLoading.rendered = () ->
     # Meteor.setTimeout( () ->
     #     indicator.css("top", "15%")
     # , 100)
+    side = this.data.side
+    if side == "isPlayer"
+        timeoutTime = 50
+        firstBarLoadingTime = 1.2 + 0.150
+    else
+        timeoutTime = 0
+        firstBarLoadingTime = 1.2
+
     tl = new TimelineLite()
     element = this.find(".filling-part")
     element2 = this.find(".filling-part-2")
-    tl
-        .to(element, 1.2, {width: "33%", ease:Linear.easeNone})
-        .to(element2, 2.4, {width: "67%", ease:Linear.easeNone})
+    Meteor.setTimeout(() ->
+        tl
+            .to(element, firstBarLoadingTime, {width: "33%", ease:Linear.easeNone})
+            .to(element2, 2.4, {width: "67%", ease:Linear.easeNone})
+    , timeoutTime)

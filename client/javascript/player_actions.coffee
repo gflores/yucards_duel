@@ -9,14 +9,14 @@ define("player_actions", [], () ->
 
     LaunchLoaderForPlayer = () ->
         $parent = $("#player-side")[0]
-        require("global_data").playerCardLoadingRenderers.push(Blaze.render(Template.cardLoading, $parent))
+        require("global_data").playerCardLoadingRenderers.push(Blaze.renderWithData(Template.cardLoading, {side: "isPlayer"}, $parent))
 
     RemoveLoaderForPlayer = () ->
         Blaze.remove(require("global_data").playerCardLoadingRenderers.shift())
 
     LaunchLoaderForOpponent = () ->
         $parent = $("#opponent-side")[0]
-        require("global_data").opponentCardLoadingRenderers.push(Blaze.render(Template.cardLoading, $parent))
+        require("global_data").opponentCardLoadingRenderers.push(Blaze.renderWithData(Template.cardLoading, {side: "isOpponent"}, $parent))
     RemoveLoaderForOpponent = () ->
         Blaze.remove(require("global_data").opponentCardLoadingRenderers.shift())
 
