@@ -39,6 +39,10 @@
         // }
         .loading-bar {
             top: 50%;
+            @media screen and (max-width: 1280px - 1px) {
+                top: 40%;
+            }
+
         }
 
     }

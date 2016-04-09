@@ -225,10 +225,22 @@
         overflow: hidden;
         position: absolute;
         border: black 3px solid;
-        width: calc(130px - 6px - 10px);
+        width: calc(#{$playable-card-width} - 6px - 10px);
         height: 18px;
-        left: calc(50% - (130px / 2) + 5px);
         background-color: rgb(125, 125, 125);
+        left: calc(50% - (#{$playable-card-width} / 2) + 5px);
+
+        @media screen and (max-width: 1280px - 1px) {
+            height: 15px;            
+        }
+        @media screen and (max-width: $screen-width1 - 1px) {
+            left: initial;
+            right: calc(#{$playable-card-hmargin} * 2 + #{$playable-card-width} + 5px);
+        }
+        @media screen and (max-width: 600px) {
+            height: 12px;
+        }
+
 
         .filling-part {
             position: absolute;

@@ -42,6 +42,10 @@
         // }
         .loading-bar {
             bottom: 50%;
+            @media screen and (max-width: 1280px - 1px) {
+                bottom: 40%;
+            }
+
         }
 
     }
