@@ -32,11 +32,15 @@
 
     .card-loading{
         top: 0;
-        .car-loading-indicator{
-            @media screen and (max-width: $screen-width1 - 1px) {
-                left: calc(#{$player-icon-width} + 6px + (100% - #{$player-icon-width} - 6px) / 2);
-            }
+        // .car-loading-indicator{
+        //     @media screen and (max-width: $screen-width1 - 1px) {
+        //         left: calc(#{$player-icon-width} + 6px + (100% - #{$player-icon-width} - 6px) / 2);
+        //     }
+        // }
+        .loading-bar {
+            top: 50%;
         }
+
     }
     &:not(.actions-unavailable):not(.is-spectator) > .playable-cards > .playable-card{
         @extend .clickable-block;

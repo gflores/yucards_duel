@@ -37,7 +37,13 @@ Template.cardLoading.helpers({
 })
 
 Template.cardLoading.rendered = () ->
-    indicator = $(this.find(".car-loading-indicator"))
-    Meteor.setTimeout( () ->
-        indicator.css("top", "15%")
-    , 100)
+    # indicator = $(this.find(".car-loading-indicator"))
+    # Meteor.setTimeout( () ->
+    #     indicator.css("top", "15%")
+    # , 100)
+    tl = new TimelineLite()
+    element = this.find(".filling-part")
+    element2 = this.find(".filling-part-2")
+    tl
+        .to(element, 1.2, {width: "33%", ease:Linear.easeNone})
+        .to(element2, 2.4, {width: "67%", ease:Linear.easeNone})

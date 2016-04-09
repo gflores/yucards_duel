@@ -197,25 +197,61 @@
     }
 }
 
+// @keyframes cardLoadingBar {
+//     0%   {width: 0%;}
+//     100% {width: 100%;}
+// }
+
 
 .card-loading{
     position: absolute;
     width: 100%;
     height: 30%;
-    .car-loading-indicator{
+    // .car-loading-indicator{
+    //     position: absolute;
+    //     width: 100%;
+    //     height: 45%;
+    //     text-align: center;
+    //     top: 50%;
+
+    //     transition-timing-function: cubic-bezier(.07,.21,0,1);
+    //     transition: all 6s;
+
+    //     @media screen and (max-width: $screen-width1 - 1px) {
+    //         width: initial;
+    //     }
+    // }
+    .loading-bar {
         position: absolute;
-        width: 100%;
-        height: 45%;
-        text-align: center;
-        top: 50%;
+        border: black 3px solid;
+        width: calc(130px - 6px - 10px);
+        height: 18px;
+        left: calc(50% - (130px / 2) + 5px);
+        background-color: rgb(125, 125, 125);
 
-        transition-timing-function: cubic-bezier(.07,.21,0,1);
-        transition: all 6s;
-
-        @media screen and (max-width: $screen-width1 - 1px) {
-            width: initial;
+        .filling-part {
+            position: absolute;
+            left: 0;
+            background-color: white;
+            height: 100%;
+            width: 0;
+        }
+        .filling-part-2 {
+            position: absolute;
+            left: calc(33% + 1px);
+            background-color: #FFEC00;
+            height: 100%;
+            width: 0;
+        }
+        .change-hand-marker {
+            position: absolute;
+            width: 4px;
+            height: 100%;
+            background-color: hsl(0, 1%, 16%);
+            left: 33%;
         }
     }
+
 }
 
 
