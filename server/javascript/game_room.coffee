@@ -101,9 +101,12 @@ define("game_room", [], () ->
     SetupRoomsCommunication = () ->
         Meteor.methods({
             "register_player_for_game": (roomId) ->
+                console.log("INVOKING register_player_for_game")
                 check(roomId, String)
                 if this.userId? == false
                     return "ERROR: no UserId"
+                else
+                    console.log("[#{this.userId}] trying to register for game")
                 global_data = require("global_data")
                 if Meteor.user().isPlaying and global_data.players[this.userId].currentGameRoomId != roomId
                     return {
@@ -202,7 +205,8 @@ define("game_room", [], () ->
                 GameRooms.insert({roomId: gameRoom.id})
                 console.log("[#{roomId}] STARTED ! total room nb:" + GameRooms.find().count());
 
-                countdownDuration = require("shared_constants").countdownDuration
+                countdownDuration = require("music_manager").GetCountdownDuration() #require("shared_constants").countdownDuration
+                prematureCountdownDuration = require("music_manager").GetPrematureCountdownDuration()
                 gameRoom.messageCollection.insert({
                     functionId: "duel_countdown"
                     countdownDuration: countdownDuration
@@ -221,7 +225,7 @@ define("game_room", [], () ->
                         ]
                             
                     })
-                , countdownDuration
+                , prematureCountdownDuration
                 )
             else
                 console.log("[#{gameRoom.id}] accepting subscriber: #{publisher.userId}")

@@ -11,8 +11,14 @@ define("music_manager", [], () ->
 
     isCrazyMode = false
 
+    buggyAudio = false
+
     Meteor.setTimeout(() ->
         delayFinderAudio = new Audio("/audio/coma.mp3")
+        if isNaN(delayFinderAudio.duration) == true
+            buggyAudio = true
+            delayFinderTotalTime = 35
+            console.log("AUDIO IS BUGGY")
 
         delayFinderAudio.oncanplaythrough = () ->
             delayFinderStartTime = (new Date()).getTime()
@@ -35,7 +41,7 @@ define("music_manager", [], () ->
             return null
         Thump = require("animation_utils").Thump
         softLoop.play((deltaStart) ->
-            if require("global_data").isGoodBrowser == false
+            if require("game_data").get("isGoodBrowser") == false
                 return
 
             beforeBeat1Time = 544 + deltaStart + 25  + 100 - 225 + delayFinderDelta
@@ -46,7 +52,7 @@ define("music_manager", [], () ->
 
             for n in [0...beat1Nb] by 1
                 setTimeout(() ->
-                    if require("global_data").isCrazyMode == false
+                    if Meteor.user().isCrazyMode == false
                         return
 
                     Thump($(".send-your-url"), "scale", 0.05, 0.2, 1.1, 1)
@@ -57,7 +63,7 @@ define("music_manager", [], () ->
             for n in [0..beat2Nb] by 1
                 do (n) ->
                     setTimeout(() ->
-                        if require("global_data").isCrazyMode == false
+                        if Meteor.user().isCrazyMode == false
                             return
 
                         if n % 2 == 0
@@ -75,7 +81,7 @@ define("music_manager", [], () ->
 
         Thump = require("animation_utils").Thump
         mainLoop.play((deltaStart) ->
-            if require("global_data").isGoodBrowser == false
+            if require("game_data").get("isGoodBrowser") == false
                 return
 
             beforeBeat1Time = 103 + 25 + deltaStart + 100 - 225 + delayFinderDelta
@@ -95,7 +101,7 @@ define("music_manager", [], () ->
             for n in [0...beat1Nb] by 1
                 do (n) ->
                     setTimeout(() ->
-                        if require("global_data").isCrazyMode == false
+                        if Meteor.user().isCrazyMode == false
                             return
 
                         Thump($("#player-side .card-player-icon img"), "scale", 0.05, 0.2, 1.1, 1)
@@ -107,7 +113,7 @@ define("music_manager", [], () ->
             for n in [0..beat2Nb] by 1
                 do (n) ->
                     setTimeout(() ->
-                        if require("global_data").isCrazyMode == false
+                        if Meteor.user().isCrazyMode == false
                             return
 
                         if n % 2 == 0
@@ -185,9 +191,10 @@ define("music_manager", [], () ->
             else
                 require("global_data").isBuildupStartFailed = true
                 console.log("buildup FAIL")
-        , (buildupAudio.duration - 0.1) * 1000)
+        , (require("game_data").get("CountdownValue") * 1000) - 100)
+        console.log("time before automatic DuelStartWithMessage #{require("game_data").get("CountdownValue")}")
 
-        if require("global_data").isGoodBrowser == false
+        if require("game_data").get("isGoodBrowser") == false
             return
 
         beforeBeat1Time = 931 + 25 + 150 - 225 + delayFinderDelta
@@ -200,7 +207,7 @@ define("music_manager", [], () ->
         currentFontSize = 32
         for n in [0...beat1Nb] by 1
             setTimeout(() ->
-                if require("global_data").isCrazyMode == false
+                if Meteor.user().isCrazyMode == false
                     return
 
                 Thump($("#player-side .card-player-icon img"), "scale", 0.05, 0.2, 1.1, 1)
@@ -217,7 +224,7 @@ define("music_manager", [], () ->
 
         for n in [0...beat2Nb] by 1
             setTimeout(() ->
-                if require("global_data").isCrazyMode == false
+                if Meteor.user().isCrazyMode == false
                     return
 
                 console.log("scale: #{currentScale}")
@@ -232,7 +239,7 @@ define("music_manager", [], () ->
             )
 
         setTimeout(() ->
-            if require("global_data").isCrazyMode == false
+            if Meteor.user().isCrazyMode == false
                 return
 
             currentFontSize += 40
@@ -241,7 +248,7 @@ define("music_manager", [], () ->
         , beforeBeat1Time + (beat1Nb * beat1Time) + (beat1Nb * beat2Time)
         )
         setTimeout(() ->
-            if require("global_data").isCrazyMode == false
+            if Meteor.user().isCrazyMode == false
                 return
 
             Thump($(".plane-overlay"), "opacity", (beat2Time / 1000) * 1.3, (beat2Time / 1000) * 0.7, 1, 0)
@@ -250,6 +257,21 @@ define("music_manager", [], () ->
 
     GetBuildupCountdownDuration = () ->
         return Math.ceil(buildupAudio.duration)
+
+    Mute = () ->
+        if softLoop.currentAudio? == true
+            softLoop.currentAudio.volume = 0
+        if mainLoop.currentAudio? == true
+            mainLoop.currentAudio.volume = 0
+        buildupAudio.volume = 0
+
+    UnMute = () ->
+        if softLoop.currentAudio? == true
+            softLoop.currentAudio.volume = 1
+        if mainLoop.currentAudio? == true
+            mainLoop.currentAudio.volume = 1
+        buildupAudio.volume = 1
+
 
     return {
         softLoop: softLoop
@@ -262,5 +284,9 @@ define("music_manager", [], () ->
 
         GetBuildupCountdownDuration: GetBuildupCountdownDuration
         isCrazyMode: isCrazyMode
+        Mute: Mute
+        UnMute: UnMute
+
+        buggyAudio: buggyAudio
     }
 )

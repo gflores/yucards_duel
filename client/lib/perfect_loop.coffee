@@ -8,6 +8,7 @@ class @PerfectLoop
         @isPlaying = false
         @isInit = false
         @loopCallback = null
+        @currentAudio = null
         # @audio1.onplaying = () ->
         #     console.log("audio1 on PLAYING #{(new Date()).getTime()}")
 
@@ -49,9 +50,14 @@ class @PerfectLoop
             @autostart = true
 
     SchedulePlayAndPause: (currentAudio, nextAudio) ->
+        @currentAudio = currentAudio
         self = this
         currentAudio.currentTime = self.deltaStart
-        currentAudio.volume = 1
+        if Meteor.user().isMusicMuted
+            currentAudio.volume = 0
+        else
+            currentAudio.volume = 1
+
         if self.loopCallback? == true
             # console.log(">loopback #{(new Date()).getTime()}")
             self.loopCallback(self.deltaStart)

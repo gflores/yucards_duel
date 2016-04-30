@@ -55,10 +55,23 @@
                     </div>
                 </div>
             {{else}}
-                <div class="open-instruction-button">
-                    ?
-                </div>
             {{/if}}
+            <div class="open-instruction-button rounded-button">
+                ?
+                {{#if IsDisplayingInstructions}}
+                    <div class="barred"> </div>
+                {{/if}}
+            </div>
         {{/if}}
+        <div class="fa fa-heartbeat crazy-button rounded-button">
+            {{#if IsCrazyMode}}
+                <div class="barred"> </div>
+            {{/if}}
+        </div>
+        <div class="fa fa-music music-button rounded-button">
+            {{#unless IsMusicMuted}}
+                <div class="barred"></div>
+            {{/unless}}
+        </div>
     </div>
 </template>

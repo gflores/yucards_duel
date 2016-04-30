@@ -1,7 +1,7 @@
 define("users", [], () ->
     Meteor.publish(null, () ->
         Meteor.users.find({ "status.online": true }, {limit: 30, fields: {
-            status: 1, rank: 1, score: 1, winNumber: 1, loseNumber: 1, isDisplayingInstructions: 1, username: 1,
+            status: 1, rank: 1, score: 1, winNumber: 1, loseNumber: 1, isDisplayingInstructions: 1, username: 1, isMusicMuted: 1, isCrazyMode: 1
             oppenedLinks: 1, currentRoomID: 1, isPlaying: 1
         }})
     )
@@ -11,6 +11,8 @@ define("users", [], () ->
         user.winNumber = 0
         user.loseNumber = 0
         user.isDisplayingInstructions = true
+        user.isMusicMuted = false
+        user.isCrazyMode = true
         user.oppenedLinks = []
         user.currentRoomID = null
         user.isPlaying = false

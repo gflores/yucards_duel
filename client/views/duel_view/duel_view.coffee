@@ -24,7 +24,7 @@ Template.duelView.helpers({
         return require("opponent_data")
 
     GetClassForVisualEffectMode: () ->
-        return if require("global_data").isCrazyMode == true then "visual-mode-crazy" else "visual-mode-normal"
+        return if require("game_data").get("isGoodBrowser") == true and Meteor.user().isCrazyMode == true then "visual-mode-crazy" else "visual-mode-normal"
 
 })
 

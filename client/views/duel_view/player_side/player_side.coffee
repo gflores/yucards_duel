@@ -23,6 +23,16 @@ Template.playerSide.helpers({
             Meteor.user().isDisplayingInstructions
         else
             require("game_data").get("isDisplayingInstructions")
+
+    IsMusicMuted: () ->
+        Meteor.user().isMusicMuted
+
+    IsCrazyMode: () ->
+        Meteor.user().isCrazyMode
+
+    IsGoodBrowser: () ->
+        return require("game_data").get("isGoodBrowser")
+
     IsGameRoomReady: () ->
         return require("game_data").get("IsGameRoomReady")
 
@@ -37,8 +47,12 @@ Template.playerSide.events({
         require("player_actions").DiscardAllCards()
 
     "click .open-instruction-button": () ->
-        require("game_data").set("isDisplayingInstructions", true)
-        Meteor.call("SetIsDisplayingInstructions", true)
+        if require("game_data").get("isDisplayingInstructions") == true
+            require("game_data").set("isDisplayingInstructions", false)
+            Meteor.call("SetIsDisplayingInstructions", false)
+        else            
+            require("game_data").set("isDisplayingInstructions", true)
+            Meteor.call("SetIsDisplayingInstructions", true)
 
     "click .instructions .close-button": () ->
         require("game_data").set("isDisplayingInstructions", false)
@@ -48,4 +62,29 @@ Template.playerSide.events({
         if $(window).width() < 960
             require("game_data").set("isDisplayingInstructions", false)
             Meteor.call("SetIsDisplayingInstructions", false)
+
+    "click .crazy-button": () ->
+        if Meteor.user().isCrazyMode == true
+            Meteor.call("SetIsCrazyMode", false)
+        else
+            Meteor.call("SetIsCrazyMode", true)
+
+    "click .crazy-button": () ->
+        if require("game_data").get("isGoodBrowser") == false
+            return
+
+        if Meteor.user().isCrazyMode == true
+            Meteor.call("SetIsCrazyMode", false)
+        else
+            Meteor.call("SetIsCrazyMode", true)
+
+    "click .music-button": () ->
+        if Meteor.user().isMusicMuted == true
+            Meteor.call("SetIsMusicMuted", false)
+            require("music_manager").UnMute()
+        else
+            Meteor.call("SetIsMusicMuted", true)
+            require("music_manager").Mute()
+
+
 })

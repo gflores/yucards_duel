@@ -18,43 +18,51 @@ require(["main"], () ->
         game_data.set("IsGameFinished", false)
         game_data.set("IsWinner", false)
         game_data.set("isDisplayingInstructions", false)
-        game_data.set("StackCards", []) 
+        if BrowserDetect.browser == "Chrome" or BrowserDetect.browser == "Opera"
+            game_data.set("isGoodBrowser", true)
+        else
+            game_data.set("isGoodBrowser", false)
 
-        Deps.autorun( () ->
-            if (Meteor.userId() != null)
-                console.log("userId: #{Meteor.userId()}")
+        game_data.set("StackCards", [])
 
-                communication = require("communication")
+        Meteor.setTimeout(() ->
+            Deps.autorun( () ->
+    #        Meteor.loginVisitor(undefined, () ->
+                if (Meteor.userId() != null)
+                    console.log("userId: #{Meteor.userId()}")
 
-                communication.RegisterToRoom(roomId)
+                    communication = require("communication")
 
-                
-                cards = require("cards")
-                card_elements = require("card_elements")
+                    communication.RegisterToRoom(roomId)
+
+                    
+                    cards = require("cards")
+                    card_elements = require("card_elements")
 
 
-                player_data = require("player_data")
+                    player_data = require("player_data")
 
-                player_data.set("UserId", Meteor.userId())
-                player_data.set("CurrentLife", require("shared_constants").maxLife)
-                player_data.set("MaxLife", require("shared_constants").maxLife)
-                player_data.set("AreActionsAvailable", true)
+                    player_data.set("UserId", Meteor.userId())
+                    player_data.set("CurrentLife", require("shared_constants").maxLife)
+                    player_data.set("MaxLife", require("shared_constants").maxLife)
+                    player_data.set("AreActionsAvailable", true)
 
-                # player_data.set("Card0", cards.Construct(8, card_elements.elements.SCISSOR, 0))
-                # player_data.set("Card1", cards.Construct(3, card_elements.elements.ROCK, 1))
-                # player_data.set("Card2", cards.Construct(7, card_elements.elements.PAPER, 2))
+                    # player_data.set("Card0", cards.Construct(8, card_elements.elements.SCISSOR, 0))
+                    # player_data.set("Card1", cards.Construct(3, card_elements.elements.ROCK, 1))
+                    # player_data.set("Card2", cards.Construct(7, card_elements.elements.PAPER, 2))
 
-                # opponent_data = require("opponent_data")
+                    # opponent_data = require("opponent_data")
 
-                # opponent_data.set("UserId", "badguyID")
-                # opponent_data.set("CurrentLife", 15)
-                # opponent_data.set("MaxLife", 60)
+                    # opponent_data.set("UserId", "badguyID")
+                    # opponent_data.set("CurrentLife", 15)
+                    # opponent_data.set("MaxLife", 60)
 
-                # opponent_data.set("Card0", cards.Construct(2, card_elements.elements.ROCK, 0))
-                # opponent_data.set("Card1", cards.Construct(6, card_elements.elements.PAPER, 1))
-                # opponent_data.set("Card2", cards.Construct(9, card_elements.elements.SCISSOR, 2))
-        )
+                    # opponent_data.set("Card0", cards.Construct(2, card_elements.elements.ROCK, 0))
+                    # opponent_data.set("Card1", cards.Construct(6, card_elements.elements.PAPER, 1))
+                    # opponent_data.set("Card2", cards.Construct(9, card_elements.elements.SCISSOR, 2))
+            )
 
+        , 2000)
 
 
 

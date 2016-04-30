@@ -78,10 +78,11 @@ define("communication", [], ()->
 
     serverMessagesHandlers = {
         "duel_countdown": (message) ->
+            game_data = require("game_data")
+            game_data.set("CountdownValue", message.countdownDuration / 1000)
             require("music_manager").softLoop.stop()
             require("music_manager").buildupAudioAnimation()
             console.log("duel is going to start in #{message.countdownDuration} ms. OpponentID: #{if require("global_data").IsBottomPlayer(message.players_ids[0]) then message.players_ids[1] else message.players_ids[0]}")
-            game_data = require("game_data")
             game_data.set("IsCountdownStarted", true)
 
             require("opponent_data").set("UserId", if Meteor.userId() == message.players_ids[0] then message.players_ids[1] else message.players_ids[0])
@@ -95,8 +96,7 @@ define("communication", [], ()->
      
 
 
-            # game_data.set("CountdownValue", message.countdownDuration / 1000)
-            game_data.set("CountdownValue", require("music_manager").GetBuildupCountdownDuration())
+            # game_data.set("CountdownValue", require("music_manager").GetBuildupCountdownDuration())
 
             timeStep = 33
             require("global_data").countdownInterval = Meteor.setInterval(() ->
@@ -116,7 +116,7 @@ define("communication", [], ()->
             #     , 1000
             #     )
 
-            CountdownFrameFunction()
+            # CountdownFrameFunction()
 
 
 
@@ -286,6 +286,7 @@ define("communication", [], ()->
 
 
     RegisterToRoom = (roomId) ->
+        console.log("CALLING register_player_for_game")
         Meteor.call("register_player_for_game", roomId, (error, result) ->
             console.log("error: '#{error}' | result: '#{JSON.stringify(result)}'")
             if result.playersNb == 1
