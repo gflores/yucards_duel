@@ -64,14 +64,14 @@
             </div>
         {{/if}}
         <div class="fa fa-heartbeat crazy-button rounded-button">
-            {{#if IsCrazyMode}}
+            {{#unless IsCrazyMode}}
                 <div class="barred"> </div>
-            {{/if}}
+            {{/unless}}
         </div>
         <div class="fa fa-music music-button rounded-button">
-            {{#unless IsMusicMuted}}
+            {{#if IsMusicMuted}}
                 <div class="barred"></div>
-            {{/unless}}
+            {{/if}}
         </div>
     </div>
 </template>
