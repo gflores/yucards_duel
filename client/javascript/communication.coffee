@@ -94,10 +94,6 @@ define("communication", [], ()->
                     icon: "/images/logo_square.png"
                 })
      
-
-
-            # game_data.set("CountdownValue", require("music_manager").GetBuildupCountdownDuration())
-
             timeStep = 33
             require("global_data").countdownInterval = Meteor.setInterval(() ->
                     currentCountdownValue = game_data.get("CountdownValue")

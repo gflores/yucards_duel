@@ -25,10 +25,10 @@ Template.playerSide.helpers({
             require("game_data").get("isDisplayingInstructions")
 
     IsMusicMuted: () ->
-        Meteor.user().isMusicMuted
+        Meteor.user().isMusicMuted == true or require("game_data").get("isAudioPlayable") == false
 
     IsCrazyMode: () ->
-        Meteor.user().isCrazyMode
+        Meteor.user().isCrazyMode == true and require("game_data").get("isGoodBrowser") == true
 
     IsGoodBrowser: () ->
         return require("game_data").get("isGoodBrowser")
@@ -64,12 +64,6 @@ Template.playerSide.events({
             Meteor.call("SetIsDisplayingInstructions", false)
 
     "click .crazy-button": () ->
-        if Meteor.user().isCrazyMode == true
-            Meteor.call("SetIsCrazyMode", false)
-        else
-            Meteor.call("SetIsCrazyMode", true)
-
-    "click .crazy-button": () ->
         if require("game_data").get("isGoodBrowser") == false
             return
 
@@ -79,6 +73,9 @@ Template.playerSide.events({
             Meteor.call("SetIsCrazyMode", true)
 
     "click .music-button": () ->
+        if require("game_data").get("isAudioPlayable") == false
+            return
+            
         if Meteor.user().isMusicMuted == true
             Meteor.call("SetIsMusicMuted", false)
             require("music_manager").UnMute()

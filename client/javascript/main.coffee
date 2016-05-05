@@ -31,6 +31,9 @@ require(["main"], () ->
                 if (Meteor.userId() != null)
                     console.log("userId: #{Meteor.userId()}")
 
+                    # if Meteor.user().isMusicMuted == true
+                    #     require("music_manager").Mute()
+
                     communication = require("communication")
 
                     communication.RegisterToRoom(roomId)

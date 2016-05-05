@@ -9,28 +9,32 @@ define("music_manager", [], () ->
     delayFinderTotalTime = null
     delayFinderDelta = null
 
-    isCrazyMode = false
-
-    buggyAudio = false
 
     Meteor.setTimeout(() ->
         delayFinderAudio = new Audio("/audio/coma.mp3")
-        if isNaN(delayFinderAudio.duration) == true
-            buggyAudio = true
-            delayFinderTotalTime = 35
-            console.log("AUDIO IS BUGGY")
-
         delayFinderAudio.oncanplaythrough = () ->
             delayFinderStartTime = (new Date()).getTime()
             delayFinderAudio.play()
             delayFinderAudio.volume = 0
-
         delayFinderAudio.onended = () ->
+            require("game_data").set("isAudioPlayable", true)
+            console.log("AUDIO IS NOT BUGGY")
             delayFinderTotalTime = (new Date()).getTime() - delayFinderStartTime
             delayFinderDelta = delayFinderTotalTime - (delayFinderAudio.duration * 1000)
             if loopAnimationToLaunch?
                 loopAnimationToLaunch()
             console.log("TOTAL TIME: #{delayFinderTotalTime}, time duration: #{delayFinderAudio.duration}, DELTA: #{delayFinderDelta}")
+
+
+        Meteor.setTimeout(() ->
+            if isNaN(delayFinderAudio.duration) == true #is buggy
+                require("game_data").set("isAudioPlayable", false)
+                require("game_data").set("isGoodBrowser", false)
+                require("music_manager").Mute()
+                console.log("AUDIO IS BUGGY")
+        , 1000)
+
+
 
     , 1500)
 
@@ -178,12 +182,6 @@ define("music_manager", [], () ->
 
         
     buildupAudioAnimation = () ->
-        if delayFinderTotalTime == null
-            loopAnimationToLaunch = buildupAudioAnimation
-            return null
-
-        Thump = require("animation_utils").Thump
-        buildupAudio.play()
         setTimeout(() ->
             if require("global_data").isDuelStartMessageReceived == true
                 console.log("buildup START")
@@ -193,6 +191,15 @@ define("music_manager", [], () ->
                 console.log("buildup FAIL")
         , (require("game_data").get("CountdownValue") * 1000) - 100)
         console.log("time before automatic DuelStartWithMessage #{require("game_data").get("CountdownValue")}")
+
+        if delayFinderTotalTime == null
+            loopAnimationToLaunch = buildupAudioAnimation
+            return null
+
+        Thump = require("animation_utils").Thump
+        if Meteor.user().isMusicMuted
+            buildupAudio.volume = 0
+        buildupAudio.play()
 
         if require("game_data").get("isGoodBrowser") == false
             return
@@ -255,9 +262,6 @@ define("music_manager", [], () ->
         , beforeBeat1Time + (beat1Nb * beat1Time) + (beat1Nb * beat2Time) + (2 * beat2Time)
         )
 
-    GetBuildupCountdownDuration = () ->
-        return Math.ceil(buildupAudio.duration)
-
     Mute = () ->
         if softLoop.currentAudio? == true
             softLoop.currentAudio.volume = 0
@@ -282,11 +286,7 @@ define("music_manager", [], () ->
         buildupAudioAnimation: buildupAudioAnimation
         mainLoopAnimation: mainLoopAnimation
 
-        GetBuildupCountdownDuration: GetBuildupCountdownDuration
-        isCrazyMode: isCrazyMode
         Mute: Mute
         UnMute: UnMute
-
-        buggyAudio: buggyAudio
     }
 )
