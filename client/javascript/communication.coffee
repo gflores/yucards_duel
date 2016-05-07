@@ -152,7 +152,9 @@ define("communication", [], ()->
             else
                 card_player_data = require("opponent_data")
                 target_player_data = require("player_data")
+                console.log("should do somethihng")
                 require("player_actions").RemoveLoaderForOpponent()
+                console.log("DOING !!")
             require("player_actions").SetAvailableForPlayer(card_player_data, true)
 
             newTopCard = card_player_data.get("Card#{message.cardPlayedIndex}")
@@ -270,16 +272,27 @@ define("communication", [], ()->
         serverMessagesHandlers[serverMessage.functionId](serverMessage)
 
 
-    ListenToServerMessages = (roomId) ->
+    ListenToServerMessages = (roomId, readMessagesImmediatly) ->
         id_keys = require("id_keys")
         collection = new Meteor.Collection(id_keys.GetServerMessagesCollectionName())
         Meteor.subscribe(id_keys.GetServerMessagesPublicationName(), roomId)
-        collection.find().observeChanges({
-            added: (id, field) ->
-                HandleServerMessage(field)
-                console.log("msg nb: " + collection.find().count())
-        })
 
+        if readMessagesImmediatly == false
+            Meteor.setTimeout(() ->
+                collection.find().observeChanges({
+                    added: (id, field) ->
+                        HandleServerMessage(field)
+                        console.log("msg nb: " + collection.find().count())
+                })
+            , 1000)
+        else
+            collection.find().observeChanges({
+                added: (id, field) ->
+                    HandleServerMessage(field)
+                    console.log("msg nb: " + collection.find().count())
+            })
+
+    currentRoomId = null
 
     RegisterToRoom = (roomId) ->
         console.log("CALLING register_player_for_game")
@@ -299,7 +312,7 @@ define("communication", [], ()->
                             console.log(res)
                     )
 
-            ListenToServerMessages(roomId)
+            currentRoomId = roomId
             game_data = require("game_data")
             game_data.set("IsPlayer", result.isPlayer)
             if result.isAlreadyPlaying #if the player is already playing another game
@@ -314,7 +327,13 @@ define("communication", [], ()->
 
                     console.log("reading from snapshot")
                     game_data.set("IsGameRoomReady", true)
-                    UpdateFromSnapshot(result.snapshot)
+
+                    Meteor.setTimeout(() ->
+                        UpdateFromSnapshot(result.snapshot)
+                    , 500)
+                    ListenToServerMessages(roomId, false)
+                else
+                    ListenToServerMessages(roomId)
        )
 
 
@@ -324,5 +343,6 @@ define("communication", [], ()->
         ListenToServerMessages: ListenToServerMessages
         RegisterToRoom: RegisterToRoom
         DuelStartWithMessage: DuelStartWithMessage
+        currentRoomId: currentRoomId
     }
 )
