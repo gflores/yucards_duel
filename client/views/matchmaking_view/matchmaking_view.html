@@ -79,7 +79,7 @@
                 <li class="user {{GetUserStatusClass user}}">
                     <div class="username">{{user.username}}</div>
                     <div class="rank">{{user.rank}}</div>
-                    {{#if user.oppenedLinks}}
+                    {{#if HashToArrayOfKeys user.oppenedLinks}}
                         <i class="action-icon fa fa-sign-in"></i>
                         <div class="waiting-for-opponent"> Waiting for opponent... </div>
                     {{/if}}
@@ -89,9 +89,9 @@
                     {{/if}}
                     <div class="user-status-extension">
                         <div class="wrapper">
-                            {{#if user.oppenedLinks}}
+                            {{#if HashToArrayOfKeys user.oppenedLinks}}
                                 <div class="user-status-extension-title"> Opened links: </div>
-                                {{#each link in user.oppenedLinks}}
+                                {{#each link in HashToArrayOfKeys user.oppenedLinks}}
                                     <a href="{{GetDuelUrlFromId link}}" class="link" target="_blank"> {{link}} </a>
                                 {{/each}}
                             {{/if}}

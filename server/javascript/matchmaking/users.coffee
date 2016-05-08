@@ -13,7 +13,7 @@ define("users", [], () ->
         user.isDisplayingInstructions = true
         user.isMusicMuted = false
         user.isCrazyMode = true
-        user.oppenedLinks = []
+        user.oppenedLinks = {}
         user.currentRoomID = null
         user.isPlaying = false
 

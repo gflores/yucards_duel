@@ -130,9 +130,10 @@ define("game_room", [], () ->
                     }
                 if isUserPlayingThisGame
                     console.log("player #{this.userId} already in room #{roomId}")
+                    Meteor.users.update({_id: this.userId}, {$inc: {"oppenedLinks.#{roomId}": 1}})
                 else
                     gameRoom.players_ids.push(this.userId)
-                    Meteor.users.update({_id: this.userId}, {$push: {"oppenedLinks": roomId}})
+                    Meteor.users.update({_id: this.userId}, {$set: {"oppenedLinks.#{roomId}": 1}})
 
                 #     player = ConstructPlayer(this.userId, roomId)
                 #     if gameRoom.players_ids.length == 1
@@ -185,7 +186,7 @@ define("game_room", [], () ->
                 opponent.opponent = newPlayer
                 newPlayer.opponent = opponent
                 RemovePlayerIdFromOtherRooms = (playerId) ->
-                    for link in Meteor.users.findOne(playerId).oppenedLinks
+                    for link of Meteor.users.findOne(playerId).oppenedLinks
                         if link != roomId
                             otherRoom = global_data.gameRooms[link]
                             idIndex = otherRoom.players_ids.indexOf(playerId)
@@ -197,7 +198,7 @@ define("game_room", [], () ->
                 Meteor.users.update({_id: {$in: gameRoom.players_ids}}, {$set:
                     {
                         "isPlaying": true,
-                        "oppenedLinks": []
+                        "oppenedLinks": {}
                         "currentRoomID": gameRoom.id
                     }
                 }, {multi: true})
@@ -236,9 +237,13 @@ define("game_room", [], () ->
                 if not publisher.userId in gameRoom.players_ids
                     console.log("#{publisher.userId} never subscribed")
                 if gameRoom.players_ids.length == 1 and publisher.userId in gameRoom.players_ids
-                    console.log("Removing #{publisher.userId} from GameRoom #{gameRoom.id}")
-                    gameRoom.players_ids = []
-                    Meteor.users.update({_id: publisher.userId}, {$pull: {"oppenedLinks": roomId}})
+                    if Meteor.users.findOne(publisher.userId).oppenedLinks["#{roomId}"] > 1
+                        console.log("Room ID count for #{publisher.userId} and GameRoom #{gameRoom.id} is #{Meteor.users.findOne(publisher.userId).oppenedLinks["#{roomId}"]}")
+                        Meteor.users.update({_id: publisher.userId}, {$inc: {"oppenedLinks.#{roomId}": -1}})
+                    else
+                        console.log("Removing #{publisher.userId} from GameRoom #{gameRoom.id}")
+                        gameRoom.players_ids = []
+                        Meteor.users.update({_id: publisher.userId}, {$unset: {"oppenedLinks.#{roomId}": ""}})
                 else
                     if gameRoom.players_ids.length == 0
                         console.log("GameRoom #{gameRoom.id} is already empty...")

@@ -3,6 +3,13 @@ Template.matchmakingView.helpers({
         return if Meteor.user().profile.guest then "is-guest" else ""
     GetOnlineUsers: () ->
         return Meteor.users.find().fetch()
+    HashToArrayOfKeys: (hash) ->
+        array = []
+        for key of hash
+            if (hash.hasOwnProperty(key))
+                array.push(key)
+        return array
+
     GetMessagesToDisplay: () ->
         return require("chat_messages").Messages.find().fetch()
         # return [
@@ -25,7 +32,7 @@ Template.matchmakingView.helpers({
     GetUserStatusClass: (user) ->
         if user.isPlaying
             return "is-playing"
-        else if user.oppenedLinks.length != 0
+        else if require("utils").GetObjectSize(user.oppenedLinks) != 0
             return "is-waiting"
         else
             return "is-available"

@@ -12,7 +12,7 @@ require(["main"], () ->
         Meteor.users.update({}, {$set: 
             {
                 "isPlaying": false
-                "oppenedLinks": []
+                "oppenedLinks": {}
                 "currentRoomID": null
             }
         }, {multi: true}

@@ -42,9 +42,17 @@ define("utils", [], () ->
             selection.removeAllRanges();
             selection.addRange(range);
 
+    GetObjectSize = (obj) ->
+        size = 0
+        for key of obj
+            if (obj.hasOwnProperty(key))
+                size += 1
+        return size;
+
     return {
         Timer: Timer
         ShuffleArray: ShuffleArray
         SelectTextById: SelectTextById
+        GetObjectSize: GetObjectSize
     }
 )
