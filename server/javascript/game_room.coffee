@@ -178,6 +178,11 @@ define("game_room", [], () ->
         OnSuccessFunc = (publisher, subArgs) ->
             roomId = subArgs[0]
             gameRoom = global_data.gameRooms[roomId]
+            gameRoom.messageCollection.insert({
+                functionId: "register_confirmation"
+                player_id: publisher.userId
+            })
+
             if gameRoom.players_ids.length == 1
                 console.log("Pub: #{gameRoom.id} still waiting")
             else if gameRoom.players_ids.length == 2 and gameRoom.isStarted == false

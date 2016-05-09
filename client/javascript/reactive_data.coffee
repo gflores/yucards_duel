@@ -36,5 +36,8 @@ define("global_data", [], () ->
         opponentCardLoadingRenderers: []
         IsBottomPlayer: IsBottomPlayer
         IsTopPlayer: IsTopPlayer
+        IsRegistrationConfirmed: false
+
+        SubscribeHandler: null
     }
 )

@@ -77,6 +77,18 @@ define("communication", [], ()->
         Meteor.clearInterval(require("global_data").countdownInterval)
 
     serverMessagesHandlers = {
+        "register_confirmation": (message) ->
+            if message.player_id == Meteor.userId()
+                if require("global_data").IsRegistrationConfirmed == true
+                    console.log("duplicate tab !")
+                    require("global_data").SubscribeHandler.stop()
+                    window.close()
+                    location.replace(Router.routes.mainRoom.url({}))
+                else
+                    require("global_data").IsRegistrationConfirmed = true
+                    console.log("confirming registration")
+
+
         "duel_countdown": (message) ->
             game_data = require("game_data")
             game_data.set("CountdownValue", message.countdownDuration / 1000)
@@ -275,7 +287,7 @@ define("communication", [], ()->
     ListenToServerMessages = (roomId, readMessagesImmediatly) ->
         id_keys = require("id_keys")
         collection = new Meteor.Collection(id_keys.GetServerMessagesCollectionName())
-        Meteor.subscribe(id_keys.GetServerMessagesPublicationName(), roomId)
+        require("global_data").SubscribeHandler = Meteor.subscribe(id_keys.GetServerMessagesPublicationName(), roomId)
 
         if readMessagesImmediatly == false
             Meteor.setTimeout(() ->
