@@ -123,11 +123,20 @@ define("game_room", [], () ->
                 isUserPlayingThisGame = this.userId in gameRoom.players_ids
 
                 if gameRoom.players_ids.length == 2 #if room is already started, no need to do additional stuff. Returning players and spectators will receive the snapshot
-                    return {
-                        isPlayer: isUserPlayingThisGame
-                        isStarted: true
-                        snapshot: GetCurrentSnapshotData(gameRoom)
-                    }
+                    if gameRoom.isCountdownFinished == false
+                        return {
+                            isPlayer: isUserPlayingThisGame
+                            isStarted: false
+                            isDuringCountdown: true
+                            players_ids: gameRoom.players_ids
+                            countdownDuration: 8000
+                        }
+                    else
+                        return {
+                            isPlayer: isUserPlayingThisGame
+                            isStarted: true
+                            snapshot: GetCurrentSnapshotData(gameRoom)
+                        }
                 if isUserPlayingThisGame
                     console.log("player #{this.userId} already in room #{roomId}")
                     Meteor.users.update({_id: this.userId}, {$inc: {"oppenedLinks.#{roomId}": 1}})

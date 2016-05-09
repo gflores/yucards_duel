@@ -306,6 +306,8 @@ define("communication", [], ()->
 
     currentRoomId = null
 
+        
+
     RegisterToRoom = (roomId) ->
         console.log("CALLING register_player_for_game")
         Meteor.call("register_player_for_game", roomId, (error, result) ->
@@ -323,10 +325,24 @@ define("communication", [], ()->
                         else
                             console.log(res)
                     )
-
             currentRoomId = roomId
             game_data = require("game_data")
             game_data.set("IsPlayer", result.isPlayer)
+            if result.isDuringCountdown == true
+                game_data.set("CountdownValue", result.countdownDuration / 1000)
+                game_data.set("IsCountdownStarted", true)
+                require("opponent_data").set("UserId", if Meteor.userId() == result.players_ids[0] then result.players_ids[1] else result.players_ids[0])
+                console.log("opponent userID set: "+ require("opponent_data").get("UserId"))
+
+                timeStep = 33
+                require("global_data").isBuildupStartFailed = true
+                
+                require("global_data").countdownInterval = Meteor.setInterval(() ->
+                        currentCountdownValue = game_data.get("CountdownValue")
+                        currentCountdownValue -= timeStep / 1000
+                        game_data.set("CountdownValue", currentCountdownValue)
+                    , timeStep)
+
             if result.isAlreadyPlaying #if the player is already playing another game
                 console.log("already ingame at #{result.otherRoomId}")
                 game_data.set("IsAlreadyPlayingOtherGame", true)
