@@ -46,6 +46,8 @@ define("communication", [], ()->
     #         opponent_data.set("Card#{index}", cards_module.Construct(card.value, card.element, index))
 
     UpdateFromSnapshot = (message) ->
+        # require("game_data").set("IsTutorial", true)
+
         require("music_manager").buildupAudio.pause()
         require("music_manager").mainLoopAnimation()
 
@@ -336,7 +338,7 @@ define("communication", [], ()->
 
                 timeStep = 33
                 require("global_data").isBuildupStartFailed = true
-                
+
                 require("global_data").countdownInterval = Meteor.setInterval(() ->
                         currentCountdownValue = game_data.get("CountdownValue")
                         currentCountdownValue -= timeStep / 1000

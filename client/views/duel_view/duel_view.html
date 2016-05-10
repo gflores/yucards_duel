@@ -1,5 +1,5 @@
 <template name="duelView">
-    <div id="duel-view" class="{{GetClassForVisualEffectMode}}">
+    <div id="duel-view" class="{{GetClassForVisualEffectMode}} {{GetClassForTutorial}}">
         <div class="plane-overlay"></div>
         {{#if IsAlreadyPlayingOtherGame}}
             <div id="already-in-another-duel">
@@ -19,6 +19,12 @@
                 {{> cardEnvironment}}
                 {{> opponentSide}}
                 {{> centralStack}}
+                {{#if IsTutorial}}
+                    <div class="tutorial-hider bottom-hider"></div>
+                    <div class="tutorial-hider top-hider"></div>
+                    <div class="tutorial-hider left-hider"></div>
+                    <div class="tutorial-hider right-hider"></div>
+                {{/if}}
             {{else}}
                 {{> countdown}}
             {{/if}}
