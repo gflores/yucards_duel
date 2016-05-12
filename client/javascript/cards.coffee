@@ -1,4 +1,4 @@
-define("cards", [], ()->
+DEF("cards", [], ()->
 
     Construct = (value, element, index) ->
         return {

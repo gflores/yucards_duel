@@ -1,5 +1,5 @@
-define("chat_messages", [], () ->
-    id_keys = require("id_keys")
+DEF("chat_messages", [], () ->
+    id_keys = REQ("id_keys")
     Messages = new Meteor.Collection(id_keys.GetChatMessagesCollectionName())
     Meteor.publish(id_keys.GetChatMessagesPublicationName(), () ->
         ms = Messages.find({}, {sort:{date: -1}, fields: {date: 1}, skip: 30, limit: 1}).fetch();

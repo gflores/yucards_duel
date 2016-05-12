@@ -1,6 +1,6 @@
-define("card_utils_shared", [], () ->
+DEF("card_utils_shared", [], () ->
     GetResultingDamage = (subject, target) ->
-        card_elements = require("card_elements")
+        card_elements = REQ("card_elements")
 
         if target? == false
             return subject.value

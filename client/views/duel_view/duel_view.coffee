@@ -1,30 +1,30 @@
 Template.duelView.helpers({
     IsGameRoomReady: () ->
-        return require("game_data").get("IsGameRoomReady")
+        return REQ("game_data").get("IsGameRoomReady")
     IsGameFinished: () ->
-        return require("game_data").get("IsGameFinished")
+        return REQ("game_data").get("IsGameFinished")
     IsWinner: () ->
-        return require("game_data").get("IsWinner")
+        return REQ("game_data").get("IsWinner")
     IsAlreadyPlayingOtherGame: () ->
-        return require("game_data").get("IsAlreadyPlayingOtherGame")
+        return REQ("game_data").get("IsAlreadyPlayingOtherGame")
     IsPlayer: () ->
-        return require("game_data").get("IsPlayer")
+        return REQ("game_data").get("IsPlayer")
     OtherRoomUrl: () ->
-        return Router.routes.duel.url({roomId: require("game_data").get("OtherRoomId")})
+        return Router.routes.duel.url({roomId: REQ("game_data").get("OtherRoomId")})
     ScoreChange: () ->
-        player_data = require("player_data")
+        player_data = REQ("player_data")
         scoreChange = player_data.get("NewScore") - player_data.get("OldScore")
         if scoreChange >= 0
             return "+#{scoreChange}"
         else
             return scoreChange
     GetPlayerData: () ->
-        return require("player_data")
+        return REQ("player_data")
     GetOpponentData: () ->
-        return require("opponent_data")
+        return REQ("opponent_data")
 
     GetClassForVisualEffectMode: () ->
-        return if require("game_data").get("isGoodBrowser") == true and Meteor.user().isCrazyMode == true then "visual-mode-crazy" else "visual-mode-normal"
+        return if REQ("game_data").get("isGoodBrowser") == true and Meteor.user().isCrazyMode == true then "visual-mode-crazy" else "visual-mode-normal"
 
 })
 

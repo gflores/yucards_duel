@@ -11,7 +11,7 @@ Template.matchmakingView.helpers({
         return array
 
     GetMessagesToDisplay: () ->
-        return require("chat_messages").Messages.find().fetch()
+        return REQ("chat_messages").Messages.find().fetch()
         # return [
         #     {user: {username: "Toto"}, text: "Salut mon grand !"}
         #     {user: {username: "Alberto"}, text: "Hello I would like to say that I don't know"}
@@ -32,7 +32,7 @@ Template.matchmakingView.helpers({
     GetUserStatusClass: (user) ->
         if user.isPlaying
             return "is-playing"
-        else if require("utils").GetObjectSize(user.oppenedLinks) != 0
+        else if REQ("utils").GetObjectSize(user.oppenedLinks) != 0
             return "is-waiting"
         else
             return "is-available"
@@ -43,7 +43,7 @@ SendCurrentMessage = () ->
     messageText = $('#message-input-box textarea')[0].value
     if messageText == ""
         return false
-    require("chat_messages").SendMessage(messageText)
+    REQ("chat_messages").SendMessage(messageText)
     $('#message-input-box textarea')[0].value = ""
 
 gameRoomIdToDisplay = Math.floor((Math.random() * 999999) + 1).toString()
@@ -63,13 +63,13 @@ Template.matchmakingView.events({
         )
 
     'click .launch-battle': (event) ->
-        require("chat_messages").SendMessage(Router.routes.duel.url({roomId: gameRoomIdToDisplay}))
+        REQ("chat_messages").SendMessage(Router.routes.duel.url({roomId: gameRoomIdToDisplay}))
         window.open(Router.routes.duel.url({roomId: gameRoomIdToDisplay}))
 
     'click #game-url': () ->
-        require("utils").SelectTextById("game-url")
+        REQ("utils").SelectTextById("game-url")
     'click #game-generator-area': () ->
-        require("utils").SelectTextById("game-url")
+        REQ("utils").SelectTextById("game-url")
 
     'mouseenter #contact-button': () ->
         $('#contact-button').hide();
@@ -101,7 +101,7 @@ Template.matchmakingView.onRendered(() ->
     # Meteor.call("get_random_available_room_id", (error, result) ->
     #     gameRoomIdToDisplay = result
     #     $(".battle-link #game-url").text(Router.routes.duel.url({roomId: gameRoomIdToDisplay}).replace(/.*?:\/\//g, ""))
-    #     require("utils").SelectTextById("game-url")
+    #     REQ("utils").SelectTextById("game-url")
     # )
 
     url = Router.routes.duel.url({roomId: gameRoomIdToDisplay})
@@ -112,7 +112,7 @@ Template.matchmakingView.onRendered(() ->
 
 
     $(".battle-link #game-url").text(url)
-    require("utils").SelectTextById("game-url")
+    REQ("utils").SelectTextById("game-url")
 )
 
 

@@ -61,12 +61,12 @@ Template.cardLoading.rendered = () ->
     tl2 = new TimelineLite()
     element3 = this.find(".loading-bar")
 
-    require("animation_utils").Shake(element3, firstBarLoadingTime / 0.016, 0.016, 1.7, 1.7)
+    REQ("animation_utils").Shake(element3, firstBarLoadingTime / 0.016, 0.016, 1.7, 1.7)
     tl2
         .to(element3, firstBarLoadingTime, {
             scale: "1.0", ease:Linear.easeNone,
             onComplete: () ->
-                require("animation_utils").Shake(element3, 2.4 / 0.030, 0.030, 3, 3)
+                REQ("animation_utils").Shake(element3, 2.4 / 0.030, 0.030, 3, 3)
 
         })
         .to(element3, 2.4, {scale: "1.4", ease:Linear.easeNone})

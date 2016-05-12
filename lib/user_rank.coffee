@@ -1,4 +1,4 @@
-define("user_rank", [], () ->
+DEF("user_rank", [], () ->
     GetRankFromScore = (score) ->
         if score <= 6
             return score / 6

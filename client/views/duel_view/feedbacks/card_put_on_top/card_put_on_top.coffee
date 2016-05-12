@@ -1,5 +1,5 @@
 Template.cardPutOnTop.rendered = () ->
-    animation_utils = require("animation_utils")
+    animation_utils = REQ("animation_utils")
     $feedbackCard = $(this.find(".playable-card"))
     instanceView = this.view
     FinalResultFunc = this.data.FinalResultFunc
@@ -14,10 +14,10 @@ Template.cardPutOnTop.rendered = () ->
 
     if this.data.isPlayerSide == true
         sideId = "player-side"
-        auraDamageFunc = require("feedback_launcher").LaunchAuraDamagingOpponent
+        auraDamageFunc = REQ("feedback_launcher").LaunchAuraDamagingOpponent
     else
         sideId = "opponent-side"
-        auraDamageFunc = require("feedback_launcher").LaunchAuraDamagingPlayer
+        auraDamageFunc = REQ("feedback_launcher").LaunchAuraDamagingPlayer
 
     $feedbackCard.css("right", "initial");
     $feedbackCard.offset($("##{sideId} .playable-card:nth-child(#{this.data.cardPlayedIndex + 1})").offset())

@@ -41,7 +41,7 @@ Template.damageAura.rendered = () ->
     # Meteor.setTimeout( () ->
     #     indicator.css("top", "0")
     # , 100)
-    animation_utils = require("animation_utils")
+    animation_utils = REQ("animation_utils")
     FinalResultFunc = this.data.FinalResultFunc
 
     instanceView = this.view

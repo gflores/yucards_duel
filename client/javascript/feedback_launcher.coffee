@@ -1,4 +1,4 @@
-define("feedback_launcher", [], () ->
+DEF("feedback_launcher", [], () ->
 
     LaunchScoreGeneratedFeedbackForPlayer = (scoreAdded, damageCriticalityValue) ->
         $parent = $("#player-side")[0]

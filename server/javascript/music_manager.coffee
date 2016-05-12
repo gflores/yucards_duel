@@ -1,4 +1,4 @@
-define("music_manager", [], () ->
+DEF("music_manager", [], () ->
     GetCountdownDuration = () ->
         7811
     GetPrematureCountdownDuration = () ->

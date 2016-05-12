@@ -1,4 +1,4 @@
-define("cards", [], ()->
+DEF("cards", [], ()->
 
     CARD_PREPARATION_TIME = 3.6 * 1000
     # CARD_PREPARATION_TIME = 1 * 1000
@@ -25,20 +25,20 @@ define("cards", [], ()->
             currentStack.push(elementCards[0].shift())
             currentStack.push(elementCards[1].shift())
             currentStack.push(elementCards[2].shift())
-        require("utils").ShuffleArray(currentStack)
+        REQ("utils").ShuffleArray(currentStack)
         return currentStack
 
     # GenerateStartingCards = () ->
-    #     card_elements = require("card_elements")
+    #     card_elements = REQ("card_elements")
     #     startingCards = []
     #     elementCards = [[], [], []]
     #     for element, index in [card_elements.elements.ROCK, card_elements.elements.PAPER, card_elements.elements.SCISSOR]
     #         for value in [1, 2, 3, 4, 5]
     #             elementCards[index].push(Construct(value, element))
 
-    #     require("utils").ShuffleArray(elementCards[0])
-    #     require("utils").ShuffleArray(elementCards[1])
-    #     require("utils").ShuffleArray(elementCards[2])
+    #     REQ("utils").ShuffleArray(elementCards[0])
+    #     REQ("utils").ShuffleArray(elementCards[1])
+    #     REQ("utils").ShuffleArray(elementCards[2])
 
     #     console.log("generated cards: #{JSON.stringify(elementCards[0])} | #{JSON.stringify(elementCards[1])} | #{JSON.stringify(elementCards[2])}")
     #     while elementCards[0].length != 0
@@ -48,13 +48,13 @@ define("cards", [], ()->
     #     return startingCards
 
     GenerateStartingCards = () ->
-        card_elements = require("card_elements")
+        card_elements = REQ("card_elements")
         startingCards = []
         for element in [card_elements.elements.ROCK, card_elements.elements.PAPER, card_elements.elements.SCISSOR]
             for value in [2, 3, 4, 5]
                 startingCards.push(Construct(value, element))
         console.log("generated cards: #{JSON.stringify(startingCards)}")
-        require("utils").ShuffleArray(startingCards)
+        REQ("utils").ShuffleArray(startingCards)
         NotLastThreeTheSameElement(startingCards)
 
         console.log("generated cards: #{JSON.stringify(startingCards)}")
@@ -86,9 +86,9 @@ define("cards", [], ()->
 
 
     SetupCardActions = () ->
-        global_data = require("global_data")
-        card_utils_shared = require("card_utils_shared")
-        card_elements = require("card_elements")
+        global_data = REQ("global_data")
+        card_utils_shared = REQ("card_utils_shared")
+        card_elements = REQ("card_elements")
 
         Meteor.methods({
             "play_card_index": (cardIndex) ->
@@ -148,7 +148,7 @@ define("cards", [], ()->
                     if gameRoom.isFinished
                         winner = Meteor.users.findOne(player.id)
                         loser = Meteor.users.findOne(player.opponent.id)
-                        duelResult = require("game_room").ConstructDuelEndResult(winner, loser)
+                        duelResult = REQ("game_room").ConstructDuelEndResult(winner, loser)
 
                         Meteor.users.update(winner._id, {$set: {"isPlaying": false, score: winner.score, rank: winner.rank, winNumber: winner.winNumber, "currentRoomID": null}})
                         Meteor.users.update(loser._id, {$set: {"isPlaying": false, score: loser.score, rank: loser.rank, loseNumber: loser.loseNumber, "currentRoomID": null}})
@@ -158,11 +158,11 @@ define("cards", [], ()->
                             duelResult: duelResult
                         })
 
-                        require("game_room").GameRooms.remove({roomId: gameRoom.id})
+                        REQ("game_room").GameRooms.remove({roomId: gameRoom.id})
                         delete global_data.gameRooms[gameRoom.id]
                         delete global_data.players[player.id]
                         delete global_data.players[player.opponent.id]
-                        console.log("[#{gameRoom.id}] FINISHED ! total room nb: " + require("game_room").GameRooms.find().count());
+                        console.log("[#{gameRoom.id}] FINISHED ! total room nb: " + REQ("game_room").GameRooms.find().count());
 
 
                 , CARD_PREPARATION_TIME

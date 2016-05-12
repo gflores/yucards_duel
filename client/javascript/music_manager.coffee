@@ -1,4 +1,4 @@
-define("music_manager", [], () ->
+DEF("music_manager", [], () ->
     softLoop = new PerfectLoop("/audio/Babaroque_soft_loop3.mp3", false, 0, -0.500, -0.525)
     buildupAudio = new Audio("/audio/Babaroque_buildup1.mp3")
     mainLoop = new PerfectLoop("/audio/Babaroque_main_loop1.mp3", false, 0, -0.500, -0.525)
@@ -17,7 +17,7 @@ define("music_manager", [], () ->
             delayFinderAudio.play()
             delayFinderAudio.volume = 0
         delayFinderAudio.onended = () ->
-            require("game_data").set("isAudioPlayable", true)
+            REQ("game_data").set("isAudioPlayable", true)
             console.log("AUDIO IS NOT BUGGY")
             delayFinderTotalTime = (new Date()).getTime() - delayFinderStartTime
             delayFinderDelta = delayFinderTotalTime - (delayFinderAudio.duration * 1000)
@@ -28,9 +28,9 @@ define("music_manager", [], () ->
 
         Meteor.setTimeout(() ->
             if isNaN(delayFinderAudio.duration) == true #is buggy
-                require("game_data").set("isAudioPlayable", false)
-                require("game_data").set("isGoodBrowser", false)
-                require("music_manager").Mute()
+                REQ("game_data").set("isAudioPlayable", false)
+                REQ("game_data").set("isGoodBrowser", false)
+                REQ("music_manager").Mute()
                 console.log("AUDIO IS BUGGY")
         , 1000)
 
@@ -43,9 +43,9 @@ define("music_manager", [], () ->
         if delayFinderTotalTime == null
             loopAnimationToLaunch = softLoopAnimation
             return null
-        Thump = require("animation_utils").Thump
+        Thump = REQ("animation_utils").Thump
         softLoop.play((deltaStart) ->
-            if require("game_data").get("isGoodBrowser") == false
+            if REQ("game_data").get("isGoodBrowser") == false
                 return
 
             beforeBeat1Time = 544 + deltaStart + 25  + 100 - 225 + delayFinderDelta
@@ -83,9 +83,9 @@ define("music_manager", [], () ->
             loopAnimationToLaunch = mainLoopAnimation
             return null
 
-        Thump = require("animation_utils").Thump
+        Thump = REQ("animation_utils").Thump
         mainLoop.play((deltaStart) ->
-            if require("game_data").get("isGoodBrowser") == false
+            if REQ("game_data").get("isGoodBrowser") == false
                 return
 
             beforeBeat1Time = 103 + 25 + deltaStart + 100 - 225 + delayFinderDelta
@@ -183,25 +183,25 @@ define("music_manager", [], () ->
         
     buildupAudioAnimation = () ->
         setTimeout(() ->
-            if require("global_data").isDuelStartMessageReceived == true
+            if REQ("global_data").isDuelStartMessageReceived == true
                 console.log("buildup START")
-                require("communication").DuelStartWithMessage()
+                REQ("communication").DuelStartWithMessage()
             else
-                require("global_data").isBuildupStartFailed = true
+                REQ("global_data").isBuildupStartFailed = true
                 console.log("buildup FAIL")
-        , (require("game_data").get("CountdownValue") * 1000) - 100)
-        console.log("time before automatic DuelStartWithMessage #{require("game_data").get("CountdownValue")}")
+        , (REQ("game_data").get("CountdownValue") * 1000) - 100)
+        console.log("time before automatic DuelStartWithMessage #{REQ("game_data").get("CountdownValue")}")
 
         if delayFinderTotalTime == null
             loopAnimationToLaunch = buildupAudioAnimation
             return null
 
-        Thump = require("animation_utils").Thump
+        Thump = REQ("animation_utils").Thump
         if Meteor.user().isMusicMuted
             buildupAudio.volume = 0
         buildupAudio.play()
 
-        if require("game_data").get("isGoodBrowser") == false
+        if REQ("game_data").get("isGoodBrowser") == false
             return
 
         beforeBeat1Time = 931 + 25 + 150 - 225 + delayFinderDelta
@@ -251,7 +251,7 @@ define("music_manager", [], () ->
 
             currentFontSize += 40
             Thump($(".countdown-timer-value"), "font-size", 2, 0.2, "#{currentFontSize}px", "#{currentFontSize}px")
-            require("animation_utils").Shake($(".countdown-timer-value")[0], 40, 0.030, 20, 20)
+            REQ("animation_utils").Shake($(".countdown-timer-value")[0], 40, 0.030, 20, 20)
         , beforeBeat1Time + (beat1Nb * beat1Time) + (beat1Nb * beat2Time)
         )
         setTimeout(() ->

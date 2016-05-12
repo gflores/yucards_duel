@@ -1,4 +1,4 @@
-define("id_keys", [], () ->
+DEF("id_keys", [], () ->
     return {
         GetServerMessagesCollectionName: () ->
             "server_messages"

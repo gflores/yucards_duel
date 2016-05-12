@@ -1,4 +1,4 @@
-define("custom_collection_publisher", [], () ->
+DEF("custom_collection_publisher", [], () ->
     GenerateHandlerForSync = (publisher, cursor, collectionName) ->
         cursor.observeChanges({
             added: (id, fields) ->

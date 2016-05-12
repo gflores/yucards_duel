@@ -1,4 +1,4 @@
-define("global_data", [], () ->
+DEF("global_data", [], () ->
     gameRooms = {}
     players = {}
 

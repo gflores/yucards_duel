@@ -1,8 +1,8 @@
 Template.countdown.helpers({
     IsCountdownStarted: () ->
-        return require("game_data").get("IsCountdownStarted")
+        return REQ("game_data").get("IsCountdownStarted")
     CountdownValue: () ->
-        return require("game_data").get("CountdownValue")
+        return REQ("game_data").get("CountdownValue")
 
     UrlToShare: () ->
         url = Router.current().url
@@ -14,5 +14,5 @@ Template.countdown.helpers({
         return url
 
     OpponentName: () ->
-        Meteor.users.findOne(require("opponent_data").get("UserId")).username
+        Meteor.users.findOne(REQ("opponent_data").get("UserId")).username
 })

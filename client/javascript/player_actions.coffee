@@ -1,4 +1,4 @@
-define("player_actions", [], () ->
+DEF("player_actions", [], () ->
     
     SetAvailableForPlayer = (card_player_data, isAvailable) ->
         card_player_data.set("AreActionsAvailable", isAvailable)
@@ -9,7 +9,7 @@ define("player_actions", [], () ->
 
     LaunchLoaderForPlayer = () ->
         $parent = $("#player-side")[0]
-        require("global_data").playerCardLoadingRenderers.push(Blaze.renderWithData(Template.cardLoading, {side: "isPlayer"}, $parent))
+        REQ("global_data").playerCardLoadingRenderers.push(Blaze.renderWithData(Template.cardLoading, {side: "isPlayer"}, $parent))
 
     RemoveLoaderForPlayer = () ->
         tl = new TimelineLite()    
@@ -18,12 +18,12 @@ define("player_actions", [], () ->
             .to(loader[0], 0.5, {
                 visibility: "visible", scale: 1.6, autoAlpha: 0
                 onComplete: () ->
-                    Blaze.remove(require("global_data").playerCardLoadingRenderers.shift())
+                    Blaze.remove(REQ("global_data").playerCardLoadingRenderers.shift())
             })
 
     LaunchLoaderForOpponent = () ->
         $parent = $("#opponent-side")[0]
-        require("global_data").opponentCardLoadingRenderers.push(Blaze.renderWithData(Template.cardLoading, {side: "isOpponent"}, $parent))
+        REQ("global_data").opponentCardLoadingRenderers.push(Blaze.renderWithData(Template.cardLoading, {side: "isOpponent"}, $parent))
     RemoveLoaderForOpponent = () ->
         tl = new TimelineLite()    
         loader = $("#opponent-side .loading-bar")
@@ -31,14 +31,14 @@ define("player_actions", [], () ->
             .to(loader[0], 0.5, {
                 visibility: "visible", scale: 1.6, autoAlpha: 0
                 onComplete: () ->
-                    Blaze.remove(require("global_data").opponentCardLoadingRenderers.shift())
+                    Blaze.remove(REQ("global_data").opponentCardLoadingRenderers.shift())
             })
 
     PlayCardIndex = (index) ->
-        player_data = require("player_data")
+        player_data = REQ("player_data")
 
         SetAvailableForPlayer(player_data, false)
-        require("game_data").set("isDiscardButtonAvailable", false)
+        REQ("game_data").set("isDiscardButtonAvailable", false)
 
         card = player_data.get("Card#{index}")
         card.isPreparing = true
@@ -50,11 +50,11 @@ define("player_actions", [], () ->
         )
 
     DiscardAllCards = () ->
-        player_data = require("player_data")
+        player_data = REQ("player_data")
         console.log("discarding cards...")
 
         SetAvailableForPlayer(player_data, false)
-#        require("game_data").set("isDiscardButtonAvailable", false)
+#        REQ("game_data").set("isDiscardButtonAvailable", false)
         LaunchLoaderForPlayer()
         Meteor.call("discard_all_cards", new Date(), (error, result) ->
             console.log("error: '#{error}' | result: '#{result}'")

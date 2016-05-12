@@ -1,5 +1,5 @@
 Template.discardedCardFeedback.rendered = () ->
-    animation_utils = require("animation_utils")
+    animation_utils = REQ("animation_utils")
     $feedbackCard = $(this.find(".playable-card"))
     instanceView = this.view
     FinalResultFunc = this.data.FinalResultFunc

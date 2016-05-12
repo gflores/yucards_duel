@@ -1,12 +1,12 @@
 Template.centralStack.helpers({
     IsThereTopCard: () ->
-        return require("game_data").get("TopCard")?
+        return REQ("game_data").get("TopCard")?
 
     GetCardFunc: () ->
-        return () -> require("game_data").get("TopCard")
+        return () -> REQ("game_data").get("TopCard")
 
     GetStackCards: () ->
-        return require("game_data").get("StackCards")
+        return REQ("game_data").get("StackCards")
 
     GetStyleForIndex: (index) ->
         index += 1

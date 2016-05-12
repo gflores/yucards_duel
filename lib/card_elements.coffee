@@ -1,4 +1,4 @@
-define("card_elements", [], () ->
+DEF("card_elements", [], () ->
     elements = {
         SCISSOR: "SCISSOR"
         ROCK: "ROCK"

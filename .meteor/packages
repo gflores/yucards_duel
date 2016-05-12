@@ -28,7 +28,6 @@ accounts-ui
 check
 random
 reactive-dict
-mrt:define
 iron:router
 sacha:spin
 webtempest:animate
@@ -43,3 +42,4 @@ accounts-google
 email
 fortawesome:fontawesome
 awatson1978:browser-detection
+my:define

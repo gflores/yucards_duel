@@ -1,4 +1,4 @@
-define("utils", [], () ->
+DEF("utils", [], () ->
     class Timer
         constructor: (lastTime)->
             if lastTime? == false

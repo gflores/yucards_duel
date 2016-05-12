@@ -1,4 +1,4 @@
-define("animation_utils", [], () ->
+DEF("animation_utils", [], () ->
 
     R = (max,min) ->
         return Math.random()*(max-min)+min

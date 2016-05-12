@@ -1,4 +1,4 @@
-define("game_room", [], () ->
+DEF("game_room", [], () ->
     GameRooms = new Mongo.Collection("game_rooms");
 
     GetAvailableRoomId = () ->
@@ -20,7 +20,7 @@ define("game_room", [], () ->
             players_ids: []
             stackTopCard: null
             messageCollection: messageCollection
-            maxLife: require("shared_constants").maxLife
+            maxLife: REQ("shared_constants").maxLife
             isStarted: false
             isFinished: false
             isCountdownFinished: false
@@ -32,7 +32,7 @@ define("game_room", [], () ->
             currentGameRoomId: currentGameRoomId
             playableCards: []
             reserveCards: []
-            currentLife: require("shared_constants").maxLife
+            currentLife: REQ("shared_constants").maxLife
             isBusy: false
             remainingCardsNumber: {}
         }
@@ -46,14 +46,14 @@ define("game_room", [], () ->
             loseNumber: player.loseNumber
         }
         player.score = Math.max(newScore, 0)
-        player.rank = 1 + Math.floor(require("user_rank").GetRankFromScore(player.score)) #require("duels").GetRankFromScore(player.score)
+        player.rank = 1 + Math.floor(REQ("user_rank").GetRankFromScore(player.score)) #REQ("duels").GetRankFromScore(player.score)
         console.log("new rank: #{player.rank}")
         res.newScore = player.score
         res.newRank = player.rank
         return res
 
     ConstructDuelEndResult = (winner, loser) ->
-        scoreTransaction = require("duels").GetScoreTransactionAmount(winner, loser)
+        scoreTransaction = REQ("duels").GetScoreTransactionAmount(winner, loser)
         winner.winNumber += 1
         loser.loseNumber += 1
 
@@ -77,7 +77,7 @@ define("game_room", [], () ->
         }
 
     GetCurrentSnapshotData = (gameRoom) ->
-        global_data = require("global_data")
+        global_data = REQ("global_data")
         return {
             players: [
                 PlayerGetFilteredField(global_data.players[gameRoom.players_ids[0]])
@@ -88,13 +88,13 @@ define("game_room", [], () ->
 
     CreatePlayerForWithId = (userId, gameRoom) ->
         player = ConstructPlayer(userId, gameRoom.id)
-        global_data = require("global_data")
-        player.reserveCards = require("cards").GenerateStartingCards()
+        global_data = REQ("global_data")
+        player.reserveCards = REQ("cards").GenerateStartingCards()
 
         player.playableCards.push(player.reserveCards.pop())
         player.playableCards.push(player.reserveCards.pop())
         player.playableCards.push(player.reserveCards.pop())
-        require("cards").ComputeRemainingCardsNumberForPlayer(player)
+        REQ("cards").ComputeRemainingCardsNumberForPlayer(player)
         global_data.players[player.id] = player
         return player
 
@@ -107,7 +107,7 @@ define("game_room", [], () ->
                     return "ERROR: no UserId"
                 else
                     console.log("[#{this.userId}] trying to register for game")
-                global_data = require("global_data")
+                global_data = REQ("global_data")
                 if Meteor.user().isPlaying and global_data.players[this.userId].currentGameRoomId != roomId
                     return {
                         isAlreadyPlaying: true
@@ -153,14 +153,14 @@ define("game_room", [], () ->
                 #         return "ERROR: the room #{roomId} is full"
                 #     #Need to create a new player
                 #     gameRoom.players_ids.push(this.userId)
-                #     player.reserveCards = require("cards").GenerateStartingCards()
+                #     player.reserveCards = REQ("cards").GenerateStartingCards()
 
                     
 
                 #     player.playableCards.push(player.reserveCards.pop())
                 #     player.playableCards.push(player.reserveCards.pop())
                 #     player.playableCards.push(player.reserveCards.pop())
-                #     require("cards").ComputeRemainingCardsNumberForPlayer(player)
+                #     REQ("cards").ComputeRemainingCardsNumberForPlayer(player)
 
                 #     global_data.players[player.id] = player
                 return {
@@ -171,9 +171,9 @@ define("game_room", [], () ->
                 }
         })
         
-        custom_collection_publisher = require("custom_collection_publisher")
-        id_keys = require("id_keys")
-        global_data = require("global_data")
+        custom_collection_publisher = REQ("custom_collection_publisher")
+        id_keys = REQ("id_keys")
+        global_data = REQ("global_data")
 
         IsAllowedFunc = (publisher, subArgs) ->
             roomId = subArgs[0]
@@ -220,8 +220,8 @@ define("game_room", [], () ->
                 GameRooms.insert({roomId: gameRoom.id})
                 console.log("[#{roomId}] STARTED ! total room nb:" + GameRooms.find().count());
 
-                countdownDuration = require("music_manager").GetCountdownDuration() #require("shared_constants").countdownDuration
-                prematureCountdownDuration = require("music_manager").GetPrematureCountdownDuration()
+                countdownDuration = REQ("music_manager").GetCountdownDuration() #REQ("shared_constants").countdownDuration
+                prematureCountdownDuration = REQ("music_manager").GetPrematureCountdownDuration()
                 gameRoom.messageCollection.insert({
                     functionId: "duel_countdown"
                     countdownDuration: countdownDuration

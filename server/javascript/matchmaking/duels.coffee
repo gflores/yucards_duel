@@ -1,9 +1,9 @@
-define("duels", [], () ->
+DEF("duels", [], () ->
     Meteor.methods({
         "get_random_available_room_id": () ->
             if this.userId? == false
                 throw Meteor.Error("<get_random_available_room_id>: no userId")
-            return require("game_room").GetAvailableRoomId()
+            return REQ("game_room").GetAvailableRoomId()
     })
     GetScoreTransactionAmount = (winner, loser) ->
         if loser.rank * 2 + 1 < winner.rank

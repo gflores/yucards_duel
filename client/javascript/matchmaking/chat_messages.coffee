@@ -1,5 +1,5 @@
-define("chat_messages", [], () ->
-    id_keys = require("id_keys")
+DEF("chat_messages", [], () ->
+    id_keys = REQ("id_keys")
     Messages = new Meteor.Collection(id_keys.GetChatMessagesCollectionName())
     Meteor.subscribe(id_keys.GetChatMessagesPublicationName())
 

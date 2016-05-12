@@ -1,7 +1,7 @@
-define("communication", [], ()->
+DEF("communication", [], ()->
 
     InitializeCardPlayer = (card_player_data, message) ->
-        cards_module = require("cards")
+        cards_module = REQ("cards")
 
         for card, index in message.playableCards
             card_player_data.set("Card#{index}", cards_module.Construct(card.value, card.element, index))
@@ -16,17 +16,17 @@ define("communication", [], ()->
             card_player_data.set("CurrentLife", message.currentLife)
 
         if message.isBusy? == true
-            require("player_actions").SetAvailableForPlayer(card_player_data, !message.isBusy)
+            REQ("player_actions").SetAvailableForPlayer(card_player_data, !message.isBusy)
             if message.isBusy
-                if require("global_data").IsBottomPlayer(message.id)
-                    require("player_actions").LaunchLoaderForPlayer()
+                if REQ("global_data").IsBottomPlayer(message.id)
+                    REQ("player_actions").LaunchLoaderForPlayer()
                 else
-                    require("player_actions").LaunchLoaderForOpponent()
+                    REQ("player_actions").LaunchLoaderForOpponent()
 
 
     # SetCardsToPlayer = (playableCards) ->
-    #     player_data = require("player_data")
-    #     cards_module = require("cards")
+    #     player_data = REQ("player_data")
+    #     cards_module = REQ("cards")
 
     #     for card, index in playableCards
     #         player_data.set("Card#{index}", cards_module.Construct(card.value, card.element, index))
@@ -39,33 +39,33 @@ define("communication", [], ()->
 
 
     # SetCardsToOpponent = (playableCards) ->
-    #     opponent_data = require("opponent_data")
-    #     cards_module = require("cards")
+    #     opponent_data = REQ("opponent_data")
+    #     cards_module = REQ("cards")
 
     #     for card, index in playableCards
     #         opponent_data.set("Card#{index}", cards_module.Construct(card.value, card.element, index))
 
     UpdateFromSnapshot = (message) ->
-        require("music_manager").buildupAudio.pause()
-        require("music_manager").mainLoopAnimation()
+        REQ("music_manager").buildupAudio.pause()
+        REQ("music_manager").mainLoopAnimation()
 
-        game_data = require("game_data")
-        [player, opponent] = if require("global_data").IsBottomPlayer(message.players[0].id) then [message.players[0], message.players[1]] else [message.players[1], message.players[0]]
+        game_data = REQ("game_data")
+        [player, opponent] = if REQ("global_data").IsBottomPlayer(message.players[0].id) then [message.players[0], message.players[1]] else [message.players[1], message.players[0]]
         # SetCardsToPlayer(player.playableCards)
         # SetCardsToOpponent(opponent.playableCards)
-        player_data = require("player_data")
-        opponent_data = require("opponent_data")
+        player_data = REQ("player_data")
+        opponent_data = REQ("opponent_data")
         InitializeCardPlayer(player_data, player)
         InitializeCardPlayer(opponent_data, opponent)
-        opponent_data.set("MaxLife", require("shared_constants").maxLife)
+        opponent_data.set("MaxLife", REQ("shared_constants").maxLife)
         if message.stackTopCard?
             game_data.set("TopCard", message.stackTopCard)
 
     DuelStartWithMessage = () ->
         console.log("duel starting with message !")
-        message = require("global_data").duelStartMessage
+        message = REQ("global_data").duelStartMessage
 
-        game_data = require("game_data")
+        game_data = REQ("game_data")
         game_data.set("IsGameRoomReady", true)
         if Meteor.userId() != message.players[0].id and Meteor.userId() != message.players[1].id
             game_data.set("IsPlayer", false)
@@ -74,40 +74,40 @@ define("communication", [], ()->
         else
             game_data.set("IsPlayer", true)
         UpdateFromSnapshot(message)
-        Meteor.clearInterval(require("global_data").countdownInterval)
+        Meteor.clearInterval(REQ("global_data").countdownInterval)
 
     serverMessagesHandlers = {
         "register_confirmation": (message) ->
             if message.player_id == Meteor.userId()
-                if require("global_data").IsRegistrationConfirmed == true
+                if REQ("global_data").IsRegistrationConfirmed == true
                     console.log("duplicate tab !")
-                    require("global_data").SubscribeHandler.stop()
+                    REQ("global_data").SubscribeHandler.stop()
                     window.close()
                     location.replace(Router.routes.mainRoom.url({}))
                 else
-                    require("global_data").IsRegistrationConfirmed = true
+                    REQ("global_data").IsRegistrationConfirmed = true
                     console.log("confirming registration")
 
 
         "duel_countdown": (message) ->
-            game_data = require("game_data")
+            game_data = REQ("game_data")
             game_data.set("CountdownValue", message.countdownDuration / 1000)
-            require("music_manager").softLoop.stop()
-            require("music_manager").buildupAudioAnimation()
-            console.log("duel is going to start in #{message.countdownDuration} ms. OpponentID: #{if require("global_data").IsBottomPlayer(message.players_ids[0]) then message.players_ids[1] else message.players_ids[0]}")
+            REQ("music_manager").softLoop.stop()
+            REQ("music_manager").buildupAudioAnimation()
+            console.log("duel is going to start in #{message.countdownDuration} ms. OpponentID: #{if REQ("global_data").IsBottomPlayer(message.players_ids[0]) then message.players_ids[1] else message.players_ids[0]}")
             game_data.set("IsCountdownStarted", true)
 
-            require("opponent_data").set("UserId", if Meteor.userId() == message.players_ids[0] then message.players_ids[1] else message.players_ids[0])
-            console.log("userID set: "+ require("opponent_data").get("UserId"))
+            REQ("opponent_data").set("UserId", if Meteor.userId() == message.players_ids[0] then message.players_ids[1] else message.players_ids[0])
+            console.log("userID set: "+ REQ("opponent_data").get("UserId"))
 
             if Meteor.userId() == message.players_ids[0]
                 new Notification("Opponent Joined !", {
-                    body: "Duel starting against #{Meteor.users.findOne(require("opponent_data").get("UserId")).username}",
+                    body: "Duel starting against #{Meteor.users.findOne(REQ("opponent_data").get("UserId")).username}",
                     icon: "/images/logo_square.png"
                 })
      
             timeStep = 33
-            require("global_data").countdownInterval = Meteor.setInterval(() ->
+            REQ("global_data").countdownInterval = Meteor.setInterval(() ->
                     currentCountdownValue = game_data.get("CountdownValue")
                     currentCountdownValue -= timeStep / 1000
                     game_data.set("CountdownValue", currentCountdownValue)
@@ -130,50 +130,50 @@ define("communication", [], ()->
 
         "duel_start": (message) ->
             console.log("received duelStartMessage !")
-            require("global_data").duelStartMessage = message
-            require("global_data").isDuelStartMessageReceived = true
-            if require("global_data").isBuildupStartFailed == true
+            REQ("global_data").duelStartMessage = message
+            REQ("global_data").isDuelStartMessageReceived = true
+            if REQ("global_data").isBuildupStartFailed == true
                 DuelStartWithMessage()
 
         "player_preparing_play": (message) ->
             now = new Date()
             console.log("Total delay: #{now - message.clientLaunchTime}, Server Received Time: #{message.serverReceivedTime}, current time: #{now}")
 
-            if require("global_data").IsBottomPlayer(message.player_id)
+            if REQ("global_data").IsBottomPlayer(message.player_id)
                 console.log("I prepare play !")
-                if require("game_data").get("IsPlayer") == false #if is spectator (but on the bottom side)
-                    require("player_actions").LaunchLoaderForPlayer()
-                    require("player_actions").SetAvailableForPlayer(require("player_data"), false)
+                if REQ("game_data").get("IsPlayer") == false #if is spectator (but on the bottom side)
+                    REQ("player_actions").LaunchLoaderForPlayer()
+                    REQ("player_actions").SetAvailableForPlayer(REQ("player_data"), false)
 
 
             else
                 console.log("opponent is preparing play")
-                require("player_actions").LaunchLoaderForOpponent()
-                require("player_actions").SetAvailableForPlayer(require("opponent_data"), false)
+                REQ("player_actions").LaunchLoaderForOpponent()
+                REQ("player_actions").SetAvailableForPlayer(REQ("opponent_data"), false)
 
 
         "card_played": (message) ->
 
             card_player_data = null
             target_player_data = null
-            if require("global_data").IsBottomPlayer(message.player_id)
-                card_player_data = require("player_data")
-                target_player_data = require("opponent_data")
-                require("player_actions").RemoveLoaderForPlayer()
-                require("game_data").set("isDiscardButtonAvailable", true)
+            if REQ("global_data").IsBottomPlayer(message.player_id)
+                card_player_data = REQ("player_data")
+                target_player_data = REQ("opponent_data")
+                REQ("player_actions").RemoveLoaderForPlayer()
+                REQ("game_data").set("isDiscardButtonAvailable", true)
             else
-                card_player_data = require("opponent_data")
-                target_player_data = require("player_data")
+                card_player_data = REQ("opponent_data")
+                target_player_data = REQ("player_data")
                 console.log("should do somethihng")
-                require("player_actions").RemoveLoaderForOpponent()
+                REQ("player_actions").RemoveLoaderForOpponent()
                 console.log("DOING !!")
-            require("player_actions").SetAvailableForPlayer(card_player_data, true)
+            REQ("player_actions").SetAvailableForPlayer(card_player_data, true)
 
             newTopCard = card_player_data.get("Card#{message.cardPlayedIndex}")
 
             SetNewCardFromReserveFunc = do (message, card_player_data, target_player_data) ->
                 () ->
-                    cards_module = require("cards")
+                    cards_module = REQ("cards")
                     card_player_data.set("Card#{message.cardPlayedIndex}", cards_module.Construct(message.newCard.value, message.newCard.element, message.cardPlayedIndex))
                     for element, number of message.remainingCardsNumber
                         card_player_data.set("RemainingNumber#{element}", number)
@@ -181,8 +181,8 @@ define("communication", [], ()->
 
             SetTopCardOnStack = do (newTopCard) ->
                 () ->
-                    require("feedback_launcher").LaunchChangeEnvironmentTo(newTopCard.element)
-                    game_data = require("game_data")
+                    REQ("feedback_launcher").LaunchChangeEnvironmentTo(newTopCard.element)
+                    game_data = REQ("game_data")
                     oldTopCard = game_data.get("TopCard")
                     game_data.set("TopCard", newTopCard)
                     if oldTopCard?
@@ -193,23 +193,23 @@ define("communication", [], ()->
 
             FinalResultFunc = do (message, card_player_data, target_player_data) ->
                 () ->
-                    game_data = require("game_data")
-                    cards_module = require("cards")
+                    game_data = REQ("game_data")
+                    cards_module = REQ("cards")
 
-                    if require("global_data").IsBottomPlayer(message.player_id)
-                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForOpponent(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
-                        require("animation_utils").Shake($("#opponent-side .life-bar")[0], 12, 0.030, 20, 20)
-                        require("animation_utils").Shake($("#opponent-side .card-player-icon")[0], 12, 0.030, 20, 20)
+                    if REQ("global_data").IsBottomPlayer(message.player_id)
+                        REQ("feedback_launcher").LaunchScoreGeneratedFeedbackForOpponent(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
+                        REQ("animation_utils").Shake($("#opponent-side .life-bar")[0], 12, 0.030, 20, 20)
+                        REQ("animation_utils").Shake($("#opponent-side .card-player-icon")[0], 12, 0.030, 20, 20)
                         
                     else
-                        require("feedback_launcher").LaunchScoreGeneratedFeedbackForPlayer(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
-                        require("animation_utils").Shake($("#player-side .life-bar")[0], 12, 0.030, 20, 20)
-                        require("animation_utils").Shake($("#player-side .card-player-icon")[0], 12, 0.030, 20, 20)
+                        REQ("feedback_launcher").LaunchScoreGeneratedFeedbackForPlayer(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
+                        REQ("animation_utils").Shake($("#player-side .life-bar")[0], 12, 0.030, 20, 20)
+                        REQ("animation_utils").Shake($("#player-side .card-player-icon")[0], 12, 0.030, 20, 20)
                     target_player_data.set("CurrentLife", Math.max(message.otherCurrentLife, 0))
 
                     if message.otherCurrentLife <= 0
                         game_data.set("IsGameFinished", true)
-                        if require("global_data").IsBottomPlayer(message.player_id)
+                        if REQ("global_data").IsBottomPlayer(message.player_id)
                             console.log("player wins !")
                             game_data.set("IsWinner", true)
                         else
@@ -217,7 +217,7 @@ define("communication", [], ()->
                             game_data.set("IsWinner", false)
             $parent = $("#central-stack")[0]
             Blaze.renderWithData(Template.cardPutOnTop, {
-                    card: newTopCard, FinalResultFunc: FinalResultFunc, SetTopCardOnStack: SetTopCardOnStack, SetNewCardFromReserveFunc: SetNewCardFromReserveFunc, isPlayerSide: require("global_data").IsBottomPlayer(message.player_id), cardPlayedIndex: message.cardPlayedIndex
+                    card: newTopCard, FinalResultFunc: FinalResultFunc, SetTopCardOnStack: SetTopCardOnStack, SetNewCardFromReserveFunc: SetNewCardFromReserveFunc, isPlayerSide: REQ("global_data").IsBottomPlayer(message.player_id), cardPlayedIndex: message.cardPlayedIndex
                 }, $parent
             )
             # $parent = $("#central-stack")[0]
@@ -225,27 +225,27 @@ define("communication", [], ()->
 
 
         "cards_discarded": (message) ->
-            game_data = require("game_data")
-            cards_module = require("cards")
+            game_data = REQ("game_data")
+            cards_module = REQ("cards")
 
             card_player_data = null
-            if require("global_data").IsBottomPlayer(message.player_id)
-                card_player_data = require("player_data")
-                require("player_actions").RemoveLoaderForPlayer()
-                require("game_data").set("isDiscardButtonAvailable", true)
+            if REQ("global_data").IsBottomPlayer(message.player_id)
+                card_player_data = REQ("player_data")
+                REQ("player_actions").RemoveLoaderForPlayer()
+                REQ("game_data").set("isDiscardButtonAvailable", true)
                 # SetCardsToPlayer(message.playableCards)
 
             else
-                card_player_data = require("opponent_data")
-                require("player_actions").RemoveLoaderForOpponent()
+                card_player_data = REQ("opponent_data")
+                REQ("player_actions").RemoveLoaderForOpponent()
                 # SetCardsToOpponent(message.playableCards)
 
-            require("player_actions").SetAvailableForPlayer(card_player_data, true)
+            REQ("player_actions").SetAvailableForPlayer(card_player_data, true)
 
             $parent = $("#central-stack")[0]
             for index in [0..2]
                 Blaze.renderWithData(Template.discardedCardFeedback, {
-                        card: card_player_data.get("Card#{index}"), FinalResultFunc: (() -> console.log("ok lol")), isPlayerSide: require("global_data").IsBottomPlayer(message.player_id), cardPlayedIndex: index
+                        card: card_player_data.get("Card#{index}"), FinalResultFunc: (() -> console.log("ok lol")), isPlayerSide: REQ("global_data").IsBottomPlayer(message.player_id), cardPlayedIndex: index
                     }, $parent
                 )
 
@@ -254,13 +254,13 @@ define("communication", [], ()->
             , 50)
 
         "duel_end_result": (message) ->
-            game_data = require("game_data")
+            game_data = REQ("game_data")
             SetPlayerResult = (playerResult) ->
                 card_player_data = null
-                if require("global_data").IsBottomPlayer(playerResult.id)
-                    card_player_data = require("player_data")
+                if REQ("global_data").IsBottomPlayer(playerResult.id)
+                    card_player_data = REQ("player_data")
                 else
-                    card_player_data = require("opponent_data")
+                    card_player_data = REQ("opponent_data")
                 card_player_data.set("OldScore", playerResult.oldScore)
                 card_player_data.set("NewScore", playerResult.newScore)
                 card_player_data.set("OldRank", playerResult.oldRank)
@@ -285,9 +285,9 @@ define("communication", [], ()->
 
 
     ListenToServerMessages = (roomId, readMessagesImmediatly) ->
-        id_keys = require("id_keys")
+        id_keys = REQ("id_keys")
         collection = new Meteor.Collection(id_keys.GetServerMessagesCollectionName())
-        require("global_data").SubscribeHandler = Meteor.subscribe(id_keys.GetServerMessagesPublicationName(), roomId)
+        REQ("global_data").SubscribeHandler = Meteor.subscribe(id_keys.GetServerMessagesPublicationName(), roomId)
 
         if readMessagesImmediatly == false
             Meteor.setTimeout(() ->
@@ -314,7 +314,7 @@ define("communication", [], ()->
             console.log("error: '#{error}' | result: '#{JSON.stringify(result)}'")
             if result.playersNb == 1
                 Meteor.setTimeout(() ->
-                    require("music_manager").softLoopAnimation()
+                    REQ("music_manager").softLoopAnimation()
                 , 500)
                 if window.Notification? == true
                     Notification.requestPermission((res) ->
@@ -326,18 +326,18 @@ define("communication", [], ()->
                             console.log(res)
                     )
             currentRoomId = roomId
-            game_data = require("game_data")
+            game_data = REQ("game_data")
             game_data.set("IsPlayer", result.isPlayer)
             if result.isDuringCountdown == true
                 game_data.set("CountdownValue", result.countdownDuration / 1000)
                 game_data.set("IsCountdownStarted", true)
-                require("opponent_data").set("UserId", if Meteor.userId() == result.players_ids[0] then result.players_ids[1] else result.players_ids[0])
-                console.log("opponent userID set: "+ require("opponent_data").get("UserId"))
+                REQ("opponent_data").set("UserId", if Meteor.userId() == result.players_ids[0] then result.players_ids[1] else result.players_ids[0])
+                console.log("opponent userID set: "+ REQ("opponent_data").get("UserId"))
 
                 timeStep = 33
-                require("global_data").isBuildupStartFailed = true
+                REQ("global_data").isBuildupStartFailed = true
                 
-                require("global_data").countdownInterval = Meteor.setInterval(() ->
+                REQ("global_data").countdownInterval = Meteor.setInterval(() ->
                         currentCountdownValue = game_data.get("CountdownValue")
                         currentCountdownValue -= timeStep / 1000
                         game_data.set("CountdownValue", currentCountdownValue)
