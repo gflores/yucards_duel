@@ -48,6 +48,7 @@ DEF("communication", [], ()->
     UpdateFromSnapshot = (message) ->
         REQ("music_manager").buildupAudio.pause()
         REQ("music_manager").mainLoopAnimation()
+        REQ("game_data").set("IsTutorial", true)
 
         game_data = REQ("game_data")
         [player, opponent] = if REQ("global_data").IsBottomPlayer(message.players[0].id) then [message.players[0], message.players[1]] else [message.players[1], message.players[0]]
@@ -336,7 +337,7 @@ DEF("communication", [], ()->
 
                 timeStep = 33
                 REQ("global_data").isBuildupStartFailed = true
-                
+
                 REQ("global_data").countdownInterval = Meteor.setInterval(() ->
                         currentCountdownValue = game_data.get("CountdownValue")
                         currentCountdownValue -= timeStep / 1000
