@@ -1,0 +1,15 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "mrt:define": {
+        "path": ".."
+      }
+    },
+    "packages": {
+      "mrt:define": {
+        "path": ".."
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "packages": {
+    "mrt:define": {
+      "path": ".."
+    }
+  }
+}
