@@ -27,10 +27,10 @@ Template.duelView.helpers({
         return if REQ("game_data").get("isGoodBrowser") == true and Meteor.user().isCrazyMode == true then "visual-mode-crazy" else "visual-mode-normal"
 
     IsTutorial: () ->
-        return require("game_data").get("IsTutorial") == true
+        return REQ("game_data").get("IsTutorial") == true
         
     GetClassForTutorial: () ->
-        return if require("game_data").get("IsTutorial") == true then "tutorial-mode" else "not-tutorial-mode"
+        return if REQ("game_data").get("IsTutorial") == true then "tutorial-mode" else "not-tutorial-mode"
 })
 
 Template.duelView.events({
