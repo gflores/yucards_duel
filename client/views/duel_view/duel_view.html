@@ -1,5 +1,5 @@
 <template name="duelView">
-    <div id="duel-view" class="{{GetClassForVisualEffectMode}} {{GetClassForTutorial}}">
+    <div id="duel-view" class="{{GetClassForVisualEffectMode}} {{GetClassForTutorial}} {{GetClassForTutorialStep}}">
         <div class="plane-overlay"></div>
         {{#if IsAlreadyPlayingOtherGame}}
             <div id="already-in-another-duel">
@@ -24,6 +24,24 @@
                     <div class="tutorial-hider top-hider"></div>
                     <div class="tutorial-hider left-hider"></div>
                     <div class="tutorial-hider right-hider"></div>
+                    <div class="tutorial-hider other1-hider"></div>
+
+                    <div class="tutorial-text popup-text1">
+                        <b>Choose a card</b> to play <br>
+                        against your opponent.
+                    </div>
+                    <div class="tutorial-text popup-text2">
+                        4 seconds loading...
+                    </div>
+
+                    <div class="tutorial-text popup-text3">
+                        <b>X</b> damages dealt !
+                    </div>
+                    <div class="tutorial-text popup-text4">
+                        Playing a card also <b>changes<br>
+                        changes the elemental environment.</b>
+                    </div>
+
                 {{/if}}
             {{else}}
                 {{> countdown}}

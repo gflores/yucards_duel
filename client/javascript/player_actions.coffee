@@ -36,6 +36,10 @@ DEF("player_actions", [], () ->
 
     PlayCardIndex = (index) ->
         player_data = REQ("player_data")
+        if REQ("game_data").get("IsTutorial") == true
+            if REQ("game_data").get("TutorialStep") == 1
+                REQ("tutorial_manager").LaunchStep2()
+
 
         SetAvailableForPlayer(player_data, false)
         REQ("game_data").set("isDiscardButtonAvailable", false)
@@ -58,7 +62,7 @@ DEF("player_actions", [], () ->
         LaunchLoaderForPlayer()
         Meteor.call("discard_all_cards", new Date(), (error, result) ->
             console.log("error: '#{error}' | result: '#{result}'")
-        )        
+        )
 
     return {
         PlayCardIndex: PlayCardIndex

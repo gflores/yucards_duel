@@ -2,12 +2,97 @@
 
 .tutorial-hider {
     z-index: 200;
-    background-color: rgba(255, 255, 255, 0.8);
+    background-color: rgba(255, 255, 255, 0.945);
 }
 
+.left-hider {
+    position: absolute;
+    left: 0;
+    width: calc(16% - 3px);
+    height: 100%;
+}
+.right-hider {
+    position: absolute;
+    right: 0;
+    width: calc(16% - 3px);
+    height: 100%;
+}
 .bottom-hider {
     position: absolute;
     bottom: 0;
-    width: 100%;
-    height: 7%;
+    left: calc(16% - 3px);
+    width: calc(100% - (16% - 3px) * 2);
+    height: calc(6% + 6px);
+}
+.top-hider {
+    position: absolute;
+    top: 0;
+    left: calc(16% - 3px);
+    width: calc(100% - (16% - 3px) * 2);
+    height: calc(6% + 6px);
+}
+
+.other1-hider {
+    position: absolute;
+    bottom: calc(50% - 1px - (130px * 1.425) / 2);
+    left: calc(16% - 3px);
+    width: calc(100% - 2 * (16% - 3px));
+    height: calc(100% - (6% + 6px) - (50% - 1px - (130px * 1.425) / 2));
+}
+
+
+.tutorial-text {
+    z-index: 220;
+    display: none;
+    background-color: black;
+    color: white;
+    position: absolute;
+    font-size: 24px;
+}
+
+&.tutorial-step-1 {
+    .popup-text1 {
+        display: block;
+        bottom: calc(50% - 1px - (130px * 1.425) / 2);
+        left: 50%;
+        transform: translateX(-50%) scale(0);
+        padding: 5px 10px;
+    }
+}
+&.tutorial-step-2 {
+    .popup-text2 {
+        display: block;
+        bottom: calc(50% - 1px - (130px * 1.425) / 2);
+        left: 50%;
+        transform: translateX(-50%) scale(0);
+        padding: 5px 10px;
+    }
+}
+
+&.tutorial-step-3 {
+    // .other1-hider {
+    //     bottom: calc(50% - 1px + (130px * 1.425) / 2 + 40px);
+    //     height: calc(100% - (6% + 6px) - (50% - 1px + (130px * 1.425) / 2) - 40px);
+    // }
+    .other1-hider {
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+    .top-hider {
+        display: none;
+    }
+    .popup-text3 {
+        display: block;
+        bottom: calc(50% - 1px + (130px * 1.425) / 2 + 40px);
+        left: 50%;
+        transform: translateX(-50%) scale(0);
+        padding: 5px 10px;
+    }
+
+    .popup-text4 {
+        display: block;
+        bottom: calc(50% - 1px - (130px * 1.425) / 2);
+        left: calc(50% + (65px * 1.5));
+        padding: 5px 10px;
+        transform:  scale(0);
+    }
 }

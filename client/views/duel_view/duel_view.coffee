@@ -31,6 +31,8 @@ Template.duelView.helpers({
         
     GetClassForTutorial: () ->
         return if REQ("game_data").get("IsTutorial") == true then "tutorial-mode" else "not-tutorial-mode"
+    GetClassForTutorialStep: () ->
+        return if REQ("game_data").get("TutorialStep") != undefined then "tutorial-step-#{REQ("game_data").get("TutorialStep")}" else ""
 })
 
 Template.duelView.events({

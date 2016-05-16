@@ -175,6 +175,7 @@
 
     .rounded-button {
         @extend .clickable-block;
+        z-index: 250;
 
         position: absolute;
 

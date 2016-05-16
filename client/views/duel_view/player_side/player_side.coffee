@@ -35,6 +35,9 @@ Template.playerSide.helpers({
 
     IsGameRoomReady: () ->
         return REQ("game_data").get("IsGameRoomReady")
+    IsTutorial: () ->
+        return REQ("game_data").get("IsTutorial") == true
+
 
 })
 

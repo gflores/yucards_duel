@@ -49,6 +49,7 @@ DEF("communication", [], ()->
         REQ("music_manager").buildupAudio.pause()
         REQ("music_manager").mainLoopAnimation()
         REQ("game_data").set("IsTutorial", true)
+        REQ("tutorial_manager").LaunchStep1()
 
         game_data = REQ("game_data")
         [player, opponent] = if REQ("global_data").IsBottomPlayer(message.players[0].id) then [message.players[0], message.players[1]] else [message.players[1], message.players[0]]
@@ -158,6 +159,9 @@ DEF("communication", [], ()->
             card_player_data = null
             target_player_data = null
             if REQ("global_data").IsBottomPlayer(message.player_id)
+                if REQ("game_data").get("IsTutorial") == true
+                    if REQ("game_data").get("TutorialStep") == 2
+                        REQ("tutorial_manager").LaunchStep3()
                 card_player_data = REQ("player_data")
                 target_player_data = REQ("opponent_data")
                 REQ("player_actions").RemoveLoaderForPlayer()
@@ -199,12 +203,14 @@ DEF("communication", [], ()->
 
                     if REQ("global_data").IsBottomPlayer(message.player_id)
                         REQ("feedback_launcher").LaunchScoreGeneratedFeedbackForOpponent(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
-                        REQ("animation_utils").Shake($("#opponent-side .life-bar")[0], 12, 0.030, 20, 20)
+                        # REQ("animation_utils").Shake($("#opponent-side .life-bar")[0], 12, 0.030, 20, 20)
+                        REQ("animation_utils").Shake($("#opponent-side .life-bar")[0], 16, 0.035, 18, 18)
                         REQ("animation_utils").Shake($("#opponent-side .card-player-icon")[0], 12, 0.030, 20, 20)
                         
                     else
                         REQ("feedback_launcher").LaunchScoreGeneratedFeedbackForPlayer(message.otherCurrentLife - target_player_data.get("CurrentLife"), message.damageCriticalityValue)
-                        REQ("animation_utils").Shake($("#player-side .life-bar")[0], 12, 0.030, 20, 20)
+                        # REQ("animation_utils").Shake($("#player-side .life-bar")[0], 12, 0.030, 20, 20)
+                        REQ("animation_utils").Shake($("#player-side .life-bar")[0], 16, 0.035, 18, 18)
                         REQ("animation_utils").Shake($("#player-side .card-player-icon")[0], 12, 0.030, 20, 20)
                     target_player_data.set("CurrentLife", Math.max(message.otherCurrentLife, 0))
 
@@ -284,26 +290,35 @@ DEF("communication", [], ()->
         console.log("ServerMessageHandler received: #{JSON.stringify(serverMessage)}")
         serverMessagesHandlers[serverMessage.functionId](serverMessage)
 
+    messagesCollection = null
+    messagesCollectionObserverHandler = null
+
+    ObserveServerMessages = () ->
+        messagesCollectionObserverHandler = messagesCollection.find().observeChanges({
+            added: (id, field) ->
+                HandleServerMessage(field)
+                console.log("msg nb: " + messagesCollection.find().count())
+        })
+
 
     ListenToServerMessages = (roomId, readMessagesImmediatly) ->
         id_keys = REQ("id_keys")
-        collection = new Meteor.Collection(id_keys.GetServerMessagesCollectionName())
+        messagesCollection = new Meteor.Collection(id_keys.GetServerMessagesCollectionName())
         REQ("global_data").SubscribeHandler = Meteor.subscribe(id_keys.GetServerMessagesPublicationName(), roomId)
 
         if readMessagesImmediatly == false
             Meteor.setTimeout(() ->
-                collection.find().observeChanges({
-                    added: (id, field) ->
-                        HandleServerMessage(field)
-                        console.log("msg nb: " + collection.find().count())
-                })
+                ObserveServerMessages()
             , 1000)
         else
-            collection.find().observeChanges({
-                added: (id, field) ->
-                    HandleServerMessage(field)
-                    console.log("msg nb: " + collection.find().count())
-            })
+            ObserveServerMessages()
+
+    StopListeningToServerMessages = () ->
+        messagesCollectionObserverHandler.stop()
+
+
+
+
 
     currentRoomId = null
 
@@ -373,5 +388,7 @@ DEF("communication", [], ()->
         RegisterToRoom: RegisterToRoom
         DuelStartWithMessage: DuelStartWithMessage
         currentRoomId: currentRoomId
+        ObserveServerMessages: ObserveServerMessages
+        StopListeningToServerMessages: StopListeningToServerMessages
     }
 )
