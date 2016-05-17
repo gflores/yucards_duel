@@ -162,11 +162,15 @@ DEF("communication", [], ()->
                 if REQ("game_data").get("IsTutorial") == true
                     if REQ("game_data").get("TutorialStep") == 2
                         REQ("tutorial_manager").LaunchStep3()
+                    REQ("game_data").set("PlayerNbPlay", REQ("game_data").get("PlayerNbPlay") + 1)
                 card_player_data = REQ("player_data")
                 target_player_data = REQ("opponent_data")
                 REQ("player_actions").RemoveLoaderForPlayer()
                 REQ("game_data").set("isDiscardButtonAvailable", true)
             else
+                if REQ("game_data").get("IsTutorial") == true
+                    if REQ("game_data").get("TutorialStep") == 3
+                        REQ("tutorial_manager").OpponentPlayStep()
                 card_player_data = REQ("opponent_data")
                 target_player_data = REQ("player_data")
                 console.log("should do somethihng")
@@ -184,7 +188,7 @@ DEF("communication", [], ()->
                         card_player_data.set("RemainingNumber#{element}", number)
 
 
-            SetTopCardOnStack = do (newTopCard) ->
+            SetTopCardOnStack = do (message, newTopCard, card_player_data) ->
                 () ->
                     REQ("feedback_launcher").LaunchChangeEnvironmentTo(newTopCard.element)
                     game_data = REQ("game_data")
@@ -195,6 +199,21 @@ DEF("communication", [], ()->
                         stackCards.unshift(oldTopCard)
                         stackCards = stackCards[0..1]
                         game_data.set("StackCards", stackCards)
+                    if REQ("game_data").get("IsTutorial") == true
+                        card_player_data.set("LastCardPlayed", newTopCard)
+                        card_player_data.set("LastCardPlayedAgainst", oldTopCard)
+                        if REQ("game_data").get("PlayerNbPlay") >= 3
+                            if REQ("global_data").IsBottomPlayer(message.player_id)
+                                REQ("tutorial_manager").PlayerPlayDescription()
+                                if REQ("game_data").get("PlayerNbPlay") == 4
+                                    Meteor.setTimeout(() ->
+                                        REQ("tutorial_manager").RevealDiscardButton()
+                                    , 2000)
+
+                            else
+                                REQ("tutorial_manager").OpponentPlayDescription()
+
+
 
             FinalResultFunc = do (message, card_player_data, target_player_data) ->
                 () ->
@@ -286,9 +305,28 @@ DEF("communication", [], ()->
 
     }
 
+    temporaryMessagesStack = []
+    pauseServerMessages = false
+
+    PauseServerMessages = () ->
+        console.log("server messages paused !")
+        pauseServerMessages = true
+
+    UnpauseServerMessages = () ->
+        console.log("server messages unpaused !")
+        for serverMessage in temporaryMessagesStack
+            serverMessagesHandlers[serverMessage.functionId](serverMessage)
+        temporaryMessagesStack = []
+        pauseServerMessages = false
+
+
     HandleServerMessage = (serverMessage) ->
         console.log("ServerMessageHandler received: #{JSON.stringify(serverMessage)}")
-        serverMessagesHandlers[serverMessage.functionId](serverMessage)
+        if pauseServerMessages == false
+            serverMessagesHandlers[serverMessage.functionId](serverMessage)
+        else
+            temporaryMessagesStack.push(serverMessage)
+
 
     messagesCollection = null
     messagesCollectionObserverHandler = null
@@ -390,5 +428,7 @@ DEF("communication", [], ()->
         currentRoomId: currentRoomId
         ObserveServerMessages: ObserveServerMessages
         StopListeningToServerMessages: StopListeningToServerMessages
+        PauseServerMessages: PauseServerMessages
+        UnpauseServerMessages: UnpauseServerMessages
     }
 )

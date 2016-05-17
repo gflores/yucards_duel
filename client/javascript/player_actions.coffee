@@ -64,6 +64,9 @@ DEF("player_actions", [], () ->
             console.log("error: '#{error}' | result: '#{result}'")
         )
 
+        if REQ("game_data").get("IsTutorial") == true
+            REQ("tutorial_manager").TutorialFinished()
+
     return {
         PlayCardIndex: PlayCardIndex
         SetAvailableForPlayer: SetAvailableForPlayer
