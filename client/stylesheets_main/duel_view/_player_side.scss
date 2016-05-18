@@ -89,14 +89,19 @@
     &:not(.actions-unavailable) > #discard-button {
         @extend .clickable-block;
     }
+    .discard-button-wrapper {
+        position: absolute;
+        left: calc(8% - 72px);
+        bottom: 322px;
+    }
     #discard-button{
         overflow: visible !important;
 
         position: absolute;
 
         height: 74px;
-        left: calc(8% - 72px);
-        bottom: 248px;
+        // left: calc(8% - 72px);
+        // bottom: 248px;
         width: calc(#{$discard_button_width});
 
         font-size: 20px;

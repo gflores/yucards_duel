@@ -137,7 +137,12 @@
     transform: scale(0);
 }
 &.tutorial-mode {
-    #discard-button {
-        opacity: 0;
+    #player-side #discard-button {
+        // opacity: 0;
+    }
+    #player-side .discard-button-wrapper {
+        left: -50%;
+        // opacity: 0;
+        // transform: scale(0);
     }
 }

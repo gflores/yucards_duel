@@ -44,10 +44,12 @@ Template.playerSide.helpers({
 Template.playerSide.events({
     "click :not(.actions-unavailable):not(.is-spectator) > .playable-cards > .playable-card": () ->
         console.log("clicking ! #{this.GetCard().index}")
-        REQ("player_actions").PlayCardIndex(this.GetCard().index)
+        if REQ("player_data").get("AreActionsAvailable") == true
+            REQ("player_actions").PlayCardIndex(this.GetCard().index)
 
     "click :not(.actions-unavailable):not(.is-spectator) > #discard-button": () ->
-        REQ("player_actions").DiscardAllCards()
+        if REQ("player_data").get("AreActionsAvailable") == true
+            REQ("player_actions").DiscardAllCards()
 
     "click .open-instruction-button": () ->
         if REQ("game_data").get("isDisplayingInstructions") == true

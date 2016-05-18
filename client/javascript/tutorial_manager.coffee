@@ -77,12 +77,14 @@ DEF("tutorial_manager", [], ()->
         (new TimelineLite()).to($(".left-hider")[0], 0.1, {scale: 0})
         (new TimelineLite()).to($(".right-hider")[0], 0.1, {scale: 0})
         Meteor.setTimeout(() ->
-            (new TimelineLite()).to($("#discard-button")[0], 0.4, {opacity: 1})
+            # (new TimelineLite()).to($("#discard-button")[0], 0.4, {opacity: 1})
+            # (new TimelineLite()).to($(".discard-button-wrapper")[0], 0.4, {scale: 1})
             (new TimelineLite()).to($(".tutorial-discard-button-text")[0], 0.4, {scale: 1})
+            (new TimelineLite()).to($(".discard-button-wrapper")[0], 0.4, {left: "calc(8% - 72px)"})
             Meteor.setTimeout(() ->
-                REQ("animation_utils").Shake($("#discard-button")[0], 16, 0.035, 18, 18)
+                REQ("animation_utils").Shake($(".discard-button-wrapper")[0], 16, 0.030, 15, 15)
             , 400)
-        , 100)
+        , 200)
 
     TutorialFinished = () ->
         (new TimelineLite()).to($(".tutorial-discard-button-text")[0], 0.4, {scale: 0})

@@ -15,11 +15,13 @@
 <!--         {{> scoreBar data}} -->
         {{> lifeBar data}}
         {{#if IsGameRoomReady}}
-            <button id="discard-button">
-                Get New Hand !
-                <div class="loading-overlay">
-                </div>
-            </button>
+            <div class="discard-button-wrapper">
+                <button id="discard-button">
+                    Reload
+                    <div class="loading-overlay">
+                    </div>
+                </button>
+            </div>
         {{/if}}
 
         {{#if IsGameRoomReady}}
