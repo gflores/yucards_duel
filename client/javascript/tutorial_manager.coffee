@@ -66,12 +66,12 @@ DEF("tutorial_manager", [], ()->
         (new TimelineLite()).to($(".player-play-description")[0], 0.4, {scale: 1})
         Meteor.setTimeout(() ->
             (new TimelineLite()).to($(".player-play-description")[0], 0.1, {scale: 0})
-        3400)
+        3600)
     OpponentPlayDescription = () ->
         (new TimelineLite()).to($(".opponent-play-description")[0], 0.4, {scale: 1})
         Meteor.setTimeout(() ->
             (new TimelineLite()).to($(".opponent-play-description")[0], 0.1, {scale: 0})
-        3400)
+        3600)
 
     RevealDiscardButton = () ->
         (new TimelineLite()).to($(".left-hider")[0], 0.1, {scale: 0})

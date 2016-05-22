@@ -48,7 +48,8 @@ DEF("communication", [], ()->
     UpdateFromSnapshot = (message) ->
         REQ("music_manager").buildupAudio.pause()
         REQ("music_manager").mainLoopAnimation()
-        REQ("game_data").set("IsTutorial", true)
+        if Meteor.user().winNumber == 0 && Meteor.user().loseNumber == 0
+            REQ("game_data").set("IsTutorial", true)
         REQ("tutorial_manager").LaunchStep1()
 
         game_data = REQ("game_data")
@@ -188,7 +189,7 @@ DEF("communication", [], ()->
                         card_player_data.set("RemainingNumber#{element}", number)
 
 
-            SetTopCardOnStack = do (message, newTopCard, card_player_data) ->
+            SetTopCardOnStack = do (message, newTopCard, card_player_data, target_player_data) ->
                 () ->
                     REQ("feedback_launcher").LaunchChangeEnvironmentTo(newTopCard.element)
                     game_data = REQ("game_data")
@@ -202,6 +203,8 @@ DEF("communication", [], ()->
                     if REQ("game_data").get("IsTutorial") == true
                         card_player_data.set("LastCardPlayed", newTopCard)
                         card_player_data.set("LastCardPlayedAgainst", oldTopCard)
+                        card_player_data.set("DamageDealt", target_player_data.get("CurrentLife") - message.otherCurrentLife)
+
                         if REQ("game_data").get("PlayerNbPlay") >= 3
                             if REQ("global_data").IsBottomPlayer(message.player_id)
                                 REQ("tutorial_manager").PlayerPlayDescription()
@@ -209,7 +212,6 @@ DEF("communication", [], ()->
                                     Meteor.setTimeout(() ->
                                         REQ("tutorial_manager").RevealDiscardButton()
                                     , 2000)
-
                             else
                                 REQ("tutorial_manager").OpponentPlayDescription()
 

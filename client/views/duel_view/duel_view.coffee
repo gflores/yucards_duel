@@ -33,6 +33,40 @@ Template.duelView.helpers({
         return if REQ("game_data").get("IsTutorial") == true then "tutorial-mode" else "not-tutorial-mode"
     GetClassForTutorialStep: () ->
         return if REQ("game_data").get("TutorialStep") != undefined then "tutorial-step-#{REQ("game_data").get("TutorialStep")}" else ""
+
+
+    GetPlayerLastCardPlayed: () ->
+        return REQ("player_data").get("LastCardPlayed")
+    GetPlayerLastCardPlayedAgainst: () ->
+        return REQ("player_data").get("LastCardPlayedAgainst")
+    GetOpponentLastCardPlayed: () ->
+        return REQ("opponent_data").get("LastCardPlayed")
+    GetOpponentLastCardPlayedAgainst: () ->
+        return REQ("opponent_data").get("LastCardPlayedAgainst")
+
+    ElementToElementTextClass: (element) ->
+        return if element == "ROCK"
+                "rock-text"
+            else if element == "PAPER"
+                "paper-text"
+            else if element == "SCISSOR"
+                "scissor-text"
+
+    ElementToElementAffinity: (subject, target) ->
+        result = REQ("card_elements").GetResult(subject, target)
+
+        return if result == 0
+                "the same"
+            else if result == 1
+                "stronger"
+            else if result == -1
+                "weaker"
+
+    GetPlayerDamageDealt: () ->
+        return REQ("player_data").get("DamageDealt")
+    GetOpponentDamageDealt: () ->
+        return REQ("opponent_data").get("DamageDealt")
+
 })
 
 Template.duelView.events({

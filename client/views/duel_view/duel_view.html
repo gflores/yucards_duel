@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="tutorial-text popup-text3">
-                        <b>X</b> damages dealt !
+                        <b>{{GetPlayerDamageDealt}}</b> damage dealt !
                     </div>
                     <div class="tutorial-text popup-text4">
                         Playing a card also <b>changes<br>
@@ -45,17 +45,19 @@
                         Opponent played a card !
                     </div>
                     <div class="tutorial-text opponent-played-damages">
-                        <b>X</b> damages dealt !
+                        <b>{{GetOpponentDamageDealt}}</b> damage dealt !
                     </div>
 
 
                     <div class="tutorial-text player-play-description">
-                        Playing X deals <b>more damages</b> <br>
-                        on a Y environment
+                        Playing <span class="{{ElementToElementTextClass GetPlayerLastCardPlayed.element}}">{{GetPlayerLastCardPlayed.element}}</span> on a <br>
+                        <span class="{{ElementToElementTextClass GetPlayerLastCardPlayedAgainst.element}}">{{GetPlayerLastCardPlayedAgainst.element}}</span> environment <br>
+                        is <b>{{ElementToElementAffinity GetPlayerLastCardPlayed.element GetPlayerLastCardPlayedAgainst.element}}</b>.
                     </div>
                     <div class="tutorial-text opponent-play-description">
-                        Playing X deals <b>more damages</b> <br>
-                        on a Y environment
+                        Playing <span class="{{ElementToElementTextClass GetOpponentLastCardPlayed.element}}">{{GetOpponentLastCardPlayed.element}}</span> on a <br>
+                        <span class="{{ElementToElementTextClass GetOpponentLastCardPlayedAgainst.element}}">{{GetOpponentLastCardPlayedAgainst.element}}</span> environment <br>
+                        is <b>{{ElementToElementAffinity GetOpponentLastCardPlayed.element GetOpponentLastCardPlayedAgainst.element}}</b>.
                     </div>
 
                     <div class="tutorial-text tutorial-discard-button-text">

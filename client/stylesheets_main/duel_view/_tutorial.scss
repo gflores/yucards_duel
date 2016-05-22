@@ -124,9 +124,10 @@
 .opponent-play-description {
     display: block;
     bottom: calc(50%);
-    right: calc(50% + (65px * 1.5));
+    // right: calc(50% + (65px * 1.5));
+    left: 44px;
     padding: 5px 10px;
-    transform: translateY(50%) scale(0);   
+    transform: scale(0);   
 }
 
 .tutorial-discard-button-text {

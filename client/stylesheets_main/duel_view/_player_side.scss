@@ -318,15 +318,6 @@
 
             }
 
-            .scissor-text {
-                font-weight: bold;
-                color: red;
-            }
-            .paper-text {
-                font-weight: bold;
-                color: #709E51;
-            }
-
             .damage-text {
                 font-weight: bold;
                 color: #ffec00;
@@ -339,3 +330,17 @@
         }
     }
 }
+
+.scissor-text {
+    font-weight: bold;
+    color: red;
+}
+.paper-text {
+    font-weight: bold;
+    color: #709E51;
+}
+.rock-text {
+    font-weight: bold;
+    color: hsla(33,100%,30%,1);
+}
+
